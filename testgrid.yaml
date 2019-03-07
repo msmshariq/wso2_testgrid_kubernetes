@@ -37,7 +37,7 @@ deploymentConfig:
 scenarioConfigs:
   - testType: TESTNG
     remoteRepository: "git@github.com:wso2/testgrid.git"
-    name: "Test-Phase-1"
+    name: "ref-scenario"
     description: "Test-Phase-1"
     file: tests/test.sh
 
