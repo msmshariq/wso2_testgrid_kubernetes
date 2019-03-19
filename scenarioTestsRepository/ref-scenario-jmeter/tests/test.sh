@@ -84,22 +84,18 @@ echo "MVN_OPTS : ${MVN_OPTS}"
 export DATA_BUCKET_LOCATION=${INPUT_DIR}
 
 #=============== Execute Scenarios ===============================================
-
-echo 'Downloading dummy surefire-reports'
-wget https://s3.amazonaws.com/testgrid-resources/test-dev-phase1/Dummy1.zip
-
+pwd
 ls
 
-echo 'Unzip downloaded files into data bucket'
-mkdir -p ${OUTPUT_DIR}/scenarios
-unzip -qo Dummy1.zip -d ${OUTPUT_DIR}/scenarios
-rm Dummy1.zip
+echo "Copying jtl files into the out data bucket"
+mkdir -p ${OUTPUT_DIR}/scenarios/ref-scenario-jmeter
+cp *.jtl ${OUTPUT_DIR}/scenarios/ref-scenario-jmeter
 
 echo 'Files in data bucket:'
 ls ${OUTPUT_DIR}
 
 echo 'Files in directory reserved for scenarios:'
-ls ${OUTPUT_DIR}/scenarios
+ls ${OUTPUT_DIR}/scenarios/*
 
 echo 'test.sh complete'
 
