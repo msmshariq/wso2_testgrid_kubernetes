@@ -41,3 +41,5 @@ In the mysql-client console, enter the command:
 
 `select id, infra_parameters, status from test_plan where id like 'test-job%';`
 
+ConfigurationContext.getProperty(ConfigurationProperties.DB_URL);
+

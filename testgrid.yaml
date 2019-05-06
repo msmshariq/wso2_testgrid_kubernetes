@@ -1,15 +1,12 @@
 # A testGrid Job 
 version: '0.9'
 emailToList: "kasung@wso2.com"
+keyFileLocation: testgrid-access.json
 infrastructureConfig:
   iacProvider: CLOUDFORMATION
   infrastructureProvider: AWS
   containerOrchestrationEngine: None
   includes:
-     - CentOS-7.5
-     - MySQL-5.7
-     - Oracle-SE-12.1
-     - OracleJDK-8
   provisioners:
     - name: prod-wso2-ei-scenario-deployment
       remoteRepository: "git@github.com:wso2/testgrid.git"
@@ -17,13 +14,8 @@ infrastructureConfig:
       scripts:
         - name: 'Test-Phase-1-Deployment'
           description: ''
-          type: SHELL
+          type: KUBERNETES
           phase: CREATE
-          file: infra.sh
-        - name: destroy
-          file: destroy.sh
-          type: SHELL
-          phase: DESTROY
 deploymentConfig:
   deploymentPatterns:
     - name: 'deployment'
@@ -31,9 +23,16 @@ deploymentConfig:
       description: 'dummy'
       dir: .
       scripts:
-        - name: 'default'
-          type: SHELL
-          file: deploy.sh
+        - name: 'deploy1'
+          type: KUBERNETES
+          file: wso2am.sh
+          inputParameters: 
+            deployment: wso2apim-with-analytics-mysql
+            services: LoadBalancer 
+        - name: destroy
+          file: destroy.sh
+          type: KUBERNETES
+          phase: DESTROY        
 scenarioConfigs:
   - testType: TESTNG
     remoteRepository: "git@github.com:wso2/testgrid.git"
