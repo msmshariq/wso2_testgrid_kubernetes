@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite hostname="ip-172-31-31-95.ec2.internal" name="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase" tests="26" failures="0" timestamp="5 Nov 2018 08:01:20 GMT" time="59.173" errors="0">
+  <testcase name="testKeyGenerationResponseContainsGrantTypesAndCallback" time="0.375" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testKeyGenerationResponseContainsGrantTypesAndCallback" time="0.702" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testTokenGenerationWithClientCredentialsGrant" time="0.084" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testTokenGenerationWithClientCredentialsGrant" time="0.064" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testTokenGenerationWithPasswordGrant" time="0.06" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testTokenGenerationWithPasswordGrant" time="0.058" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testUpdateGrantTypesAndCallback" time="0.325" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testUpdateGrantTypesAndCallback" time="0.313" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testGetGrantTypesAndCallback" time="0.068" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testGetGrantTypesAndCallback" time="0.066" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testGetApplicationAndCheckKeys" time="0.08" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testGetApplicationAndCheckKeys" time="0.07" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testKeyGenerationWithoutGrantTypesNorCallback" time="0.263" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testKeyGenerationWithoutGrantTypesNorCallback" time="0.266" classname="org.wso2.am.integration.tests.restapi.GIT_1628_OAuthAppUpdateViaRestApiTestCase"/>
+  <testcase name="testAPIs" time="6.617" classname="org.wso2.am.integration.tests.restapi.testcases.APITestCase"/>
+  <testcase name="testEnvironment" time="3.331" classname="org.wso2.am.integration.tests.restapi.testcases.EnvironmentTestCase"/>
+  <testcase name="testApplications" time="2.865" classname="org.wso2.am.integration.tests.restapi.testcases.ApplicationTestCase"/>
+  <testcase name="testRegenerateConsumerSecret" time="2.753" classname="org.wso2.am.integration.tests.restapi.testcases.ApplicationRegenerateConsumerSecretTestCase"/>
+  <testcase name="testCreateAPIWithScopesAndUpdate" time="4.491" classname="org.wso2.am.integration.tests.restapi.testcases.APIMANAGER4877CreateAPIWithScopesAndUpdateTemplateTestCase"/>
+  <testcase name="testUpdateAPIwhichHasThumbnail" time="4.447" classname="org.wso2.am.integration.tests.restapi.testcases.APIMANAGER5872UpdateAPIWithoutThumbnailValueAndAPISummaryTestCase"/>
+  <testcase name="testChangeLifeCycleToPublish" time="1.891" classname="org.wso2.am.integration.tests.restapi.GIT_1638_UrlEncodedApiNameTestCase"/>
+  <testcase name="testChangeLifeCycleToPublish" time="1.174" classname="org.wso2.am.integration.tests.restapi.GIT_1638_UrlEncodedApiNameTestCase"/>
+  <testcase name="testGetApiDetailFromPublisher" time="0.443" classname="org.wso2.am.integration.tests.restapi.GIT_1638_UrlEncodedApiNameTestCase"/>
+  <testcase name="testGetApiDetailFromPublisher" time="0.397" classname="org.wso2.am.integration.tests.restapi.GIT_1638_UrlEncodedApiNameTestCase"/>
+  <testcase name="testGetApplicationScope" time="5.139" classname="org.wso2.am.integration.tests.restapi.testcases.ApplicationScopeValidationTestCase"/>
+  <testcase name="testApplications" time="2.388" classname="org.wso2.am.integration.tests.restapi.testcases.ApplicationWithCustomAttributesTestCase"/>
+</testsuite>

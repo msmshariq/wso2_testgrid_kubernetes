@@ -27,8 +27,9 @@ deploymentConfig:
           type: KUBERNETES
           file: wso2am.sh
           inputParameters: 
-            deployment: wso2apim-with-analytics-mysql
-            services: LoadBalancer 
+            deployment: wso2apim-with-analytics-apim
+            service: LoadBalancer 
+            yaml: deployment.yaml
         - name: destroy
           file: destroy.sh
           type: KUBERNETES

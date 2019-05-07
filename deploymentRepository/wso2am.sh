@@ -15,19 +15,33 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------------
-IFS='' read -r -d '' deployment<<"EOF"
+
+set -e
+
+# bash variables
+k8s_obj_file="deployment.yaml";
+NODE_IP=''
+
+# bash functions
+
+function undeploy(){
+  echoBold "Undeploying WSO2 API Manager ... \n"
+  kubectl delete -f deployment.yaml
+  exit 0
+}
+function echoBold () {
+    echo -en  $'\e[1m'"${1}"$'\e[0m'
+}
+
+function display_msg(){
+    msg=$@
+    echoBold "${msg}"
+    exit 1
+}
 
 
-apiVersion: v1
-data:
-  .dockerconfigjson: "wso2.secret&auth.base64"
-kind: Secret
-metadata:
-  name: wso2creds
-  namespace: wso2
-type: kubernetes.io/dockerconfigjson
----
-
+function create_yaml(){
+cat >> $k8s_obj_file << "EOF"
 apiVersion: v1
 data:
   api-manager.xml: |
@@ -53,7 +67,13 @@ data:
                     <ServerURL>https://localhost:${mgt.transport.https.port}${carbon.context}services/</ServerURL>
                     <Username>${admin.username}</Username>
                     <Password>${admin.password}</Password>
-               </Environment>
+EOF
+
+echo '                    <GatewayEndpoint>http://'$NODE_IP':30243,https://'$NODE_IP':30243</GatewayEndpoint>' >> $k8s_obj_file
+
+cat >> $k8s_obj_file << "EOF"
+                    <GatewayWSEndpoint>ws://${carbon.local.ip}:9099</GatewayWSEndpoint>
+                </Environment>
             </Environments>
         </APIGateway>
         <CacheConfigurations>
@@ -125,6 +145,12 @@ data:
         <APIStore>
             <CompareCaseInsensitively>true</CompareCaseInsensitively>
             <DisplayURL>false</DisplayURL>
+EOF
+
+echo "            <URL>https://$NODE_IP:30443/store</URL>" >> $k8s_obj_file
+echo "            <ServerURL>https://$NODE_IP:30443services/</ServerURL>" >> $k8s_obj_file
+
+cat >> $k8s_obj_file << "EOF"
             <Username>${admin.username}</Username>
             <Password>${admin.password}</Password>
             <DisplayMultipleVersions>false</DisplayMultipleVersions>
@@ -381,8 +407,13 @@ data:
         <Name>WSO2 API Manager</Name>
         <ServerKey>AM</ServerKey>
         <Version>2.6.0</Version>
-        <HostName>"wso2.k8s&node_ip"</HostName>
-        <MgtHostName>"wso2.k8s&node_ip"</MgtHostName>
+EOF
+
+echo "        <HostName>$NODE_IP</HostName>" >> $k8s_obj_file
+
+echo "        <MgtHostName>$NODE_IP</MgtHostName>" >> $k8s_obj_file
+
+cat >> $k8s_obj_file << "EOF"
         <ServerURL>local:/${carbon.context}/services/</ServerURL>
         <ServerRoles>
             <Role>APIManager</Role>
@@ -626,7 +657,7 @@ data:
 kind: ConfigMap
 metadata:
   name: apim-conf
-  namespace: wso2
+
 ---
 
 apiVersion: v1
@@ -746,7 +777,7 @@ data:
 kind: ConfigMap
 metadata:
   name: apim-conf-datasources
-  namespace: wso2
+
 ---
 
 apiVersion: v1
@@ -1072,7 +1103,7 @@ data:
 kind: ConfigMap
 metadata:
   name: apim-analytics-conf-worker
-  namespace: wso2
+
 ---
 
 apiVersion: v1
@@ -2807,14 +2838,13 @@ data:
 kind: ConfigMap
 metadata:
   name: mysql-dbscripts
-  namespace: wso2
+
 ---
 
 apiVersion: v1
 kind: Service
 metadata:
   name: wso2apim-with-analytics-rdbms-service
-  namespace: wso2
 spec:
   type: ClusterIP
   selector:
@@ -2830,7 +2860,6 @@ apiVersion: v1
 kind: Service
 metadata:
   name: wso2apim-with-analytics-apim-analytics-service
-  namespace: wso2
 spec:
   selector:
     deployment: wso2apim-with-analytics-apim-analytics
@@ -2861,43 +2890,11 @@ spec:
       port: 7444
 ---
 
-apiVersion: v1
-kind: Service
-metadata:
-  name: wso2apim-with-analytics-apim-service
-  namespace: wso2
-  labels:
-    deployment: wso2apim-with-analytics-apim
-spec:
-  selector:
-    deployment: wso2apim-with-analytics-apim
-  type: NodePort
-  ports:
-    -
-      name: pass-through-http
-      protocol: TCP
-      port: 8280
-    -
-      name: pass-through-https
-      protocol: TCP
-      port: 8243
-      nodePort: 30243
-    -
-      name: servlet-http
-      protocol: TCP
-      port: 9763
-    -
-      name: servlet-https
-      protocol: TCP
-      nodePort: 30443
-      port: 9443
----
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wso2apim-with-analytics-mysql-deployment
-  namespace: wso2
 spec:
   replicas: 1
   selector:
@@ -2934,14 +2931,12 @@ spec:
         - name: mysql-dbscripts
           configMap:
             name: mysql-dbscripts
-      serviceAccountName: 'wso2svc-account'
 ---
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wso2apim-with-analytics-apim-analytics-deployment
-  namespace: wso2
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -3020,7 +3015,6 @@ spec:
         - name: init-apim-with-analytics
           image: busybox
           command: ['sh', '-c', 'echo -e "checking for the availability of MySQL"; while ! nc -z wso2apim-with-analytics-rdbms-service 3306; do sleep 1; printf "-"; done; echo -e "  >> MySQL started";']
-      serviceAccountName: 'wso2svc-account'
       imagePullSecrets:
         - name: wso2creds
       volumes:
@@ -3033,7 +3027,6 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wso2apim-with-analytics-apim
-  namespace: wso2
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -3109,7 +3102,6 @@ spec:
         - name: init-apim
           image: busybox
           command: ['sh', '-c', 'echo -e "checking for the availability of wso2apim-with-analytics-apim-analytics"; while ! nc -z wso2apim-with-analytics-apim-analytics-service 7712; do sleep 1; printf "-"; done; echo -e " >> wso2is-with-analytics-is-analytics started";']
-      serviceAccountName: 'wso2svc-account'
       imagePullSecrets:
         - name: wso2creds
       volumes:
@@ -3122,45 +3114,55 @@ spec:
 ---
 EOF
 
-
-# bash variables
-k8s_obj_file="deployment.yaml"
-KUBECTL=`which kubectl`
-WSO2_SUBSCRIPTION_USERNAME=$WUMUsername
-WSO2_SUBSCRIPTION_PASSWORD=$WUMPassword
-
-# bash functions
-function display_msg(){
-    msg=$@
-    ${msg}
-    exit 1
 }
-  
+
+function get_node_ip(){
+  NODE_IP=$(kubectl get nodes -o jsonpath='{.items[*].status.addresses[?(@.type=="ExternalIP")].address}')
+
+  if [[ -z $NODE_IP ]]
+  then
+      if [[ $(kubectl config current-context)="minikube" ]]
+      then
+          NODE_IP=$(minikube ip)
+      else
+        echo "We could not find your cluster node-ip."
+        while [[ -z "$NODE_IP" ]]
+        do
+              read -p "$(echo "Enter one of your cluster Node IPs to provision instant access to server: ")" NODE_IP
+              if [[ -z "$NODE_IP" ]]
+              then
+                echo "cluster node ip cannot be empty"
+              fi
+        done
+      fi
+  fi
+  set -- $NODE_IP; NODE_IP=$1
+}
 
 function deploy(){
     # checking for required command line tools
+    if [[ ! $(which kubectl) ]]
+    then
+       display_msg "Please install Kubernetes command-line tool (kubectl) before you start with the setup\n"
+    fi
+
     if [[ ! $(which base64) ]]
     then
        display_msg "Please install base64 before you start with the setup\n"
     fi
-    # copy kubernetes object yaml files to deployment.yaml
-    echo "$deployment" > ${k8s_obj_file}
 
-    # create and encode username/password pair
-    auth="$WSO2_SUBSCRIPTION_USERNAME:$WSO2_SUBSCRIPTION_PASSWORD"
-    authb64=`echo -n $auth | base64`
+    cluster_isReady=$(kubectl cluster-info) > /dev/null 2>&1  || true
 
-    # create authorisation code
-    authstring='{"auths":{"docker.wso2.com":
-    {"username":"'${WSO2_SUBSCRIPTION_USERNAME}'",
-    "password":"'${WSO2_SUBSCRIPTION_PASSWORD}'",
-    "email":"'${WSO2_SUBSCRIPTION_USERNAME}'",
-    "auth":"'${authb64}'"}}}'
+    if [[ ! $cluster_isReady == *"KubeDNS"* ]]
+    then
+        display_msg "\nPlease enable your cluster before running the setup.\n\nIf you don't have a kubernetes cluster, follow: https://kubernetes.io/docs/setup/\n\n"
+    fi
 
-    # encode in base64
-    secdata=`echo -n $authstring | base64`
+    # get node-ip
+    get_node_ip
 
-    # add authorization code 
+    # create kubernetes object yaml
+    create_yaml
 
 }
 
