@@ -56,7 +56,7 @@ function create_key(){
         echo "credential file for authentication not found"
         exit 1
     fi
-   `echo ${KEY_FILE_LOCATION} | base64 --decode` >> $INPUT_DIR/key.json
+   echo `echo ${KEY_FILE_LOCATION} | base64 --decode` >> $INPUT_DIR/key.json
 
 }
 

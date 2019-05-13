@@ -102,7 +102,7 @@ echo 'Files in directory reserved for scenarios:'
 ls ${OUTPUT_DIR}/scenarios
 
 source ${INPUT_DIR}/deployment.properties
-curl -v ${externalIP1}:9443/carbon
+curl -v ${externalIP0}:9443/carbon
 
 echo 'test.sh complete'
 

@@ -1,0 +1,739 @@
+<html>
+<head>
+<title>TestNG:  apim-integration-tests-samples</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>apim-integration-tests-samples</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>132/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Mon Nov 05 07:11:52 UTC 2018</td>
+</tr>
+<tr><td>Total time:</td><td>2201 seconds (2201653 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIInvocationFailureTestCase.APIInvocationFailure()'><b>APIInvocationFailure</b><br>Test class: org.wso2.am.integration.tests.other.APIInvocationFailureTestCase<br>Test method: Calling API with invalid token</td>
+<td></td>
+<td>6</td>
+<td>org.wso2.am.integration.tests.other.APIInvocationFailureTestCase@4ec37a42</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIInvocationFailureTestCase.APIInvocationFailure()'><b>APIInvocationFailure</b><br>Test class: org.wso2.am.integration.tests.other.APIInvocationFailureTestCase<br>Test method: Calling API with invalid token</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIInvocationFailureTestCase@798b36fd</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.login.EmailUserNameLoginTestCase.LoginWithEmailUserNameTestCase()'><b>LoginWithEmailUserNameTestCase</b><br>Test class: org.wso2.am.integration.tests.login.EmailUserNameLoginTestCase<br>Test method: Email username login test case</td>
+<td></td>
+<td>20</td>
+<td>org.wso2.am.integration.tests.login.EmailUserNameLoginTestCase@1ddc889b</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIMANAGER2611EndpointValidationTestCase.checkEndpointValidation()'><b>checkEndpointValidation</b><br>Test class: org.wso2.am.integration.tests.other.APIMANAGER2611EndpointValidationTestCase<br>Test method: Validate endpoint with Http Head not support End point</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIMANAGER2611EndpointValidationTestCase@3c3ab672</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIMANAGER2611EndpointValidationTestCase.checkEndpointValidation()'><b>checkEndpointValidation</b><br>Test class: org.wso2.am.integration.tests.other.APIMANAGER2611EndpointValidationTestCase<br>Test method: Validate endpoint with Http Head not support End point</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIMANAGER2611EndpointValidationTestCase@3e6acec2</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIM4765ResourceOrderInSwagger.swaggerResourceOrderTest()'><b>swaggerResourceOrderTest</b><br>Test class: org.wso2.am.integration.tests.other.APIM4765ResourceOrderInSwagger<br>Test method: Test resource order in the swagger</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.other.APIM4765ResourceOrderInSwagger@1e749235</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testAPIAccessWhenJWTCachingEnabledTestCase()'><b>testAPIAccessWhenJWTCachingEnabledTestCase</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: JWT Token generation when JWT caching is enabled</td>
+<td></td>
+<td>25</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@2a9f8d47</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testAPIAccessWhenJWTCachingEnabledTestCase()'><b>testAPIAccessWhenJWTCachingEnabledTestCase</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: JWT Token generation when JWT caching is enabled</td>
+<td></td>
+<td>26</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@51297528</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase.testAPIAccessWhenJWTCachingEnabledTestCase()'><b>testAPIAccessWhenJWTCachingEnabledTestCase</b><br>Test class: org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase<br>Test method: JWT Token generation when JWT caching is enabled</td>
+<td></td>
+<td>24</td>
+<td>org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase@3bb4c2b2</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase.testAPIAccessWhenJWTCachingEnabledTestCase()'><b>testAPIAccessWhenJWTCachingEnabledTestCase</b><br>Test class: org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase<br>Test method: JWT Token generation when JWT caching is enabled</td>
+<td></td>
+<td>24</td>
+<td>org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase@4fbc516f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testAPICreation()'><b>testAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Sample API creation and subscribe</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPICreation()'><b>testAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPICreation()'><b>testAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase.testAPICreation()'><b>testAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>5</td>
+<td>org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase@11c999da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase.testAPICreation()'><b>testAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>6</td>
+<td>org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase@54f69311</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testAPICreationTenant()'><b>testAPICreationTenant</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Update to only HTTPS transport and invoke</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPIExport()'><b>testAPIExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exported Sample API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPIExport()'><b>testAPIExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exported Sample API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPIImport()'><b>testAPIImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing exported API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPIImport()'><b>testAPIImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing exported API</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testAPIProvider()'><b>testAPIProvider</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: Test application operations</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@6556471b</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testAPIProvider()'><b>testAPIProvider</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: Test application operations</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@3e1897d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase.testAPISearchByTag()'><b>testAPISearchByTag</b><br>Test class: org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase<br>Test method: API search by TAG</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase@11c999da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase.testAPISearchByTag()'><b>testAPISearchByTag</b><br>Test class: org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase<br>Test method: API search by TAG</td>
+<td></td>
+<td>6</td>
+<td>org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase@54f69311</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase.testAPISearchByTagGroup()'><b>testAPISearchByTagGroup</b><br>Test class: org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase<br>Test method: API search by group TAG</td>
+<td></td>
+<td>21</td>
+<td>org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase@11c999da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase.testAPISearchByTagGroup()'><b>testAPISearchByTagGroup</b><br>Test class: org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase<br>Test method: API search by group TAG</td>
+<td></td>
+<td>12</td>
+<td>org.wso2.am.integration.tests.other.APISearchAPIByTagTestCase@54f69311</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPIState()'><b>testAPIState</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Checking status of the imported API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testAPIState()'><b>testAPIState</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Checking status of the imported API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.LocationHeaderTestCase.testAPIWithLocationHeader()'><b>testAPIWithLocationHeader</b><br>Test class: org.wso2.am.integration.tests.other.LocationHeaderTestCase<br>Test method: Check whether the Location header is correct</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.LocationHeaderTestCase@43201f84</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.RelativeUrlLocationHeaderTestCase.testAPIWithRelativeUrlLocationHeader()'><b>testAPIWithRelativeUrlLocationHeader</b><br>Test class: org.wso2.am.integration.tests.other.RelativeUrlLocationHeaderTestCase<br>Test method: Check functionality of the API for relative URL location header</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.RelativeUrlLocationHeaderTestCase@2c51c756</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase.testApiCreation()'><b>testApiCreation</b><br>Test class: org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase@7aa1fb0e</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase.testApiCreation()'><b>testApiCreation</b><br>Test class: org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase@5e663ab</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase.testApiInvocation()'><b>testApiInvocation</b><br>Test class: org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase<br>Test method: Subscribe and invoke api</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase@7aa1fb0e</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase.testApiInvocation()'><b>testApiInvocation</b><br>Test class: org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase<br>Test method: Subscribe and invoke api</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.InvalidAuthTokenLargePayloadTestCase@5e663ab</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DAOTestCase.testApplication()'><b>testApplication</b><br>Test class: org.wso2.am.integration.tests.other.DAOTestCase<br>Test method: Test application object</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.DAOTestCase@1a947424</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DAOTestCase.testApplication()'><b>testApplication</b><br>Test class: org.wso2.am.integration.tests.other.DAOTestCase<br>Test method: Test application object</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.DAOTestCase@62d6ac</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testApplication()'><b>testApplication</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: Test application object</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@6556471b</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testApplication()'><b>testApplication</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: Test application object</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@3e1897d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DAOTestCase.testApplicationOperations()'><b>testApplicationOperations</b><br>Test class: org.wso2.am.integration.tests.other.DAOTestCase<br>Test method: Test application operations</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.DAOTestCase@1a947424</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DAOTestCase.testApplicationOperations()'><b>testApplicationOperations</b><br>Test class: org.wso2.am.integration.tests.other.DAOTestCase<br>Test method: Test application operations</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.DAOTestCase@62d6ac</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testApplicationOperations()'><b>testApplicationOperations</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: Test application operations</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@6556471b</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testApplicationOperations()'><b>testApplicationOperations</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: Test application operations</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@3e1897d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase.testCallUserInfoApiWithOpenIdAccessToken()'><b>testCallUserInfoApiWithOpenIdAccessToken</b><br>Test class: org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase<br>Test method: Token API Test sample</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase@3f71ae7f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase.testCallUserInfoApiWithOpenIdAccessToken()'><b>testCallUserInfoApiWithOpenIdAccessToken</b><br>Test class: org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase<br>Test method: Token API Test sample</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase@5b32e0b1</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIScopeTestCase.testCopyApiWithScopes()'><b>testCopyApiWithScopes</b><br>Test class: org.wso2.am.integration.tests.other.APIScopeTestCase<br>Test method: Testing Copy api with scopes assigned</td>
+<td></td>
+<td>7</td>
+<td>org.wso2.am.integration.tests.other.APIScopeTestCase@4e9bd2c8</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIScopeTestCase.testCopyApiWithScopes()'><b>testCopyApiWithScopes</b><br>Test class: org.wso2.am.integration.tests.other.APIScopeTestCase<br>Test method: Testing Copy api with scopes assigned</td>
+<td></td>
+<td>5</td>
+<td>org.wso2.am.integration.tests.other.APIScopeTestCase@18f13756</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DAOTestCase.testDAOTestCase()'><b>testDAOTestCase</b><br>Test class: org.wso2.am.integration.tests.other.DAOTestCase<br>Test method: API Life cycle test case</td>
+<td></td>
+<td>6</td>
+<td>org.wso2.am.integration.tests.other.DAOTestCase@1a947424</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DAOTestCase.testDAOTestCase()'><b>testDAOTestCase</b><br>Test class: org.wso2.am.integration.tests.other.DAOTestCase<br>Test method: API Life cycle test case</td>
+<td></td>
+<td>7</td>
+<td>org.wso2.am.integration.tests.other.DAOTestCase@62d6ac</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.version.DefaultVersionAPITestCase.testDefaultVersionAPI()'><b>testDefaultVersionAPI</b><br>Test class: org.wso2.am.integration.tests.version.DefaultVersionAPITestCase<br>Test method: Check functionality of the default version API</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.version.DefaultVersionAPITestCase@185bf6e0</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.version.DefaultVersionAPITestCase.testDefaultVersionAPI()'><b>testDefaultVersionAPI</b><br>Test class: org.wso2.am.integration.tests.version.DefaultVersionAPITestCase<br>Test method: Check functionality of the default version API</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.version.DefaultVersionAPITestCase@6a562255</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.DigestAuthenticationTestCase.testDigestAuthentication()'><b>testDigestAuthentication</b><br>Test class: org.wso2.am.integration.tests.other.DigestAuthenticationTestCase<br>Test method: Check functionality of the digest authenticated API</td>
+<td></td>
+<td>12</td>
+<td>org.wso2.am.integration.tests.other.DigestAuthenticationTestCase@77648321</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.header.APIMANAGER3614DuplicateTransferEncodingHeaderTestCase.testDuplicateTransferEncodingPropertyTest()'><b>testDuplicateTransferEncodingPropertyTest</b><br>Test class: org.wso2.am.integration.tests.header.APIMANAGER3614DuplicateTransferEncodingHeaderTestCase<br>Test method: Test for reading the duplicate transfer-encoding header in the response</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.header.APIMANAGER3614DuplicateTransferEncodingHeaderTestCase@3d213a2b</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testEnableJWTAndClaims()'><b>testEnableJWTAndClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: Enabling JWT Token generation, admin user claims</td>
+<td></td>
+<td>17</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@2a9f8d47</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testEnableJWTAndClaims()'><b>testEnableJWTAndClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: Enabling JWT Token generation, admin user claims</td>
+<td></td>
+<td>8</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@51297528</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase.testEnableJWTAndClaims()'><b>testEnableJWTAndClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase<br>Test method: Enabling JWT Token generation, admin user claims</td>
+<td></td>
+<td>15</td>
+<td>org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase@3bb4c2b2</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase.testEnableJWTAndClaims()'><b>testEnableJWTAndClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase<br>Test method: Enabling JWT Token generation, admin user claims</td>
+<td></td>
+<td>7</td>
+<td>org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase@4fbc516f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase.testGenerateAccessTokenWithOpenIdScope()'><b>testGenerateAccessTokenWithOpenIdScope</b><br>Test class: org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase<br>Test method: Token API Test sample</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase@3f71ae7f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase.testGenerateAccessTokenWithOpenIdScope()'><b>testGenerateAccessTokenWithOpenIdScope</b><br>Test class: org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase<br>Test method: Token API Test sample</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.token.OpenIDTokenAPITestCase@5b32e0b1</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testHTTPTransportBeforeUpdate()'><b>testHTTPTransportBeforeUpdate</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Invoke HTTP before Update</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testHTTPTransportBeforeUpdateInTenant()'><b>testHTTPTransportBeforeUpdateInTenant</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Invoke HTTP before Update</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testHostObjectTestCase()'><b>testHostObjectTestCase</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: API Life cycle test case</td>
+<td></td>
+<td>17</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@6556471b</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.hostobject.HostObjectTestCase.testHostObjectTestCase()'><b>testHostObjectTestCase</b><br>Test class: org.wso2.am.integration.tests.hostobject.HostObjectTestCase<br>Test method: API Life cycle test case</td>
+<td></td>
+<td>16</td>
+<td>org.wso2.am.integration.tests.hostobject.HostObjectTestCase@3e1897d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.HttpPATCHSupportTestCase.testHttpPatchSupport()'><b>testHttpPatchSupport</b><br>Test class: org.wso2.am.integration.tests.other.HttpPATCHSupportTestCase<br>Test method: Check functionality of HTTP PATCH support for APIM</td>
+<td></td>
+<td>5</td>
+<td>org.wso2.am.integration.tests.other.HttpPATCHSupportTestCase@1dd44289</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.InvokeAPIUsingOldThrottlingWithWSClient.testInvokingAPIWithOldThrottleUsingWSClient()'><b>testInvokingAPIWithOldThrottleUsingWSClient</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.InvokeAPIUsingOldThrottlingWithWSClient<br>Test method: test  invocation of  api using old throttle and ws client</td>
+<td></td>
+<td>14</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.InvokeAPIUsingOldThrottlingWithWSClient@510bd87a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.TokenAPITestCase.testJWTTokenAPITestCase()'><b>testJWTTokenAPITestCase</b><br>Test class: org.wso2.am.integration.tests.token.TokenAPITestCase<br>Test method: JWT Token API Test other</td>
+<td></td>
+<td>23</td>
+<td>org.wso2.am.integration.tests.token.TokenAPITestCase@34e9de8d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.TokenAPITestCase.testJWTTokenAPITestCase()'><b>testJWTTokenAPITestCase</b><br>Test class: org.wso2.am.integration.tests.token.TokenAPITestCase<br>Test method: JWT Token API Test other</td>
+<td></td>
+<td>14</td>
+<td>org.wso2.am.integration.tests.token.TokenAPITestCase@33a8f553</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPICreation()'><b>testNewAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Implementing sample api for scope test</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPICreation()'><b>testNewAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Implementing sample api for scope test</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIExport()'><b>testNewAPIExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exporting above created new API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIExport()'><b>testNewAPIExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exporting above created new API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIImport()'><b>testNewAPIImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing new API</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIImport()'><b>testNewAPIImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing new API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIInvoke()'><b>testNewAPIInvoke</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Invoke the API before export</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIInvoke()'><b>testNewAPIInvoke</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Invoke the API before export</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIInvokeAfterImport()'><b>testNewAPIInvokeAfterImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Invoke the newly imported API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIInvokeAfterImport()'><b>testNewAPIInvokeAfterImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Invoke the newly imported API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIState()'><b>testNewAPIState</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Checking newly imported API status</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testNewAPIState()'><b>testNewAPIState</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Checking newly imported API status</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIMANAGER4081PaginationCountTestCase.testPagination()'><b>testPagination</b><br>Test class: org.wso2.am.integration.tests.other.APIMANAGER4081PaginationCountTestCase<br>Test method: Pagination test case</td>
+<td></td>
+<td>309</td>
+<td>org.wso2.am.integration.tests.other.APIMANAGER4081PaginationCountTestCase@78a34c47</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.SearchPaginatedAPIsWithMultipleStatusTestCase.testPaginationWithMultipleStatus()'><b>testPaginationWithMultipleStatus</b><br>Test class: org.wso2.am.integration.tests.rest.SearchPaginatedAPIsWithMultipleStatusTestCase<br>Test method: check paginated API count</td>
+<td></td>
+<td>65</td>
+<td>org.wso2.am.integration.tests.rest.SearchPaginatedAPIsWithMultipleStatusTestCase@2c978637</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.header.ESBJAVA3447PreserveCharsetInContentTypeTestCase.testPreserveCharsetInContentTypeHeader()'><b>testPreserveCharsetInContentTypeHeader</b><br>Test class: org.wso2.am.integration.tests.header.ESBJAVA3447PreserveCharsetInContentTypeTestCase<br>Test method: Test for preserving Charset in Content-Type header in the request</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.header.ESBJAVA3447PreserveCharsetInContentTypeTestCase@27691ee8</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderFalseAPICreation()'><b>testPreserveProviderFalseAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderFalseAPICreation()'><b>testPreserveProviderFalseAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderFalseApiExport()'><b>testPreserveProviderFalseApiExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exported Sample API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderFalseApiExport()'><b>testPreserveProviderFalseApiExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exported Sample API</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderFalseSameProviderApiImport()'><b>testPreserveProviderFalseSameProviderApiImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing exported API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderFalseSameProviderApiImport()'><b>testPreserveProviderFalseSameProviderApiImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing exported API</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderTrueAPICreation()'><b>testPreserveProviderTrueAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderTrueAPICreation()'><b>testPreserveProviderTrueAPICreation</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Sample API creation</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderTrueApiExport()'><b>testPreserveProviderTrueApiExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exported Sample API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderTrueApiExport()'><b>testPreserveProviderTrueApiExport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Exported Sample API</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderTrueSameProviderApiImport()'><b>testPreserveProviderTrueSameProviderApiImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing exported API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@5724c7da</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIImportExportTestCase.testPreserveProviderTrueSameProviderApiImport()'><b>testPreserveProviderTrueSameProviderApiImport</b><br>Test class: org.wso2.am.integration.tests.other.APIImportExportTestCase<br>Test method: Importing exported API</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIImportExportTestCase@3ad2883a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testPrototypeInvocationWithJWTEnabled()'><b>testPrototypeInvocationWithJWTEnabled</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: Invoking Prototype api with JWT enabled</td>
+<td></td>
+<td>6</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@2a9f8d47</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testPrototypeInvocationWithJWTEnabled()'><b>testPrototypeInvocationWithJWTEnabled</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: Invoking Prototype api with JWT enabled</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@51297528</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.URLMappingRESTTestCase.testRESTURITemplate()'><b>testRESTURITemplate</b><br>Test class: org.wso2.am.integration.tests.rest.URLMappingRESTTestCase<br>Test method: Sending a Message Via REST to test uri template fix</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.URLMappingRESTTestCase@372841d2</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.URLMappingRESTTestCase.testRESTURITemplate()'><b>testRESTURITemplate</b><br>Test class: org.wso2.am.integration.tests.rest.URLMappingRESTTestCase<br>Test method: Sending a Message Via REST to test uri template fix</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.URLMappingRESTTestCase@6c8d638a</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.RefreshTokenTestCase.testRefreshTokenAPITestCase()'><b>testRefreshTokenAPITestCase</b><br>Test class: org.wso2.am.integration.tests.token.RefreshTokenTestCase<br>Test method: Test Refresh token functionality</td>
+<td></td>
+<td>9</td>
+<td>org.wso2.am.integration.tests.token.RefreshTokenTestCase@4070c4ff</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.RefreshTokenTestCase.testRefreshTokenAPITestCase()'><b>testRefreshTokenAPITestCase</b><br>Test class: org.wso2.am.integration.tests.token.RefreshTokenTestCase<br>Test method: Test Refresh token functionality</td>
+<td></td>
+<td>10</td>
+<td>org.wso2.am.integration.tests.token.RefreshTokenTestCase@4bceac99</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIScopeTestCase.testSetScopeToResourceTestCase()'><b>testSetScopeToResourceTestCase</b><br>Test class: org.wso2.am.integration.tests.other.APIScopeTestCase<br>Test method: Testing the scopes with admin, subscriber roles</td>
+<td></td>
+<td>25</td>
+<td>org.wso2.am.integration.tests.other.APIScopeTestCase@4e9bd2c8</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIScopeTestCase.testSetScopeToResourceTestCase()'><b>testSetScopeToResourceTestCase</b><br>Test class: org.wso2.am.integration.tests.other.APIScopeTestCase<br>Test method: Testing the scopes with admin, subscriber roles</td>
+<td></td>
+<td>22</td>
+<td>org.wso2.am.integration.tests.other.APIScopeTestCase@18f13756</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.resources.APIResourceModificationTestCase.testSetScopeToResourceTestCase()'><b>testSetScopeToResourceTestCase</b><br>Test class: org.wso2.am.integration.tests.resources.APIResourceModificationTestCase<br>Test method: add scope to resource test case</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.resources.APIResourceModificationTestCase@4fdac2a7</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.resources.APIResourceModificationTestCase.testSetScopeToResourceTestCase()'><b>testSetScopeToResourceTestCase</b><br>Test class: org.wso2.am.integration.tests.resources.APIResourceModificationTestCase<br>Test method: add scope to resource test case</td>
+<td></td>
+<td>5</td>
+<td>org.wso2.am.integration.tests.resources.APIResourceModificationTestCase@8debe42</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testSpecificUserJWTClaims()'><b>testSpecificUserJWTClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: Enabling JWT Token generation, specific user claims</td>
+<td></td>
+<td>7</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@2a9f8d47</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.JWTTestCase.testSpecificUserJWTClaims()'><b>testSpecificUserJWTClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.JWTTestCase<br>Test method: Enabling JWT Token generation, specific user claims</td>
+<td></td>
+<td>6</td>
+<td>org.wso2.am.integration.tests.jwt.JWTTestCase@51297528</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase.testSpecificUserJWTClaims()'><b>testSpecificUserJWTClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase<br>Test method: Enabling JWT Token generation, specific user claims</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase@3bb4c2b2</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase.testSpecificUserJWTClaims()'><b>testSpecificUserJWTClaims</b><br>Test class: org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase<br>Test method: Enabling JWT Token generation, specific user claims</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.jwt.URLSafeJWTTestCase@4fbc516f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.TagsRatingCommentTestCase.testTagsRatingCommentTestCase()'><b>testTagsRatingCommentTestCase</b><br>Test class: org.wso2.am.integration.tests.other.TagsRatingCommentTestCase<br>Test method: Comment Rating Test case</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.other.TagsRatingCommentTestCase@556a6320</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.TagsRatingCommentTestCase.testTagsRatingCommentTestCase()'><b>testTagsRatingCommentTestCase</b><br>Test class: org.wso2.am.integration.tests.other.TagsRatingCommentTestCase<br>Test method: Comment Rating Test case</td>
+<td></td>
+<td>3</td>
+<td>org.wso2.am.integration.tests.other.TagsRatingCommentTestCase@45375bdf</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.TokenAPITestCase.testTokenAPITestCase()'><b>testTokenAPITestCase</b><br>Test class: org.wso2.am.integration.tests.token.TokenAPITestCase<br>Test method: Token API Test other</td>
+<td></td>
+<td>11</td>
+<td>org.wso2.am.integration.tests.token.TokenAPITestCase@34e9de8d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.TokenAPITestCase.testTokenAPITestCase()'><b>testTokenAPITestCase</b><br>Test class: org.wso2.am.integration.tests.token.TokenAPITestCase<br>Test method: Token API Test other</td>
+<td></td>
+<td>9</td>
+<td>org.wso2.am.integration.tests.token.TokenAPITestCase@33a8f553</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.TokenAPITestCase.testTokenEqualityBeforeExpiration()'><b>testTokenEqualityBeforeExpiration</b><br>Test class: org.wso2.am.integration.tests.token.TokenAPITestCase<br>Test method: Token equality test</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.token.TokenAPITestCase@34e9de8d</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.token.TokenAPITestCase.testTokenEqualityBeforeExpiration()'><b>testTokenEqualityBeforeExpiration</b><br>Test class: org.wso2.am.integration.tests.token.TokenAPITestCase<br>Test method: Token equality test</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.token.TokenAPITestCase@33a8f553</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateExpandWithEscapedPercentEncoding()'><b>testURITemplateExpandWithEscapedPercentEncoding</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a query param consist of reserved character : with percent encoding escaped at uri-template expansion</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateExpandWithEscapedPercentEncodingPathParam()'><b>testURITemplateExpandWithEscapedPercentEncodingPathParam</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a path param consist of reserved character : with percent encoding escaped at uri-template expansion</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateExpandWithPercentEncoding()'><b>testURITemplateExpandWithPercentEncoding</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a query param consist of reserved character : </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateExpandWithPercentEncodingPathParamCase()'><b>testURITemplateExpandWithPercentEncodingPathParamCase</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a path param consist of reserved character : </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateParameterDecodingPlusCharacterCase()'><b>testURITemplateParameterDecodingPlusCharacterCase</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a query param consist of reserved + character </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateParameterDecodingSpaceCharacterCase()'><b>testURITemplateParameterDecodingSpaceCharacterCase</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a query param consist of reserved space character </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateParameterDecodingTrailingPercentageCase()'><b>testURITemplateParameterDecodingTrailingPercentageCase</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a query param consist of reserved space character </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateParameterDecodingWithPercentEncodingEscapedAtExpansion()'><b>testURITemplateParameterDecodingWithPercentEncodingEscapedAtExpansion</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a query param consist of reserved + character </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest.testURITemplateSpecialCaseVariableWithFullURL()'><b>testURITemplateSpecialCaseVariableWithFullURL</b><br>Test class: org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest<br>Test method: Sending http request with a path param consist of whole URL including protocol , host , port etc. </td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.rest.UriTemplateReservedCharacterEncodingTest@4ef277ef</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIScopeTestCase.testUpdateApiWithScopes()'><b>testUpdateApiWithScopes</b><br>Test class: org.wso2.am.integration.tests.other.APIScopeTestCase<br>Test method: Testing Update api with scopes assigned</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.other.APIScopeTestCase@4e9bd2c8</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIScopeTestCase.testUpdateApiWithScopes()'><b>testUpdateApiWithScopes</b><br>Test class: org.wso2.am.integration.tests.other.APIScopeTestCase<br>Test method: Testing Update api with scopes assigned</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.other.APIScopeTestCase@18f13756</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testUpdatedHTTPSTransport()'><b>testUpdatedHTTPSTransport</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Update to only HTTPS transport and invoke</td>
+<td></td>
+<td>16</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testUpdatedHTTPSTransportTenant()'><b>testUpdatedHTTPSTransportTenant</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Update to only HTTPS transport and invoke</td>
+<td></td>
+<td>16</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testUpdatedHTTPTransport()'><b>testUpdatedHTTPTransport</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Update to only HTTP transport and invoke</td>
+<td></td>
+<td>16</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase.testUpdatedHTTPTransportTenant()'><b>testUpdatedHTTPTransportTenant</b><br>Test class: org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase<br>Test method: Update to only HTTP transport and invoke</td>
+<td></td>
+<td>16</td>
+<td>org.wso2.am.integration.tests.other.APIEndpointTypeUpdateTestCase@54a5799f</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIMANAGER3226APINameWithDifferentCaseTestCase.testValidateAddAPIsWithDifferentCase()'><b>testValidateAddAPIsWithDifferentCase</b><br>Test class: org.wso2.am.integration.tests.other.APIMANAGER3226APINameWithDifferentCaseTestCase<br>Test method: Test validation of adding api with same name and different case(uppercase)</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIMANAGER3226APINameWithDifferentCaseTestCase@4a7c72af</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.other.APIMANAGER3226APINameWithDifferentCaseTestCase.testValidateAddAPIsWithDifferentCase()'><b>testValidateAddAPIsWithDifferentCase</b><br>Test class: org.wso2.am.integration.tests.other.APIMANAGER3226APINameWithDifferentCaseTestCase<br>Test method: Test validation of adding api with same name and different case(uppercase)</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.other.APIMANAGER3226APINameWithDifferentCaseTestCase@3e24bab6</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.throttling.ThrottlingTestCase.throttlingTestCase()'><b>throttlingTestCase</b><br>Test class: org.wso2.am.integration.tests.throttling.ThrottlingTestCase<br>Test method: Token API Test other</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.throttling.ThrottlingTestCase@6802d023</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.throttling.ThrottlingTestCase.throttlingTestCase()'><b>throttlingTestCase</b><br>Test class: org.wso2.am.integration.tests.throttling.ThrottlingTestCase<br>Test method: Token API Test other</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.throttling.ThrottlingTestCase@e895e3e</td></tr>
+</table><p>
+</body>
+</html>

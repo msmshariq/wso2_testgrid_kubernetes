@@ -1,0 +1,149 @@
+<html>
+<head>
+<title>TestNG:  apim-integration-tests-without-advance-throttling</title>
+<link href="../testng.css" rel="stylesheet" type="text/css" />
+<link href="../my-testng.css" rel="stylesheet" type="text/css" />
+
+<style type="text/css">
+.log { display: none;} 
+.stack-trace { display: none;} 
+</style>
+<script type="text/javascript">
+<!--
+function flip(e) {
+  current = e.style.display;
+  if (current == 'block') {
+    e.style.display = 'none';
+    return 0;
+  }
+  else {
+    e.style.display = 'block';
+    return 1;
+  }
+}
+
+function toggleBox(szDivId, elem, msg1, msg2)
+{
+  var res = -1;  if (document.getElementById) {
+    res = flip(document.getElementById(szDivId));
+  }
+  else if (document.all) {
+    // this is the way old msie versions work
+    res = flip(document.all[szDivId]);
+  }
+  if(elem) {
+    if(res == 0) elem.innerHTML = msg1; else elem.innerHTML = msg2;
+  }
+
+}
+
+function toggleAllBoxes() {
+  if (document.getElementsByTagName) {
+    d = document.getElementsByTagName('div');
+    for (i = 0; i < d.length; i++) {
+      if (d[i].className == 'log') {
+        flip(d[i]);
+      }
+    }
+  }
+}
+
+// -->
+</script>
+
+</head>
+<body>
+<h2 align='center'>apim-integration-tests-without-advance-throttling</h2><table border='1' align="center">
+<tr>
+<td>Tests passed/Failed/Skipped:</td><td>14/0/0</td>
+</tr><tr>
+<td>Started on:</td><td>Mon Nov 05 08:17:54 UTC 2018</td>
+</tr>
+<tr><td>Total time:</td><td>346 seconds (346440 ms)</td>
+</tr><tr>
+<td>Included groups:</td><td></td>
+</tr><tr>
+<td>Excluded groups:</td><td></td>
+</tr>
+</table><p/>
+<small><i>(Hover the method name to see the test class name)</i></small><p/>
+<table width='100%' border='1' class='invocation-passed'>
+<tr><td colspan='4' align='center'><b>PASSED TESTS</b></td></tr>
+<tr><td><b>Test method</b></td>
+<td width="30%"><b>Exception</b></td>
+<td width="10%"><b>Time (seconds)</b></td>
+<td><b>Instance</b></td>
+</tr>
+<tr>
+<td title='org.wso2.am.integration.tests.restapi.testcases.APILifecycleTestCase.testAPILifecycle()'><b>testAPILifecycle</b><br>Test class: org.wso2.am.integration.tests.restapi.testcases.APILifecycleTestCase<br>Test method: REST API Implementation test : API Lifecycle change test case</td>
+<td></td>
+<td>7</td>
+<td>org.wso2.am.integration.tests.restapi.testcases.APILifecycleTestCase@4f7bc46e</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.restapi.testcases.TagTestCase.testAPITags()'><b>testAPITags</b><br>Test class: org.wso2.am.integration.tests.restapi.testcases.TagTestCase<br>Test method: REST API Implementation test : API tags test case</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.restapi.testcases.TagTestCase@30422a69</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase.testAvailabilityOfTiersInAPIManagePageAfterChangeTiersXML()'><b>testAvailabilityOfTiersInAPIManagePageAfterChangeTiersXML</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase<br>Test method: Test availability of tiers in API Manage Page after change tiers XML</td>
+<td></td>
+<td>0</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase@4528c187</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase.testAvailabilityOfTiersInAPIManagePageBeforeChangeTiersXML()'><b>testAvailabilityOfTiersInAPIManagePageBeforeChangeTiersXML</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase<br>Test method: Test availability of tiers in API Manage Page before change tiers XML</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase@4528c187</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase.testAvailabilityOfTiersInPermissionPageAfterChangeTiersXML()'><b>testAvailabilityOfTiersInPermissionPageAfterChangeTiersXML</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase<br>Test method: test availability of tiers in Permission Page after change tiers XML</td>
+<td></td>
+<td>1</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase@4528c187</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase.testAvailabilityOfTiersInPermissionPageBeforeChangeTiersXML()'><b>testAvailabilityOfTiersInPermissionPageBeforeChangeTiersXML</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase<br>Test method: test availability of tiers in Permission Page before change tiers XML</td>
+<td></td>
+<td>4</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.EditTiersXMLAndVerifyInPublisherTestCase@4528c187</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase.testEditAPITierToSilver()'><b>testEditAPITierToSilver</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase<br>Test method: Test changing of the API Tier from Gold to Silver</td>
+<td></td>
+<td>17</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase@7a986079</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase.testInvokingAfterExpireThrottleExpireTime()'><b>testInvokingAfterExpireThrottleExpireTime</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase<br>Test method: test  invocation of APi after expire the throttling block time.</td>
+<td></td>
+<td>65</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase@7a986079</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase.testInvokingWithGoldTier()'><b>testInvokingWithGoldTier</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase<br>Test method: test  invocation of  api under tier Gold.</td>
+<td></td>
+<td>17</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase@7a986079</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase.testInvokingWithSilverTier()'><b>testInvokingWithSilverTier</b><br>Test class: org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase<br>Test method: test  invocation of  api under tier Silver.</td>
+<td></td>
+<td>65</td>
+<td>org.wso2.am.integration.tests.api.lifecycle.ChangeAPITierAndTestInvokingTestCase@7a986079</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.restapi.testcases.SubscriptionTestCase.testSubscription()'><b>testSubscription</b><br>Test class: org.wso2.am.integration.tests.restapi.testcases.SubscriptionTestCase<br>Test method: REST API Implementation test : API Subscription test case</td>
+<td></td>
+<td>10</td>
+<td>org.wso2.am.integration.tests.restapi.testcases.SubscriptionTestCase@3f13c9a2</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.restapi.testcases.MultipleSubscriptionsTestCase.testSubscription()'><b>testSubscription</b><br>Test class: org.wso2.am.integration.tests.restapi.testcases.MultipleSubscriptionsTestCase<br>Test method: REST API Implementation test : API Subscription test case</td>
+<td></td>
+<td>8</td>
+<td>org.wso2.am.integration.tests.restapi.testcases.MultipleSubscriptionsTestCase@67b920c9</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.restapi.testcases.OnHoldSubscriptionWorkflowIdTestCase.testSubscription()'><b>testSubscription</b><br>Test class: org.wso2.am.integration.tests.restapi.testcases.OnHoldSubscriptionWorkflowIdTestCase<br>Test method: Returning workflow external ref. id from subscriptions rest api in publisher when subscription is in ON_HOLD status</td>
+<td></td>
+<td>5</td>
+<td>org.wso2.am.integration.tests.restapi.testcases.OnHoldSubscriptionWorkflowIdTestCase@117bb3a4</td></tr>
+<tr>
+<td title='org.wso2.am.integration.tests.restapi.testcases.TierTestCase.testTiers()'><b>testTiers</b><br>Test class: org.wso2.am.integration.tests.restapi.testcases.TierTestCase<br>Test method: REST API Implementation test : Tier handling test case</td>
+<td></td>
+<td>2</td>
+<td>org.wso2.am.integration.tests.restapi.testcases.TierTestCase@30b0d271</td></tr>
+</table><p>
+</body>
+</html>

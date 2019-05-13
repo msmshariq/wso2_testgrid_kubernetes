@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite hostname="ip-172-31-31-95.ec2.internal" name="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase" tests="10" failures="0" timestamp="5 Nov 2018 06:44:43 GMT" time="57.364" errors="0">
+  <testcase name="testAPIApplicationLifeCycleITestCase" time="25.503" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="testInvalidLoginAsPublisherTestCase" time="0.034" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="copyAPILifeCycleTestCase" time="5.166" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="copyAndDepricateAPILifeCycleTestCase" time="6.665" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="otherAPILifeCycleStatesTestCase" time="7.443" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="testAPIVisibilityTestCase" time="10.906" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="testApplicationsInStoreTestCase" time="0.315" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="testInvalidLoginAsSubscriberTestCase" time="0.109" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="testInvalidLoginAsTenantSubscriberTestCase" time="0.508" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+  <testcase name="testLoginToStoreTestCase" time="0.284" classname="org.wso2.am.integration.tests.other.APIApplicationLifeCycleTestCase"/>
+</testsuite>
