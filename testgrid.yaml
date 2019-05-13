@@ -1,39 +1,36 @@
 # A testGrid Job 
 version: '0.9'
 emailToList: "kasung@wso2.com"
-keyFileLocation: testgrid-access.json
 infrastructureConfig:
-  iacProvider: CLOUDFORMATION
-  infrastructureProvider: AWS
+  iacProvider: KUBERNETES
+  infrastructureProvider: GKE
   containerOrchestrationEngine: None
   includes:
   provisioners:
-    - name: prod-wso2-ei-scenario-deployment
-      remoteRepository: "git@github.com:wso2/testgrid.git"
+    - name: kubernetes woring environment
       description: Provision Infra for running intg tests
       scripts:
         - name: 'Test-Phase-1-Deployment'
           description: ''
           type: KUBERNETES
           phase: CREATE
+        - name: 'kubernetes-destroy-environment'
+          type: KUBERNETES
+          phase: DESTROY
 deploymentConfig:
   deploymentPatterns:
     - name: 'deployment'
       remoteRepository: "git@github.com:wso2/testgrid.git"
-      description: 'dummy'
-      dir: .
+      description: 'deployment of the resources in the gke'
       scripts:
         - name: 'deploy1'
-          type: KUBERNETES
+          type: SHELL
           file: wso2am.sh
-          inputParameters: 
-            deployment: wso2apim-with-analytics-apim
-            service: LoadBalancer 
-            yaml: deployment.yaml
-        - name: destroy
-          file: destroy.sh
+        - name: 'deploy'
           type: KUBERNETES
-          phase: DESTROY        
+          inputParameters:
+            yamls: 'deployment.yaml'
+            deployments: 'wso2apim-with-analytics-apim'
 scenarioConfigs:
   - testType: TESTNG
     remoteRepository: "git@github.com:wso2/testgrid.git"

@@ -20,12 +20,12 @@
 set -o xtrace
 
 #definitions
-$NAME=hai
+INPUT_DIR=$2
+source $INPUT_DIR/deployment.properties
 
 function delete_resources() {
-
-echo "running dummy destroy.sh"
-#    kubectl delete namespaces $NAME
+  echo "running destroy.sh"
+  kubectl delete namespaces $namespace
 }
 
 delete_resources

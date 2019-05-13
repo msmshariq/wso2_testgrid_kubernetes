@@ -15,7 +15,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------------
-
 set -o xtrace
 
 OUTPUT_DIR=$4
@@ -23,104 +22,73 @@ INPUT_DIR=$2
 source $INPUT_DIR/infrastructure.properties
 
 #definitions
-SCRIPT=$script
-DEPLOYMENT=$deployment
-YAML=$yaml
-SERVICE=$service
+DEPLOYMENTS=$deployments
+YAMLS=$yamls
 
-#create yaml files if they are created through a script
-function create_yaml() {
-    if [ -f $SCRIPT ]
-    then
-      source $SCRIPT
-    else   
-      echo "the script not exists"
-    fi     
-}
+yamls=($YAMLS)
+no_yamls=${#yamls[@]}
+dep=($DEPLOYMENTS)
+dep_num=${#dep[@]}
 
-function create_randomName() {
-    if [ -z $name]
-    then 
-      echo "The name is not set"
-    fi
-    NAME="$name$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
-    echo NAME
-}
-
-function create_namespace() {
-
-    create_randomName
-    kubectl create namespace $NAME
-    kubectl config set-context $(kubectl config current-context) --namespace=$NAME
-    kubectl config view | grep namespace:
-
-}
-
-#function to check whether a deployment is functioning properly
-function readiness_deployment() {
-    #kubectl get pods -n t pod -o jsonpath="{.status.phase}"
-    deployment_status=$(kubectl get deployments -n $NAME $DEPLOYMENT -o jsonpath='{.status.conditions[?(@.type=="Available")].status}')
-    while [$deployment_status = "False"]
-    do 
-      sleep5
-    done
-
-}
-
-function readiness_service() {
-
-    service_status=$(kubectl describe services $DEPLOYMENT)
-}
-
-#create the resources in gke by defining a seperate namespace
 function create_resources() {
-
-    if [ -z $YAML ]
+    if [ -z $YAMLS ]
     then 
       echo "the yaml file is not created or the yaml file is not available"
+      exit 1
     fi
     #create the deployments
-    kubectl create -f $YAML
-    #check whether the deployment is deployed properly
-    #readiness_deployment
-    sleep 1m
 
-    if [ -z $DEPLOYMENT ]
+    if [ -z $DEPLOYMENTS ]
     then
-      echo "the deployment is not available"
-    fi
-    if [ -z $SERVICE ]
-    then 
-      echo "the service is not available"
+      echo "No deployment is given. Please makesure to give atleast one deployment"
+      exit 1
     fi
 
-    kubectl expose deployment $DEPLOYMENT --name=$DEPLOYMENT  --type=$SERVICE -n $NAME
-    sleep 2m
-}
+    i=0;
+    for ((i=0; i<$no_yamls; i++))
+    do 
+      kubectl create -f ${yamls[$i]}
+    done
 
-#get the details about the endpoints which are needed for scenerio tests.
-function get_endPoints() {
+    readiness_deployments
 
-    externalIP=$(kubectl describe services $DEPLOYMENT --namespace=$NAME | grep "Ingress:" | cut -b 27-)
-    echo externalIP
-    echo "externalIP=$externalIP" >> $OUTPUT_DIR/deployment.properties
-}
+    i=0;
+    for ((i=0; i<$dep_num; i++))
+    do 
+      kubectl expose deployment ${dep[$i]} --name=${dep[$i]}  --type=LoadBalancer -n $namespace
+    done
 
-function view_logs() {
+    readinesss_services
 
-    kubectl -n kube-system logs $DEPLOYMENT 
-    #-c container-name
-    
-}
-
-
-function deploy() {
-
-    create_yaml
-    create_namespace
-    create_resources
-    get_endPoints
+    echo "namespace=$namespace" >> $OUTPUT_DIR/deployment.properties
 
 }
 
-deploy
+function readiness_deployments(){
+    i=0;
+    for ((i=0; i<$dep_num; i++)) ; do 
+      num_true=0;
+      while [ "$num_true" -eq "0" ] ; do 
+        sleep 5
+        deployment_status=$(kubectl get deployments -n $namespace ${dep[$i]} -o jsonpath='{.status.conditions[?(@.type=="Available")].status}')
+        if [ "$deployment_status" == "True" ] ; then
+          num_true=1;
+        fi
+      done
+    done
+}
+
+function readinesss_services(){
+    i=0;
+    for ((i=0; i<$dep_num; i++)); do 
+      external_ip=""
+      while [ -z $external_ip ]; do
+        echo "Waiting for end point..."
+        external_ip=$(kubectl get service ${dep[$i]} --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
+        [ -z "$external_ip" ] && sleep 10
+      done
+      echo "externalIP$i=$external_ip" >> $OUTPUT_DIR/deployment.properties
+    done
+}
+
+create_resources
