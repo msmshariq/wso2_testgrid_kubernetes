@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<testsuite hostname="ip-172-31-31-95.ec2.internal" name="org.wso2.am.integration.tests.header.CORSAccessControlAllowCredentialsHeaderTestCase" tests="4" failures="0" timestamp="5 Nov 2018 07:11:52 GMT" time="430.12" errors="0">
-  <testcase name="CheckAccessControlAllowCredentialsHeadersWithAnyOrigin" time="130.44" classname="org.wso2.am.integration.tests.header.CORSAccessControlAllowCredentialsHeaderTestCase"/>
-  <testcase name="CheckAccessControlAllowCredentialsHeadersWithAnyOrigin" time="9.075" classname="org.wso2.am.integration.tests.header.CORSAccessControlAllowCredentialsHeaderTestCase"/>
-  <testcase name="CheckAccessControlAllowCredentialsHeadersWithSpecificOrigin" time="140.207" classname="org.wso2.am.integration.tests.header.CORSAccessControlAllowCredentialsHeaderTestCase"/>
-  <testcase name="CheckAccessControlAllowCredentialsHeadersWithSpecificOrigin" time="8.09" classname="org.wso2.am.integration.tests.header.CORSAccessControlAllowCredentialsHeaderTestCase"/>
-</testsuite>
