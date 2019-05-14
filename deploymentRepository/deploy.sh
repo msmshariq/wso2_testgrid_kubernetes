@@ -22,12 +22,12 @@ INPUT_DIR=$2
 source $INPUT_DIR/infrastructure.properties
 
 #definitions
-DEPLOYMENTS=$deployments
-YAMLS=$yamls
+
+YAMLS=$deploymentYamlFiles
 
 yamls=($YAMLS)
 no_yamls=${#yamls[@]}
-dep=($DEPLOYMENTS)
+dep=($deployments)
 dep_num=${#dep[@]}
 
 function create_resources() {
@@ -38,7 +38,7 @@ function create_resources() {
     fi
     #create the deployments
 
-    if [ -z $DEPLOYMENTS ]
+    if [ -z $deployments ]
     then
       echo "No deployment is given. Please makesure to give atleast one deployment"
       exit 1
