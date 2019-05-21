@@ -22,8 +22,6 @@ INPUT_DIR=$2
 OUTPUT_DIR=$4
 source $INPUT_DIR/testplan-props.properties
 
-#definitions
-KEY_FILE_LOCATION=$accessKeyFileLocation
 
 if [ -z $ClusterName ]
 then
@@ -49,16 +47,6 @@ function check_tools() {
     fi
 }
 
-function create_key(){
-
-    if [[ ! $KEY_FILE_LOCATION ]]
-    then
-        echo "credential file for authentication not found"
-        exit 1
-    fi
-   echo `echo ${KEY_FILE_LOCATION} | base64 --decode` >> $INPUT_DIR/key.json
-
-}
 
 function auth() {
 
@@ -97,7 +85,6 @@ function set_properties() {
 
 function infra_creation() {
     check_tools
-    create_key
     auth
     create_namespace
     set_properties
