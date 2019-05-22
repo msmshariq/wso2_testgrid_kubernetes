@@ -42,9 +42,10 @@ function check_tools() {
         tar -xzf google-cloud-sdk-247.0.0-linux-x86_64.tar.gz
         cd google-cloud-sdk
         CLOUDSDK_CORE_DISABLE_PROMPTS=1 ./install.sh
+        source path.bash.inc && source completion.bash.inc
         cd ..
     fi
-    
+
     if ! type 'kubectl'
     then
         echo "installing Kubernetes command-line tool (kubectl) before you start with the setup"
