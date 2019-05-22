@@ -15,7 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------------
+
 set -o xtrace
+echo "deploy file is found"
 
 OUTPUT_DIR=$4
 INPUT_DIR=$2
@@ -23,7 +25,7 @@ source $INPUT_DIR/infrastructure.properties
 
 #definitions
 
-YAMLS=$deploymentYamlFiles
+YAMLS=$yamls
 
 yamls=($YAMLS)
 no_yamls=${#yamls[@]}
@@ -31,6 +33,7 @@ dep=($deployments)
 dep_num=${#dep[@]}
 
 function create_resources() {
+
     if [ -z $YAMLS ]
     then 
       echo "the yaml file is not created or the yaml file is not available"
