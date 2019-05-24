@@ -15,10 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------------
-
+set -o xtrace
 set -e
-#set -o xtrace
-echo "hai"
+
 # bash variables
 k8s_obj_file="deployment.yaml"; NODE_IP=''; str_sec=""
 
