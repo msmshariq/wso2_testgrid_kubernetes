@@ -3456,11 +3456,13 @@ function deploy(){
     if test -f "$INPUT_DIR/infrastructure.properties"; then
       file=$INPUT_DIR/infrastructure.properties
       WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
-      WUMPassword=$(cat $file | grep "WUMPassword" | cut -d'=' -f2)
+      WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13-)
       randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
       namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
       echo $WUMUsername
       echo $WUMPassword
+      echo $randomPort
+      echo $namespace
     else
       get_creds
     fi
