@@ -3454,18 +3454,9 @@ function deploy(){
 
     # check if testgrid
     if test -f "$INPUT_DIR/infrastructure.properties"; then
-      while IFS= read -r line
-      do
-        IFS='=' tokens=( $line )
-        key=${tokens[0]}
-        value=${tokens[1]}
-        if [ "$key" = "WUMUsername" ]; then
-          WUMUsername=${tokens[1]}
-        fi
-        if [ "$key" = "WUMPassword" ]; then
-          WUMPassword=${tokens[1]}
-        fi
-      done < "${INPUT_DIR}/infrastructure.properties"
+      file=$INPUT_DIR/infrastructure.properties
+      WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
+      WUMPassword=$(cat $file | grep "WUMPassword" | cut -d'=' -f2)
     else
       get_creds
     fi
