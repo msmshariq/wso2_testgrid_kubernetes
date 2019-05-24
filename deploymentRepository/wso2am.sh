@@ -15,7 +15,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #--------------------------------------------------------------------------------
-set -o xtrace
+
 set -e
 
 # bash variables
@@ -3457,6 +3457,8 @@ function deploy(){
       file=$INPUT_DIR/infrastructure.properties
       WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
       WUMPassword=$(cat $file | grep "WUMPassword" | cut -d'=' -f2)
+      echo $WUMUsername
+      echo $WUMPassword
     else
       get_creds
     fi
