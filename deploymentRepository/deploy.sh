@@ -91,7 +91,6 @@ function readinesss_services(){
         [ -z "$external_ip" ] && sleep 10
       done
       echo "APIMServiceCarbonURL=https://$external_ip:9443/carbon" >> $OUTPUT_DIR/deployment.properties
-      echo "CarbonServerUrl=https://$external_ip:9443/services" >> $OUTPUT_DIR/deployment.properties
       echo "APIMServicePublisherURL=https://$external_ip:9443/publisher" >> $OUTPUT_DIR/deployment.properties
       echo "APIMServiceStoreURL=https://$external_ip:9443/store" >> $OUTPUT_DIR/deployment.properties
       echo "APIMGatewayHTTPSEndpoint=$external_ip:8243" >> $OUTPUT_DIR/deployment.properties
