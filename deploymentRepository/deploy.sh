@@ -90,9 +90,12 @@ function readinesss_services(){
         external_ip=$(kubectl get service ${dep[$i]} --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
         [ -z "$external_ip" ] && sleep 10
       done
-      echo "MgtConsoleUrl=https://$external_ip:9443/carbon" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMServiceCarbonURL=https://$external_ip:9443/carbon" >> $OUTPUT_DIR/deployment.properties
       echo "CarbonServerUrl=https://$external_ip:9443/services" >> $OUTPUT_DIR/deployment.properties
-      echo "PublisherUrl=https://$external_ip:9443/publisher" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMServicePublisherURL=https://$external_ip:9443/publisher" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMServiceStoreURL=https://$external_ip:9443/store" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMGatewayHTTPSEndpoint=$external_ip:8243" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMGatewayHTTPEndpoint=$external_ip:8280" >> $OUTPUT_DIR/deployment.properties
 
     done
 }
