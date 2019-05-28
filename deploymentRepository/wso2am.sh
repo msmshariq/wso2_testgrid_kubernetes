@@ -233,7 +233,7 @@ cat >> $k8s_obj_file << "EOF"
 EOF
 
 echo "            <URL>https://$NODE_IP:30443/store</URL>" >> $k8s_obj_file
-echo "            <ServerURL>https://$NODE_IP:30443services/</ServerURL>" >> $k8s_obj_file
+echo "            <ServerURL>https://localhost:9443services/</ServerURL>" >> $k8s_obj_file
 
 cat >> $k8s_obj_file << "EOF"
             <Username>${admin.username}</Username>
