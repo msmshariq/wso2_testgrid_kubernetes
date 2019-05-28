@@ -94,11 +94,8 @@ function readinesss_services(){
       echo "PublisherUrl=https://$external_ip:9443/publisher" >> $OUTPUT_DIR/deployment.properties
       echo "StoreUrl=https://$external_ip:9443/store" >> $OUTPUT_DIR/deployment.properties
       echo "AdminUrl=https://$external_ip:9443/admin" >> $OUTPUT_DIR/deployment.properties
-      echo "StoreUrl=https://$external_ip:9443/store" >> $OUTPUT_DIR/deployment.properties
       echo "CarbonServerUrl=https://$external_ip:9443/services" >> $OUTPUT_DIR/deployment.properties
       echo "GatewayHttpsUrl=https://$external_ip:8243" >> $OUTPUT_DIR/deployment.properties
-      echo "GatewayHttpUrl=http://$external_ip:8280" >> $OUTPUT_DIR/deployment.properties
-
     done
 }
 
