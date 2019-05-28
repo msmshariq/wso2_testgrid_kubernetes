@@ -91,11 +91,12 @@ function readinesss_services(){
         [ -z "$external_ip" ] && sleep 10
       done
       echo "WSO2APIMLoadBalancer=$external_ip" >> $OUTPUT_DIR/deployment.properties 
+      echo "APIMServiceURL=https://$external_ip:9443/service" >> $OUTPUT_DIR/deployment.properties 
       echo "APIMServiceCarbonURL=https://$external_ip:9443/carbon" >> $OUTPUT_DIR/deployment.properties
       echo "APIMServicePublisherURL=https://$external_ip:9443/publisher" >> $OUTPUT_DIR/deployment.properties
       echo "APIMServiceStoreURL=https://$external_ip:9443/store" >> $OUTPUT_DIR/deployment.properties
-      echo "APIMGatewayHTTPSEndpoint=$external_ips:8243" >> $OUTPUT_DIR/deployment.properties
-      echo "APIMGatewayHTTPEndpoint=$external_ip:8280" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMGatewayHTTPSEndpoint=https://$external_ip:8243" >> $OUTPUT_DIR/deployment.properties
+      echo "APIMGatewayHTTPEndpoint=http://$external_ip:8280" >> $OUTPUT_DIR/deployment.properties
 
     done
 }
