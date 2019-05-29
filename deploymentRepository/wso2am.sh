@@ -233,8 +233,7 @@ cat >> $k8s_obj_file << "EOF"
 EOF
 
 echo "            <URL>https://$NODE_IP:30443/store</URL>" >> $k8s_obj_file
-echo "            <ServerURL>https://localhost:
-"$nodeport.k8s.&.2.wso2apim"/services/</ServerURL>" >> $k8s_obj_file
+echo "            <ServerURL>https://localhost:30443/services/</ServerURL>" >> $k8s_obj_file
 
 cat >> $k8s_obj_file << "EOF"
             <Username>${admin.username}</Username>
