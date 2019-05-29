@@ -90,7 +90,7 @@ function readinesss_services(){
         external_ip=$(kubectl get service ${dep[$i]} --template="{{range .status.loadBalancer.ingress}}{{.ip}}{{end}}")
         [ -z "$external_ip" ] && sleep 10
       done
-      echo "KeyManagerUrl=https://$external_ip:9443/services/" >> $OUTPUT_DIR/deployment.properties 
+      echo "KeyManagerUrl=https://localhost:9443/services/" >> $OUTPUT_DIR/deployment.properties 
       echo "PublisherUrl=https://$external_ip:9443/publisher" >> $OUTPUT_DIR/deployment.properties
       echo "StoreUrl=https://$external_ip:9443/store" >> $OUTPUT_DIR/deployment.properties
       echo "AdminUrl=https://$external_ip:9443/admin" >> $OUTPUT_DIR/deployment.properties
