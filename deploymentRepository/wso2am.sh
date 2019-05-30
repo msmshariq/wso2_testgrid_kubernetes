@@ -124,6 +124,323 @@ metadata:
 type: kubernetes.io/dockerconfigjson
 ---
 EOF
+cat >> $k8s_obj_file << "EOF"
+apiVersion: v1
+data:
+  axis2.xml: |
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <axisconfig name="AxisJava2.0">
+        <parameter name="hotdeployment" locked="false">true</parameter>
+        <parameter name="hotupdate" locked="false">true</parameter>
+        <parameter name="enableMTOM" locked="false">false</parameter>
+        <parameter name="enableSwA" locked="false">false</parameter>
+        <parameter name="cacheAttachments" locked="false">false</parameter>
+        <parameter name="attachmentDIR" locked="false">work/mtom</parameter>
+        <parameter name="sizeThreshold" locked="false">4000</parameter>
+        <parameter name="disableREST" locked="false">false</parameter>
+        <parameter name="Sandesha2StorageManager" locked="false">inmemory</parameter>
+        <parameter name="servicePath" locked="false">services</parameter>
+        <parameter name="ServicesDirectory">axis2services</parameter>
+        <parameter name="ModulesDirectory">axis2modules</parameter>
+        <parameter name="userAgent" locked="true">WSO2 AM 2.1.0</parameter>
+        <parameter name="server" locked="true">WSO2 AM 2.1.0</parameter>
+        <parameter name="sendStacktraceDetailsWithFaults" locked="false">false</parameter>
+        <parameter name="DrillDownToRootCauseForFaultReason" locked="false">false</parameter>
+        <parameter name="manageTransportSession" locked="false">true</parameter>
+        <parameter name="ConfigContextTimeoutInterval" locked="false">30000</parameter>
+        <parameter name="SynapseConfig.ConfigurationFile" locked="false">repository/deployment/server/synapse-configs</parameter>
+        <parameter name="SynapseConfig.HomeDirectory" locked="false">.</parameter>
+        <parameter name="SynapseConfig.ResolveRoot" locked="false">.</parameter>
+        <parameter name="SynapseConfig.ServerName" locked="false">localhost</parameter>
+        <listener class="org.wso2.carbon.core.deployment.DeploymentInterceptor"/>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/robust-in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <messageFormatters>
+           <messageFormatter contentType="application/x-www-form-urlencoded"
+                              class="org.apache.axis2.transport.http.XFormURLEncodedFormatter"/>
+            <messageFormatter contentType="multipart/form-data"
+                              class="org.apache.axis2.transport.http.MultipartFormDataFormatter"/>
+            <messageFormatter contentType="text/html"
+                              class="org.apache.axis2.transport.http.ApplicationXMLFormatter"/>
+            <messageFormatter contentType="application/xml"
+                              class="org.apache.axis2.transport.http.ApplicationXMLFormatter"/>
+            <messageFormatter contentType="text/xml"
+                             class="org.apache.axis2.transport.http.SOAPMessageFormatter"/>
+            <messageFormatter contentType="application/soap+xml"
+                             class="org.apache.axis2.transport.http.SOAPMessageFormatter"/>
+            <messageFormatter contentType="text/plain"
+                             class="org.apache.axis2.format.PlainTextFormatter"/>
+            <messageFormatter contentType="application/json"
+                              class="org.apache.synapse.commons.json.JsonStreamFormatter"/>
+            <messageFormatter contentType="application/json/badgerfish"
+                              class="org.apache.axis2.json.JSONBadgerfishMessageFormatter"/>
+            <messageFormatter contentType="text/javascript"
+                              class="org.apache.axis2.json.JSONMessageFormatter"/>
+            <messageFormatter contentType="application/octet-stream"
+                              class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
+        </messageFormatters>
+        <messageBuilders>
+        <messageBuilder contentType="application/xml"
+                            class="org.apache.axis2.builder.ApplicationXMLBuilder"/>
+            <messageBuilder contentType="text/html"
+                            class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+            <messageBuilder contentType="application/x-www-form-urlencoded"
+                            class="org.apache.synapse.commons.builders.XFormURLEncodedBuilder"/>
+            <messageBuilder contentType="multipart/form-data"
+                            class="org.apache.axis2.builder.MultipartFormDataBuilder"/>
+            <messageBuilder contentType="text/plain"
+                            class="org.apache.axis2.format.PlainTextBuilder"/>
+            <messageBuilder contentType="application/json"
+                            class="org.apache.synapse.commons.json.JsonStreamBuilder"/>
+            <messageBuilder contentType="application/json/badgerfish"
+                            class="org.apache.axis2.json.JSONBadgerfishOMBuilder"/>
+            <messageBuilder contentType="text/javascript"
+                            class="org.apache.axis2.json.JSONBuilder"/>
+            <messageBuilder contentType="application/octet-stream"
+                            class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+        </messageBuilders>
+        <transportReceiver name="http" class="org.apache.synapse.transport.passthru.PassThroughHttpListener">
+            <parameter name="port" locked="false">8280</parameter>
+            <parameter name="non-blocking" locked="false">true</parameter>
+            <parameter name="httpGetProcessor" locked="false">org.wso2.carbon.mediation.transport.handlers.PassThroughNHttpGetProcessor</parameter>
+        </transportReceiver>
+       <transportReceiver name="https" class="org.apache.synapse.transport.passthru.PassThroughHttpSSLListener">
+            <parameter name="port" locked="false">8243</parameter>
+            <parameter name="non-blocking" locked="false">true</parameter>
+           <parameter name="httpGetProcessor" locked="false">org.wso2.carbon.mediation.transport.handlers.PassThroughNHttpGetProcessor</parameter>
+            <parameter name="keystore" locked="false">
+                <KeyStore>
+                    <Location>repository/resources/security/wso2carbon.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                    <KeyPassword>wso2carbon</KeyPassword>
+                </KeyStore>
+            </parameter>
+            <parameter name="truststore" locked="false">
+                <TrustStore>
+                    <Location>repository/resources/security/client-truststore.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                </TrustStore>
+            </parameter>
+        </transportReceiver>
+        <transportReceiver name="local" class="org.wso2.carbon.core.transports.local.CarbonLocalTransportReceiver"/>
+        <transportSender name="http" class="org.apache.synapse.transport.passthru.PassThroughHttpSender">
+            <parameter name="non-blocking" locked="false">true</parameter>
+        </transportSender>
+        <transportSender name="local" class="org.wso2.carbon.core.transports.local.CarbonLocalTransportSender"/>
+        <transportSender name="https" class="org.apache.synapse.transport.passthru.PassThroughHttpSSLSender">
+            <parameter name="non-blocking" locked="false">true</parameter>
+            <parameter name="keystore" locked="false">
+                <KeyStore>
+                    <Location>repository/resources/security/wso2carbon.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                    <KeyPassword>wso2carbon</KeyPassword>
+                </KeyStore>
+            </parameter>
+            <parameter name="truststore" locked="false">
+                <TrustStore>
+                    <Location>repository/resources/security/client-truststore.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                </TrustStore>
+            </parameter>
+            <parameter name="dynamicSSLProfilesConfig">
+                <filePath>repository/resources/security/sslprofiles.xml</filePath>
+                <fileReadInterval>600000</fileReadInterval>
+            </parameter>
+            <parameter name="HostnameVerifier">AllowAll</parameter>
+        </transportSender>
+        <transportSender name="ws" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">
+            <parameter name="ws.outflow.dispatch.sequence" locked="false">outflowDispatchSeq</parameter>
+            <parameter name="ws.outflow.dispatch.fault.sequence" locked="false">outflowFaultSeq</parameter>
+        </transportSender>
+
+        <transportSender name="wss" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">
+            <parameter name="ws.outflow.dispatch.sequence" locked="false">outflowDispatchSeq</parameter>
+            <parameter name="ws.outflow.dispatch.fault.sequence" locked="false">outflowFaultSeq</parameter>
+            <parameter name="ws.trust.store" locked="false">
+                <ws.trust.store.location>repository/resources/security/client-truststore.jks</ws.trust.store.location>
+                <ws.trust.store.Password>wso2carbon</ws.trust.store.Password>
+            </parameter>
+        </transportSender>
+        <module ref="addressing"/>
+        <clustering class="org.wso2.carbon.core.clustering.hazelcast.HazelcastClusteringAgent"
+                    enable="false">
+            <parameter name="AvoidInitiation">true</parameter>
+            <parameter name="membershipScheme">multicast</parameter>
+            <parameter name="domain">wso2.carbon.domain</parameter>
+            <parameter name="mcastPort">45564</parameter>
+
+            <parameter name="mcastTTL">100</parameter>
+
+            <parameter name="mcastTimeout">60</parameter>
+            <parameter name="localMemberHost">10.12.5.129</parameter>
+            <parameter name="localMemberPort">4000</parameter>
+            <parameter name="properties">
+                <property name="backendServerURL" value="https://${hostName}:${httpsPort}/services/"/>
+                <property name="mgtConsoleURL" value="https://${hostName}:${httpsPort}/"/>
+                <property name="subDomain" value="worker"/>
+            </parameter>
+            <members>
+                <member>
+                    <hostName>127.0.0.1</hostName>
+                    <port>4000</port>
+                </member>
+            </members>
+            <groupManagement enable="false">
+                <applicationDomain name="wso2.apim.domain"
+                                   description="APIM group"
+                                   agent="org.wso2.carbon.core.clustering.hazelcast.HazelcastGroupManagementAgent"
+                                   subDomain="worker"
+                                   port="2222"/>
+            </groupManagement>
+        </clustering>
+        <phaseOrder type="InFlow">
+        <phase name="MsgInObservation">
+            <handler name="TraceMessageBuilderDispatchHandler"
+                         class="org.apache.synapse.transport.passthru.util.TraceMessageBuilderDispatchHandler"/>
+        </phase>
+        <phase name="Validation"/>
+            <phase name="Transport">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+            <handler name="CarbonContextConfigurator"
+            class="org.wso2.carbon.mediation.initializer.handler.CarbonContextConfigurator"/>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+                <handler name="CarbonContentConfigurator"
+                         class="org.wso2.carbon.mediation.initializer.handler.CarbonContextConfigurator"/>
+            </phase>
+            <phase name="Addressing">
+                <handler name="AddressingBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.AddressingBasedDispatcher">
+                    <order phase="Addressing"/>
+                </handler>
+
+            </phase>
+            <phase name="Security"/>
+            <phase name="PreDispatch"/>
+            <phase name="Dispatch" class="org.apache.axis2.engine.DispatchPhase">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher"/>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher"/>
+                <handler name="RequestURIOperationDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIOperationDispatcher"/>
+                <handler name="SOAPMessageBodyBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPMessageBodyBasedDispatcher"/>
+
+            <handler name="HTTPLocationBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.HTTPLocationBasedDispatcher"/>
+                <handler name="MultitenantDispatcher"
+                         class="org.wso2.carbon.tenant.dispatcher.MultitenantDispatcher"/>
+                <handler name="SynapseDispatcher"
+                         class="org.apache.synapse.core.axis2.SynapseDispatcher"/>
+                <handler name="SynapseMustUnderstandHandler"
+                         class="org.apache.synapse.core.axis2.SynapseMustUnderstandHandler"/>
+            </phase>
+            <phase name="RMPhase"/>
+            <phase name="OpPhase"/>
+            <phase name="AuthPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OperationInPhase"/>
+        </phaseOrder>
+
+        <phaseOrder type="OutFlow">
+            <phase name="UEPPhase" />
+            <phase name="RMPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OpPhase"/>
+            <phase name="OperationOutPhase"/>
+            <phase name="PolicyDetermination"/>
+            <phase name="PTSecurityOutPhase">
+                <handler name="RelaySecuirtyMessageBuilderDispatchandler"
+                         class="org.apache.synapse.transport.passthru.util.RelaySecuirtyMessageBuilderDispatchandler"/>
+            </phase>
+            <phase name="MessageOut"/>
+            <phase name="Security"/>
+            <phase name="MsgOutObservation"/>
+        </phaseOrder>
+
+        <phaseOrder type="InFaultFlow">
+            <phase name="MsgInObservation"/>
+        <phase name="Validation"/>
+
+            <phase name="Transport">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+            <handler name="CarbonContentConfigurator"
+                class="org.wso2.carbon.mediation.initializer.handler.CarbonContextConfigurator"/>
+               </phase>
+
+               <phase name="Addressing">
+                <handler name="AddressingBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.AddressingBasedDispatcher">
+                    <order phase="Addressing"/>
+                </handler>
+               </phase>
+
+            <phase name="Security"/>
+            <phase name="PreDispatch"/>
+            <phase name="Dispatch" class="org.apache.axis2.engine.DispatchPhase">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher"/>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher"/>
+                <handler name="RequestURIOperationDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIOperationDispatcher"/>
+                <handler name="SOAPMessageBodyBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPMessageBodyBasedDispatcher"/>
+
+                <handler name="HTTPLocationBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.HTTPLocationBasedDispatcher"/>
+            </phase>
+            <phase name="RMPhase"/>
+            <phase name="OpPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OperationInFaultPhase"/>
+        </phaseOrder>
+
+        <phaseOrder type="OutFaultFlow">
+            <phase name="UEPPhase" />
+            <phase name="RMPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OperationOutFaultPhase"/>
+            <phase name="PolicyDetermination"/>
+            <phase name="MessageOut"/>
+            <phase name="Security"/>
+        <phase name="Transport"/>
+            <phase name="MsgOutObservation"/>
+        </phaseOrder>
+
+    </axisconfig>
+kind: ConfigMap
+metadata:
+    name: apim-conf-axis2
+EOF
+
+cat >> $k8s_obj_file << EOF
+    namespace: $namespace
+---
+EOF
 
 cat >> $k8s_obj_file << "EOF"
 apiVersion: v1
@@ -692,14 +1009,7 @@ cat >> $k8s_obj_file << "EOF"
             <LoadAPIContextsInServerStartup>true</LoadAPIContextsInServerStartup>
         </APIManagement>
     </Server>
-  axis2.xml: |
-    <?xml version="1.0" encoding="ISO-8859-1"?>
-    <axisconfig name="AxisJava2.0">
-        <transportSender name="https" class="org.apache.synapse.transport.passthru.PassThroughHttpSSLSender">
-            <parameter name="HostnameVerifier">AllowAll</parameter>
-        </transportSender>
-    </axisconfig>
-  user-mgt.xml: |
+    user-mgt.xml: |
     <?xml version="1.0" encoding="UTF-8"?>
     <UserManager>
         <Realm>
@@ -3246,6 +3556,8 @@ spec:
           volumeMounts:
             - name: apim-conf
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
+            - name: apim-conf-axis2
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/axis2
             - name: apim-conf-datasources
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/datasources
       initContainers:
@@ -3259,6 +3571,9 @@ spec:
         - name: apim-conf
           configMap:
             name: apim-conf
+        - name: apim-conf-axis2
+          configMap:
+            name: apim-conf-axis2
         - name: apim-conf-datasources
           configMap:
             name: apim-conf-datasources
