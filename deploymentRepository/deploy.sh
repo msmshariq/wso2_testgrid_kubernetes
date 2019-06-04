@@ -54,6 +54,7 @@ function create_resources() {
     done
 
     readiness_deployments
+    sleep 30
 
 }
 
