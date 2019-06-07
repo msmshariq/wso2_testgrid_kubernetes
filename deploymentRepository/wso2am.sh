@@ -1009,7 +1009,7 @@ cat >> $k8s_obj_file << "EOF"
             <LoadAPIContextsInServerStartup>true</LoadAPIContextsInServerStartup>
         </APIManagement>
     </Server>
-    user-mgt.xml: |
+  user-mgt.xml: |
     <?xml version="1.0" encoding="UTF-8"?>
     <UserManager>
         <Realm>
