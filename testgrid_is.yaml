@@ -30,8 +30,11 @@ deploymentConfig:
             deployments: 'wso2is-is-deployment'
 scenarioConfigs:
   - testType: TESTNG
-    remoteRepository: "git@github.com:wso2/testgrid.git"
-    name: "ref-scenario"
-    description: "Test-Phase-1"
-    file: tests/test.sh
+    remoteRepository: "https://github.com/wso2/product-is.git"
+    remoteBranch: "product-scenarios"
+    name: "2-single-sign-on"
+    description: "2-single-sign-on"
+    file: product-scenarios/test.sh
+    inputParameters:
+      RemoteProductDir: "/usr/lib/wso2/wso2is/5.7.0/wso2is-5.7.0"
 
