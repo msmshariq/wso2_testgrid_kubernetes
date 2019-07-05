@@ -28,6 +28,9 @@ deploymentConfig:
           inputParameters:
             deploymentYamlFiles: 'deployment.yaml'
             deployments: '"wso2ei-with-analytics-dashboard-deployment wso2ei-with-analytics-integrator-deployment"'
+        - name: 'outputs'
+          type: SHELL
+          file: deploymentRepository/kubernetes_outputs.sh
 scenarioConfigs:
   - testType: TESTNG
     remoteRepository: "git@github.com:wso2/testgrid.git"

@@ -35,6 +35,9 @@ deploymentConfig:
           inputParameters:
             yamls: 'deployment.yaml'
             deployments: 'wso2apim-with-analytics-apim'
+        - name: 'outputs'
+          type: SHELL
+          file: deploymentRepository/kubernetes_outputs.sh
 scenarioConfigs:
   - testType: TESTNG
     remoteRepository: "https://github.com/wso2/product-apim.git"
