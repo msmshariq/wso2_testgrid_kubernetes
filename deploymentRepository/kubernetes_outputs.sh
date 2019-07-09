@@ -35,3 +35,6 @@ function create_endpoints(){
     echo "external_ip=$external_ip" >> $OUTPUT_DIR/deployment.properties
 
 }
+
+create_endpoints
+
