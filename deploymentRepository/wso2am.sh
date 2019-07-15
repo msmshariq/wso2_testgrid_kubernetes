@@ -3779,7 +3779,7 @@ function deploy(){
       file=$INPUT_DIR/infrastructure.properties
       echo $file
       WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
-      WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
+      WUMPassword=$(cat $file | grep "WUMPassword" | cut -d'=' -f2)
       wso2DockerPullPassword=$WUMPassword
       randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
       namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
