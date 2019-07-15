@@ -19,23 +19,81 @@
 set -e
 
 # bash variables
-k8s_obj_file="deployment.yaml"; NODE_IP='';
+k8s_obj_file="deployment.yaml"; NODE_IP=''; str_sec=""
 
 # wso2 subscription variables
 WUMUsername=''; WUMPassword=''
-IMG_DEST="wso2"
 
 : ${namespace:="wso2"}
-: ${randomPort:="False"}; : ${NP_1:=30443}; : ${NP_2:=30243}
+: ${randomPort:=False}; : ${NP_1:=30243}; : ${NP_2:=30443}
 
 # testgrid directory
 OUTPUT_DIR=$4; INPUT_DIR=$2
 
+# bash functions
+function usage(){
+  echo "Usage: "
+  echo -e "-d, --deploy     Deploy WSO2 API Manager"
+  echo -e "-u, --undeploy   Undeploy WSO2 API Manager"
+  echo -e "-h, --help       Display usage instrusctions"
+}
+function undeploy(){
+  echoBold "Undeploying WSO2 API Manager ... \n"
+  kubectl delete -f deployment.yaml
+  exit 0
+}
+function echoBold () {
+    echo -en  $'\e[1m'"${1}"$'\e[0m'
+}
+
+function display_msg(){
+    msg=$@
+    echoBold "${msg}"
+    exit 1
+}
+
+function st(){
+  cycles=${1}
+  i=0
+  while [[ i -lt $cycles ]]
+  do
+    echoBold "* "
+    let "i=i+1"
+  done
+}
+function sp(){
+  cycles=${1}
+  i=0
+  while [[ i -lt $cycles ]]
+  do
+    echoBold " "
+    let "i=i+1"
+  done
+}
+function product_name(){
+  #wso2apim
+  echo -e "\n"
+  st 1; sp 8; st 1; sp 2; sp 1; st 3; sp 3; sp 2; st 3; sp 4; sp 1; st 3; sp 3; sp 8; sp 2; st 3; sp 1; sp 3; st 3; sp 3; st 5; sp 2; st 1; sp 8; st 1;
+  echo ""
+  st 1; sp 8; st 1; sp 2; st 1; sp 4; st 1; sp 2; st 1; sp 6; st 1; sp 2; st 1; sp 4; st 1; sp 2; sp 8; sp 1; st 1; sp 4; st 1; sp 3; st 1; sp 4; st 1; sp 2; sp 3; st 1; sp 6; st 2; sp 4; st 2;
+  echo ""
+  st 1; sp 3; st 1; sp 3; st 1; sp 2; st 1; sp 8; st 1; sp 6; st 1; sp 2; sp 6; st 1; sp 2; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp 4; st 1; sp 2; sp 3; st 1; sp 6; st 1; sp 1; st 1; sp 2; st 1; sp 1; st 1;
+  echo ""
+  st 1; sp 2; st 1; st 1; sp 2; st 1; sp 2; sp 1; st 3; sp 3; st 1; sp 6; st 1; sp 2; sp 4; st 1; sp 4; st 3; sp 2; st 5; sp 2; st 3; sp 3; sp 4; st 1; sp 6; st 1; sp 2; st 2; sp 2; st 1;
+  echo ""
+  st 1; sp 1; st 1; sp 2; st 1; sp 1; st 1; sp 2; sp 6; st 1; sp 2; st 1; sp 6; st 1; sp 2; sp 2; st 1; sp 6; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp  7; sp 4; st 1; sp 6; st 1; sp 3; st 1; sp 3; st 1;
+  echo ""
+  st 2; sp 4; st 2; sp 2; st 1; sp 4; st 1; sp 2; st 1; sp 6; st 1; sp 2; st 1; sp 8; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp 7; sp 4; st 1; sp 6; st 1; sp 8; st 1;
+  echo ""
+  st 1; sp 8; st 1; sp 2; sp 1; st 3; sp 3; sp 2; st 3; sp 4; st 4; sp 2; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp 7; st 5; sp 2; st 1; sp 8; st 1;
+  echo -e "\n"
+}
 function create_yaml(){
+
 cat > $k8s_obj_file << "EOF"
 EOF
 if [ "$namespace" == "wso2" ]; then
-cat > $k8s_obj_file << "EOF"
+cat >> $k8s_obj_file << "EOF"
 apiVersion: v1
 kind: Namespace
 metadata:
@@ -46,15 +104,345 @@ spec:
 ---
 EOF
 fi
-cat >> $k8s_obj_file << "EOF"
+cat >> $k8s_obj_file << EOF
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: wso2svc-account
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 secrets:
   - name: wso2svc-account-token-t7s49
 ---
+
+apiVersion: v1
+data:
+  .dockerconfigjson: $str_sec
+kind: Secret
+metadata:
+  name: wso2creds
+  namespace: $namespace
+type: kubernetes.io/dockerconfigjson
+---
+EOF
+cat >> $k8s_obj_file << "EOF"
+apiVersion: v1
+data:
+  axis2.xml: |
+    <?xml version="1.0" encoding="ISO-8859-1"?>
+    <axisconfig name="AxisJava2.0">
+        <parameter name="hotdeployment" locked="false">true</parameter>
+        <parameter name="hotupdate" locked="false">true</parameter>
+        <parameter name="enableMTOM" locked="false">false</parameter>
+        <parameter name="enableSwA" locked="false">false</parameter>
+        <parameter name="cacheAttachments" locked="false">false</parameter>
+        <parameter name="attachmentDIR" locked="false">work/mtom</parameter>
+        <parameter name="sizeThreshold" locked="false">4000</parameter>
+        <parameter name="disableREST" locked="false">false</parameter>
+        <parameter name="Sandesha2StorageManager" locked="false">inmemory</parameter>
+        <parameter name="servicePath" locked="false">services</parameter>
+        <parameter name="ServicesDirectory">axis2services</parameter>
+        <parameter name="ModulesDirectory">axis2modules</parameter>
+        <parameter name="userAgent" locked="true">WSO2 AM 2.1.0</parameter>
+        <parameter name="server" locked="true">WSO2 AM 2.1.0</parameter>
+        <parameter name="sendStacktraceDetailsWithFaults" locked="false">false</parameter>
+        <parameter name="DrillDownToRootCauseForFaultReason" locked="false">false</parameter>
+        <parameter name="manageTransportSession" locked="false">true</parameter>
+        <parameter name="ConfigContextTimeoutInterval" locked="false">30000</parameter>
+        <parameter name="SynapseConfig.ConfigurationFile" locked="false">repository/deployment/server/synapse-configs</parameter>
+        <parameter name="SynapseConfig.HomeDirectory" locked="false">.</parameter>
+        <parameter name="SynapseConfig.ResolveRoot" locked="false">.</parameter>
+        <parameter name="SynapseConfig.ServerName" locked="false">localhost</parameter>
+        <listener class="org.wso2.carbon.core.deployment.DeploymentInterceptor"/>
+        <messageReceivers>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/robust-in-only"
+                             class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+            <messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+                             class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+        </messageReceivers>
+        <messageFormatters>
+           <messageFormatter contentType="application/x-www-form-urlencoded"
+                              class="org.apache.axis2.transport.http.XFormURLEncodedFormatter"/>
+            <messageFormatter contentType="multipart/form-data"
+                              class="org.apache.axis2.transport.http.MultipartFormDataFormatter"/>
+            <messageFormatter contentType="text/html"
+                              class="org.apache.axis2.transport.http.ApplicationXMLFormatter"/>
+            <messageFormatter contentType="application/xml"
+                              class="org.apache.axis2.transport.http.ApplicationXMLFormatter"/>
+            <messageFormatter contentType="text/xml"
+                             class="org.apache.axis2.transport.http.SOAPMessageFormatter"/>
+            <messageFormatter contentType="application/soap+xml"
+                             class="org.apache.axis2.transport.http.SOAPMessageFormatter"/>
+            <messageFormatter contentType="text/plain"
+                             class="org.apache.axis2.format.PlainTextFormatter"/>
+            <messageFormatter contentType="application/json"
+                              class="org.apache.synapse.commons.json.JsonStreamFormatter"/>
+            <messageFormatter contentType="application/json/badgerfish"
+                              class="org.apache.axis2.json.JSONBadgerfishMessageFormatter"/>
+            <messageFormatter contentType="text/javascript"
+                              class="org.apache.axis2.json.JSONMessageFormatter"/>
+            <messageFormatter contentType="application/octet-stream"
+                              class="org.wso2.carbon.relay.ExpandingMessageFormatter"/>
+        </messageFormatters>
+        <messageBuilders>
+        <messageBuilder contentType="application/xml"
+                            class="org.apache.axis2.builder.ApplicationXMLBuilder"/>
+            <messageBuilder contentType="text/html"
+                            class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+            <messageBuilder contentType="application/x-www-form-urlencoded"
+                            class="org.apache.synapse.commons.builders.XFormURLEncodedBuilder"/>
+            <messageBuilder contentType="multipart/form-data"
+                            class="org.apache.axis2.builder.MultipartFormDataBuilder"/>
+            <messageBuilder contentType="text/plain"
+                            class="org.apache.axis2.format.PlainTextBuilder"/>
+            <messageBuilder contentType="application/json"
+                            class="org.apache.synapse.commons.json.JsonStreamBuilder"/>
+            <messageBuilder contentType="application/json/badgerfish"
+                            class="org.apache.axis2.json.JSONBadgerfishOMBuilder"/>
+            <messageBuilder contentType="text/javascript"
+                            class="org.apache.axis2.json.JSONBuilder"/>
+            <messageBuilder contentType="application/octet-stream"
+                            class="org.wso2.carbon.relay.BinaryRelayBuilder"/>
+        </messageBuilders>
+        <transportReceiver name="http" class="org.apache.synapse.transport.passthru.PassThroughHttpListener">
+            <parameter name="port" locked="false">8280</parameter>
+            <parameter name="non-blocking" locked="false">true</parameter>
+            <parameter name="httpGetProcessor" locked="false">org.wso2.carbon.mediation.transport.handlers.PassThroughNHttpGetProcessor</parameter>
+        </transportReceiver>
+       <transportReceiver name="https" class="org.apache.synapse.transport.passthru.PassThroughHttpSSLListener">
+            <parameter name="port" locked="false">8243</parameter>
+            <parameter name="non-blocking" locked="false">true</parameter>
+           <parameter name="httpGetProcessor" locked="false">org.wso2.carbon.mediation.transport.handlers.PassThroughNHttpGetProcessor</parameter>
+            <parameter name="keystore" locked="false">
+                <KeyStore>
+                    <Location>repository/resources/security/wso2carbon.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                    <KeyPassword>wso2carbon</KeyPassword>
+                </KeyStore>
+            </parameter>
+            <parameter name="truststore" locked="false">
+                <TrustStore>
+                    <Location>repository/resources/security/client-truststore.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                </TrustStore>
+            </parameter>
+        </transportReceiver>
+        <transportReceiver name="local" class="org.wso2.carbon.core.transports.local.CarbonLocalTransportReceiver"/>
+        <transportSender name="http" class="org.apache.synapse.transport.passthru.PassThroughHttpSender">
+            <parameter name="non-blocking" locked="false">true</parameter>
+        </transportSender>
+        <transportSender name="local" class="org.wso2.carbon.core.transports.local.CarbonLocalTransportSender"/>
+        <transportSender name="https" class="org.apache.synapse.transport.passthru.PassThroughHttpSSLSender">
+            <parameter name="non-blocking" locked="false">true</parameter>
+            <parameter name="keystore" locked="false">
+                <KeyStore>
+                    <Location>repository/resources/security/wso2carbon.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                    <KeyPassword>wso2carbon</KeyPassword>
+                </KeyStore>
+            </parameter>
+            <parameter name="truststore" locked="false">
+                <TrustStore>
+                    <Location>repository/resources/security/client-truststore.jks</Location>
+                    <Type>JKS</Type>
+                    <Password>wso2carbon</Password>
+                </TrustStore>
+            </parameter>
+            <parameter name="dynamicSSLProfilesConfig">
+                <filePath>repository/resources/security/sslprofiles.xml</filePath>
+                <fileReadInterval>600000</fileReadInterval>
+            </parameter>
+            <parameter name="HostnameVerifier">AllowAll</parameter>
+        </transportSender>
+        <transportSender name="ws" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">
+            <parameter name="ws.outflow.dispatch.sequence" locked="false">outflowDispatchSeq</parameter>
+            <parameter name="ws.outflow.dispatch.fault.sequence" locked="false">outflowFaultSeq</parameter>
+        </transportSender>
+
+        <transportSender name="wss" class="org.wso2.carbon.websocket.transport.WebsocketTransportSender">
+            <parameter name="ws.outflow.dispatch.sequence" locked="false">outflowDispatchSeq</parameter>
+            <parameter name="ws.outflow.dispatch.fault.sequence" locked="false">outflowFaultSeq</parameter>
+            <parameter name="ws.trust.store" locked="false">
+                <ws.trust.store.location>repository/resources/security/client-truststore.jks</ws.trust.store.location>
+                <ws.trust.store.Password>wso2carbon</ws.trust.store.Password>
+            </parameter>
+        </transportSender>
+        <module ref="addressing"/>
+        <clustering class="org.wso2.carbon.core.clustering.hazelcast.HazelcastClusteringAgent"
+                    enable="false">
+            <parameter name="AvoidInitiation">true</parameter>
+            <parameter name="membershipScheme">multicast</parameter>
+            <parameter name="domain">wso2.carbon.domain</parameter>
+            <parameter name="mcastPort">45564</parameter>
+
+            <parameter name="mcastTTL">100</parameter>
+
+            <parameter name="mcastTimeout">60</parameter>
+            <parameter name="localMemberHost">10.12.5.129</parameter>
+            <parameter name="localMemberPort">4000</parameter>
+            <parameter name="properties">
+                <property name="backendServerURL" value="https://${hostName}:${httpsPort}/services/"/>
+                <property name="mgtConsoleURL" value="https://${hostName}:${httpsPort}/"/>
+                <property name="subDomain" value="worker"/>
+            </parameter>
+            <members>
+                <member>
+                    <hostName>127.0.0.1</hostName>
+                    <port>4000</port>
+                </member>
+            </members>
+            <groupManagement enable="false">
+                <applicationDomain name="wso2.apim.domain"
+                                   description="APIM group"
+                                   agent="org.wso2.carbon.core.clustering.hazelcast.HazelcastGroupManagementAgent"
+                                   subDomain="worker"
+                                   port="2222"/>
+            </groupManagement>
+        </clustering>
+        <phaseOrder type="InFlow">
+        <phase name="MsgInObservation">
+            <handler name="TraceMessageBuilderDispatchHandler"
+                         class="org.apache.synapse.transport.passthru.util.TraceMessageBuilderDispatchHandler"/>
+        </phase>
+        <phase name="Validation"/>
+            <phase name="Transport">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+            <handler name="CarbonContextConfigurator"
+            class="org.wso2.carbon.mediation.initializer.handler.CarbonContextConfigurator"/>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+                <handler name="CarbonContentConfigurator"
+                         class="org.wso2.carbon.mediation.initializer.handler.CarbonContextConfigurator"/>
+            </phase>
+            <phase name="Addressing">
+                <handler name="AddressingBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.AddressingBasedDispatcher">
+                    <order phase="Addressing"/>
+                </handler>
+
+            </phase>
+            <phase name="Security"/>
+            <phase name="PreDispatch"/>
+            <phase name="Dispatch" class="org.apache.axis2.engine.DispatchPhase">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher"/>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher"/>
+                <handler name="RequestURIOperationDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIOperationDispatcher"/>
+                <handler name="SOAPMessageBodyBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPMessageBodyBasedDispatcher"/>
+
+            <handler name="HTTPLocationBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.HTTPLocationBasedDispatcher"/>
+                <handler name="MultitenantDispatcher"
+                         class="org.wso2.carbon.tenant.dispatcher.MultitenantDispatcher"/>
+                <handler name="SynapseDispatcher"
+                         class="org.apache.synapse.core.axis2.SynapseDispatcher"/>
+                <handler name="SynapseMustUnderstandHandler"
+                         class="org.apache.synapse.core.axis2.SynapseMustUnderstandHandler"/>
+            </phase>
+            <phase name="RMPhase"/>
+            <phase name="OpPhase"/>
+            <phase name="AuthPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OperationInPhase"/>
+        </phaseOrder>
+
+        <phaseOrder type="OutFlow">
+            <phase name="UEPPhase" />
+            <phase name="RMPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OpPhase"/>
+            <phase name="OperationOutPhase"/>
+            <phase name="PolicyDetermination"/>
+            <phase name="PTSecurityOutPhase">
+                <handler name="RelaySecuirtyMessageBuilderDispatchandler"
+                         class="org.apache.synapse.transport.passthru.util.RelaySecuirtyMessageBuilderDispatchandler"/>
+            </phase>
+            <phase name="MessageOut"/>
+            <phase name="Security"/>
+            <phase name="MsgOutObservation"/>
+        </phaseOrder>
+
+        <phaseOrder type="InFaultFlow">
+            <phase name="MsgInObservation"/>
+        <phase name="Validation"/>
+
+            <phase name="Transport">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher">
+                    <order phase="Transport"/>
+                </handler>
+            <handler name="CarbonContentConfigurator"
+                class="org.wso2.carbon.mediation.initializer.handler.CarbonContextConfigurator"/>
+               </phase>
+
+               <phase name="Addressing">
+                <handler name="AddressingBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.AddressingBasedDispatcher">
+                    <order phase="Addressing"/>
+                </handler>
+               </phase>
+
+            <phase name="Security"/>
+            <phase name="PreDispatch"/>
+            <phase name="Dispatch" class="org.apache.axis2.engine.DispatchPhase">
+                <handler name="RequestURIBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIBasedDispatcher"/>
+                <handler name="SOAPActionBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPActionBasedDispatcher"/>
+                <handler name="RequestURIOperationDispatcher"
+                         class="org.apache.axis2.dispatchers.RequestURIOperationDispatcher"/>
+                <handler name="SOAPMessageBodyBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.SOAPMessageBodyBasedDispatcher"/>
+
+                <handler name="HTTPLocationBasedDispatcher"
+                         class="org.apache.axis2.dispatchers.HTTPLocationBasedDispatcher"/>
+            </phase>
+            <phase name="RMPhase"/>
+            <phase name="OpPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OperationInFaultPhase"/>
+        </phaseOrder>
+
+        <phaseOrder type="OutFaultFlow">
+            <phase name="UEPPhase" />
+            <phase name="RMPhase"/>
+            <phase name="MUPhase"/>
+            <phase name="OperationOutFaultPhase"/>
+            <phase name="PolicyDetermination"/>
+            <phase name="MessageOut"/>
+            <phase name="Security"/>
+        <phase name="Transport"/>
+            <phase name="MsgOutObservation"/>
+        </phaseOrder>
+
+    </axisconfig>
+kind: ConfigMap
+metadata:
+    name: apim-conf-axis2
+EOF
+
+cat >> $k8s_obj_file << EOF
+    namespace: $namespace
+---
+EOF
+
+cat >> $k8s_obj_file << "EOF"
 apiVersion: v1
 data:
   api-manager.xml: |
@@ -80,7 +468,12 @@ data:
                     <ServerURL>https://localhost:${mgt.transport.https.port}${carbon.context}services/</ServerURL>
                     <Username>${admin.username}</Username>
                     <Password>${admin.password}</Password>
-                    <GatewayEndpoint>http://"ip.node.k8s.&.wso2.apim":"$nodeport.k8s.&.2.wso2apim",https://"ip.node.k8s.&.wso2.apim":"$nodeport.k8s.&.2.wso2apim"</GatewayEndpoint>
+EOF
+
+
+echo "                    <GatewayEndpoint>http://'$NODE_IP':30243,https://'$NODE_IP':30243</GatewayEndpoint>" >> $k8s_obj_file
+
+cat >> $k8s_obj_file << "EOF"
                     <GatewayWSEndpoint>ws://${carbon.local.ip}:9099</GatewayWSEndpoint>
                 </Environment>
             </Environments>
@@ -154,8 +547,12 @@ data:
         <APIStore>
             <CompareCaseInsensitively>true</CompareCaseInsensitively>
             <DisplayURL>false</DisplayURL>
-            <URL>https://"ip.node.k8s.&.wso2.apim":"$nodeport.k8s.&.1.wso2apim"/store</URL>
-            <ServerURL>https://localhost:${mgt.transport.https.port}${carbon.context}services/</ServerURL>
+EOF
+
+echo "            <URL>https://$NODE_IP:30443/store</URL>" >> $k8s_obj_file
+echo "            <ServerURL>https://localhost:9443/services/</ServerURL>" >> $k8s_obj_file
+
+cat >> $k8s_obj_file << "EOF"
             <Username>${admin.username}</Username>
             <Password>${admin.password}</Password>
             <DisplayMultipleVersions>false</DisplayMultipleVersions>
@@ -379,7 +776,7 @@ data:
                     <java.naming.factory.initial>org.wso2.andes.jndi.PropertiesFileInitialContextFactory</java.naming.factory.initial>
                     <connectionfactory.TopicConnectionFactory>amqp://${admin.username}:${admin.password}@clientid/carbon?brokerlist='tcp://${carbon.local.ip}:${jms.port}'</connectionfactory.TopicConnectionFactory>
                 </JMSConnectionParameters>
-            </JMSConnectionDetails>
+            </JMSConnectionDetails>=
             <EnableUnlimitedTier>true</EnableUnlimitedTier>
             <EnableHeaderConditions>false</EnableHeaderConditions>
             <EnableJWTClaimConditions>false</EnableJWTClaimConditions>
@@ -412,8 +809,13 @@ data:
         <Name>WSO2 API Manager</Name>
         <ServerKey>AM</ServerKey>
         <Version>2.6.0</Version>
-        <HostName>"ip.node.k8s.&.wso2.apim"</HostName>
-        <MgtHostName>"ip.node.k8s.&.wso2.apim"</MgtHostName>
+EOF
+
+echo "        <HostName>wso2.us-central1a-google-clouds.com</HostName>" >> $k8s_obj_file
+
+echo "        <MgtHostName>wso2.us-central1a-google-clouds.com</MgtHostName>" >> $k8s_obj_file
+
+cat >> $k8s_obj_file << "EOF"
         <ServerURL>local:/${carbon.context}/services/</ServerURL>
         <ServerRoles>
             <Role>APIManager</Role>
@@ -657,8 +1059,12 @@ data:
 kind: ConfigMap
 metadata:
   name: apim-conf
-  namespace: "$ns.k8s.&.wso2.apim"
+EOF
+
+cat >> $k8s_obj_file << EOF
+  namespace: $namespace
 ---
+
 apiVersion: v1
 data:
   master-datasources.xml: |
@@ -746,7 +1152,7 @@ data:
                         <testOnBorrow>true</testOnBorrow>
                         <validationQuery>SELECT 1</validationQuery>
                         <validationInterval>30000</validationInterval>
-    		    <defaultAutoCommit>true</defaultAutoCommit>
+                <defaultAutoCommit>true</defaultAutoCommit>
                     </configuration>
                 </definition>
             </datasource>
@@ -776,8 +1182,11 @@ data:
 kind: ConfigMap
 metadata:
   name: apim-conf-datasources
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 ---
+EOF
+
+cat >> $k8s_obj_file << "EOF"
 apiVersion: v1
 data:
   deployment.yaml: |
@@ -1101,8 +1510,14 @@ data:
 kind: ConfigMap
 metadata:
   name: apim-analytics-conf-worker
-  namespace: "$ns.k8s.&.wso2.apim"
+EOF
+
+cat >> $k8s_obj_file << EOF
+  namespace: $namespace
 ---
+EOF
+
+cat >> $k8s_obj_file << "EOF"
 apiVersion: v1
 data:
   init.sql: |
@@ -1293,14 +1708,14 @@ data:
     CREATE INDEX REG_SNAPSHOT_IND_BY_PATH_ID_AND_RESOURCE_NAME USING HASH ON REG_SNAPSHOT(REG_PATH_ID, REG_RESOURCE_NAME, REG_TENANT_ID);
     ALTER TABLE REG_SNAPSHOT ADD CONSTRAINT REG_SNAPSHOT_FK_BY_PATH_ID FOREIGN KEY (REG_PATH_ID, REG_TENANT_ID) REFERENCES REG_PATH (REG_PATH_ID, REG_TENANT_ID);
     CREATE TABLE UM_TENANT (
-    			UM_ID INTEGER NOT NULL AUTO_INCREMENT,
-    	        UM_DOMAIN_NAME VARCHAR(255) NOT NULL,
+                UM_ID INTEGER NOT NULL AUTO_INCREMENT,
+                UM_DOMAIN_NAME VARCHAR(255) NOT NULL,
                 UM_EMAIL VARCHAR(255),
                 UM_ACTIVE BOOLEAN DEFAULT FALSE,
-    	        UM_CREATED_DATE TIMESTAMP NOT NULL,
-    	        UM_USER_CONFIG LONGBLOB,
-    			PRIMARY KEY (UM_ID),
-    			UNIQUE(UM_DOMAIN_NAME)
+                UM_CREATED_DATE TIMESTAMP NOT NULL,
+                UM_USER_CONFIG LONGBLOB,
+                PRIMARY KEY (UM_ID),
+                UNIQUE(UM_DOMAIN_NAME)
     )ENGINE INNODB;
     CREATE TABLE UM_DOMAIN(
                 UM_DOMAIN_ID INTEGER NOT NULL AUTO_INCREMENT,
@@ -1336,29 +1751,29 @@ data:
                  UM_ID INTEGER NOT NULL AUTO_INCREMENT,
                  UM_ROLE_NAME VARCHAR(255) NOT NULL,
                  UM_TENANT_ID INTEGER DEFAULT 0,
-    		UM_SHARED_ROLE BOOLEAN DEFAULT FALSE,
+            UM_SHARED_ROLE BOOLEAN DEFAULT FALSE,
                  PRIMARY KEY (UM_ID, UM_TENANT_ID),
                  UNIQUE(UM_ROLE_NAME, UM_TENANT_ID)
     )ENGINE INNODB;
     CREATE TABLE UM_MODULE(
-    	UM_ID INTEGER  NOT NULL AUTO_INCREMENT,
-    	UM_MODULE_NAME VARCHAR(100),
-    	UNIQUE(UM_MODULE_NAME),
-    	PRIMARY KEY(UM_ID)
+        UM_ID INTEGER  NOT NULL AUTO_INCREMENT,
+        UM_MODULE_NAME VARCHAR(100),
+        UNIQUE(UM_MODULE_NAME),
+        PRIMARY KEY(UM_ID)
     )ENGINE INNODB;
     CREATE TABLE UM_MODULE_ACTIONS(
-    	UM_ACTION VARCHAR(255) NOT NULL,
-    	UM_MODULE_ID INTEGER NOT NULL,
-    	PRIMARY KEY(UM_ACTION, UM_MODULE_ID),
-    	FOREIGN KEY (UM_MODULE_ID) REFERENCES UM_MODULE(UM_ID) ON DELETE CASCADE
+        UM_ACTION VARCHAR(255) NOT NULL,
+        UM_MODULE_ID INTEGER NOT NULL,
+        PRIMARY KEY(UM_ACTION, UM_MODULE_ID),
+        FOREIGN KEY (UM_MODULE_ID) REFERENCES UM_MODULE(UM_ID) ON DELETE CASCADE
     )ENGINE INNODB;
     CREATE TABLE UM_PERMISSION (
                  UM_ID INTEGER NOT NULL AUTO_INCREMENT,
                  UM_RESOURCE_ID VARCHAR(255) NOT NULL,
                  UM_ACTION VARCHAR(255) NOT NULL,
                  UM_TENANT_ID INTEGER DEFAULT 0,
-    		UM_MODULE_ID INTEGER DEFAULT 0,
-    			       UNIQUE(UM_RESOURCE_ID,UM_ACTION, UM_TENANT_ID),
+            UM_MODULE_ID INTEGER DEFAULT 0,
+                       UNIQUE(UM_RESOURCE_ID,UM_ACTION, UM_TENANT_ID),
                  PRIMARY KEY (UM_ID, UM_TENANT_ID)
     )ENGINE INNODB;
     CREATE INDEX INDEX_UM_PERMISSION_UM_RESOURCE_ID_UM_ACTION ON UM_PERMISSION (UM_RESOURCE_ID, UM_ACTION, UM_TENANT_ID);
@@ -1368,10 +1783,10 @@ data:
                  UM_ROLE_NAME VARCHAR(255) NOT NULL,
                  UM_IS_ALLOWED SMALLINT NOT NULL,
                  UM_TENANT_ID INTEGER DEFAULT 0,
-    	     UM_DOMAIN_ID INTEGER,
+             UM_DOMAIN_ID INTEGER,
                  UNIQUE (UM_PERMISSION_ID, UM_ROLE_NAME, UM_TENANT_ID, UM_DOMAIN_ID),
-    	     FOREIGN KEY (UM_PERMISSION_ID, UM_TENANT_ID) REFERENCES UM_PERMISSION(UM_ID, UM_TENANT_ID) ON DELETE CASCADE,
-    	     FOREIGN KEY (UM_DOMAIN_ID, UM_TENANT_ID) REFERENCES UM_DOMAIN(UM_DOMAIN_ID, UM_TENANT_ID) ON DELETE CASCADE,
+             FOREIGN KEY (UM_PERMISSION_ID, UM_TENANT_ID) REFERENCES UM_PERMISSION(UM_ID, UM_TENANT_ID) ON DELETE CASCADE,
+             FOREIGN KEY (UM_DOMAIN_ID, UM_TENANT_ID) REFERENCES UM_DOMAIN(UM_DOMAIN_ID, UM_TENANT_ID) ON DELETE CASCADE,
                  PRIMARY KEY (UM_ID, UM_TENANT_ID)
     )ENGINE INNODB;
     -- REMOVED UNIQUE (UM_PERMISSION_ID, UM_ROLE_ID)
@@ -1405,14 +1820,14 @@ data:
         FOREIGN KEY(UM_USER_ID,UM_USER_TENANT_ID) REFERENCES UM_USER(UM_ID,UM_TENANT_ID) ON DELETE CASCADE
     )ENGINE INNODB;
     CREATE TABLE UM_ACCOUNT_MAPPING(
-    	UM_ID INTEGER NOT NULL AUTO_INCREMENT,
-    	UM_USER_NAME VARCHAR(255) NOT NULL,
-    	UM_TENANT_ID INTEGER NOT NULL,
-    	UM_USER_STORE_DOMAIN VARCHAR(100),
-    	UM_ACC_LINK_ID INTEGER NOT NULL,
-    	UNIQUE(UM_USER_NAME, UM_TENANT_ID, UM_USER_STORE_DOMAIN, UM_ACC_LINK_ID),
-    	FOREIGN KEY (UM_TENANT_ID) REFERENCES UM_TENANT(UM_ID) ON DELETE CASCADE,
-    	PRIMARY KEY (UM_ID)
+        UM_ID INTEGER NOT NULL AUTO_INCREMENT,
+        UM_USER_NAME VARCHAR(255) NOT NULL,
+        UM_TENANT_ID INTEGER NOT NULL,
+        UM_USER_STORE_DOMAIN VARCHAR(100),
+        UM_ACC_LINK_ID INTEGER NOT NULL,
+        UNIQUE(UM_USER_NAME, UM_TENANT_ID, UM_USER_STORE_DOMAIN, UM_ACC_LINK_ID),
+        FOREIGN KEY (UM_TENANT_ID) REFERENCES UM_TENANT(UM_ID) ON DELETE CASCADE,
+        PRIMARY KEY (UM_ID)
     )ENGINE INNODB;
     CREATE TABLE UM_USER_ATTRIBUTE (
                 UM_ID INTEGER NOT NULL AUTO_INCREMENT,
@@ -1444,7 +1859,7 @@ data:
                 UM_SUPPORTED SMALLINT,
                 UM_REQUIRED SMALLINT,
                 UM_DISPLAY_ORDER INTEGER,
-    	    UM_CHECKED_ATTRIBUTE SMALLINT,
+            UM_CHECKED_ATTRIBUTE SMALLINT,
                 UM_READ_ONLY SMALLINT,
                 UM_TENANT_ID INTEGER DEFAULT 0,
                 UNIQUE(UM_DIALECT_ID, UM_CLAIM_URI, UM_TENANT_ID,UM_MAPPED_ATTRIBUTE_DOMAIN),
@@ -1480,10 +1895,10 @@ data:
                 UM_USER_NAME VARCHAR(255),
                 UM_ROLE_ID INTEGER NOT NULL,
                 UM_TENANT_ID INTEGER DEFAULT 0,
-    	    UM_DOMAIN_ID INTEGER,
+            UM_DOMAIN_ID INTEGER,
                 UNIQUE (UM_USER_NAME, UM_ROLE_ID, UM_TENANT_ID, UM_DOMAIN_ID),
                 FOREIGN KEY (UM_ROLE_ID, UM_TENANT_ID) REFERENCES UM_HYBRID_ROLE(UM_ID, UM_TENANT_ID) ON DELETE CASCADE,
-    	    FOREIGN KEY (UM_DOMAIN_ID, UM_TENANT_ID) REFERENCES UM_DOMAIN(UM_DOMAIN_ID, UM_TENANT_ID) ON DELETE CASCADE,
+            FOREIGN KEY (UM_DOMAIN_ID, UM_TENANT_ID) REFERENCES UM_DOMAIN(UM_DOMAIN_ID, UM_TENANT_ID) ON DELETE CASCADE,
                 PRIMARY KEY (UM_ID, UM_TENANT_ID)
     )ENGINE INNODB;
     CREATE TABLE UM_SYSTEM_ROLE(
@@ -1504,11 +1919,11 @@ data:
     )ENGINE INNODB;
     CREATE TABLE UM_HYBRID_REMEMBER_ME(
                 UM_ID INTEGER NOT NULL AUTO_INCREMENT,
-    			UM_USER_NAME VARCHAR(255) NOT NULL,
-    			UM_COOKIE_VALUE VARCHAR(1024),
-    			UM_CREATED_TIME TIMESTAMP,
+                UM_USER_NAME VARCHAR(255) NOT NULL,
+                UM_COOKIE_VALUE VARCHAR(1024),
+                UM_CREATED_TIME TIMESTAMP,
                 UM_TENANT_ID INTEGER DEFAULT 0,
-    			PRIMARY KEY (UM_ID, UM_TENANT_ID)
+                PRIMARY KEY (UM_ID, UM_TENANT_ID)
     )ENGINE INNODB;
     USE WSO2AM_APIMGT_DB;
     -- Start of IDENTITY Tables--
@@ -1539,10 +1954,10 @@ data:
                 PRIMARY KEY (ID)
     )ENGINE INNODB;
     CREATE TABLE IF NOT EXISTS IDN_OAUTH2_SCOPE_VALIDATORS (
-    	APP_ID INTEGER NOT NULL,
-    	SCOPE_VALIDATOR VARCHAR (128) NOT NULL,
-    	PRIMARY KEY (APP_ID,SCOPE_VALIDATOR),
-    	FOREIGN KEY (APP_ID) REFERENCES IDN_OAUTH_CONSUMER_APPS(ID) ON DELETE CASCADE
+        APP_ID INTEGER NOT NULL,
+        SCOPE_VALIDATOR VARCHAR (128) NOT NULL,
+        PRIMARY KEY (APP_ID,SCOPE_VALIDATOR),
+        FOREIGN KEY (APP_ID) REFERENCES IDN_OAUTH_CONSUMER_APPS(ID) ON DELETE CASCADE
     )ENGINE INNODB;
     CREATE TABLE IF NOT EXISTS IDN_OAUTH1A_REQUEST_TOKEN (
                 REQUEST_TOKEN VARCHAR(255),
@@ -1760,22 +2175,22 @@ data:
     CREATE TABLE IF NOT EXISTS SP_APP (
             ID INTEGER NOT NULL AUTO_INCREMENT,
             TENANT_ID INTEGER NOT NULL,
-    	    	APP_NAME VARCHAR (255) NOT NULL ,
-    	    	USER_STORE VARCHAR (255) NOT NULL,
+                APP_NAME VARCHAR (255) NOT NULL ,
+                USER_STORE VARCHAR (255) NOT NULL,
             USERNAME VARCHAR (255) NOT NULL ,
             DESCRIPTION VARCHAR (1024),
-    	    	ROLE_CLAIM VARCHAR (512),
+                ROLE_CLAIM VARCHAR (512),
             AUTH_TYPE VARCHAR (255) NOT NULL,
-    	    	PROVISIONING_USERSTORE_DOMAIN VARCHAR (512),
-    	    	IS_LOCAL_CLAIM_DIALECT CHAR(1) DEFAULT '1',
-    	    	IS_SEND_LOCAL_SUBJECT_ID CHAR(1) DEFAULT '0',
-    	    	IS_SEND_AUTH_LIST_OF_IDPS CHAR(1) DEFAULT '0',
+                PROVISIONING_USERSTORE_DOMAIN VARCHAR (512),
+                IS_LOCAL_CLAIM_DIALECT CHAR(1) DEFAULT '1',
+                IS_SEND_LOCAL_SUBJECT_ID CHAR(1) DEFAULT '0',
+                IS_SEND_AUTH_LIST_OF_IDPS CHAR(1) DEFAULT '0',
             IS_USE_TENANT_DOMAIN_SUBJECT CHAR(1) DEFAULT '1',
             IS_USE_USER_DOMAIN_SUBJECT CHAR(1) DEFAULT '1',
             ENABLE_AUTHORIZATION CHAR(1) DEFAULT '0',
-    	    	SUBJECT_CLAIM_URI VARCHAR (512),
-    	    	IS_SAAS_APP CHAR(1) DEFAULT '0',
-    	    	IS_DUMB_MODE CHAR(1) DEFAULT '0',
+                SUBJECT_CLAIM_URI VARCHAR (512),
+                IS_SAAS_APP CHAR(1) DEFAULT '0',
+                IS_DUMB_MODE CHAR(1) DEFAULT '0',
             PRIMARY KEY (ID)
     )ENGINE INNODB;
     ALTER TABLE SP_APP ADD CONSTRAINT APPLICATION_NAME_CONSTRAINT UNIQUE(APP_NAME, TENANT_ID);
@@ -1820,11 +2235,11 @@ data:
     )ENGINE INNODB;
     ALTER TABLE SP_FEDERATED_IDP ADD CONSTRAINT STEP_ID_CONSTRAINT FOREIGN KEY (ID) REFERENCES SP_AUTH_STEP (ID) ON DELETE CASCADE;
     CREATE TABLE IF NOT EXISTS SP_CLAIM_DIALECT (
-    	   	ID INTEGER NOT NULL AUTO_INCREMENT,
-    	   	TENANT_ID INTEGER NOT NULL,
-    	   	SP_DIALECT VARCHAR (512) NOT NULL,
-    	   	APP_ID INTEGER NOT NULL,
-    	   	PRIMARY KEY (ID));
+            ID INTEGER NOT NULL AUTO_INCREMENT,
+            TENANT_ID INTEGER NOT NULL,
+            SP_DIALECT VARCHAR (512) NOT NULL,
+            APP_ID INTEGER NOT NULL,
+            PRIMARY KEY (ID));
     ALTER TABLE SP_CLAIM_DIALECT ADD CONSTRAINT DIALECTID_APPID_CONSTRAINT FOREIGN KEY (APP_ID) REFERENCES SP_APP (ID) ON DELETE CASCADE;
     CREATE TABLE IF NOT EXISTS SP_CLAIM_MAPPING (
                 ID INTEGER NOT NULL AUTO_INCREMENT,
@@ -1833,7 +2248,7 @@ data:
                 SP_CLAIM VARCHAR (512) NOT NULL ,
                 APP_ID INTEGER NOT NULL,
                 IS_REQUESTED VARCHAR(128) DEFAULT '0',
-    	    IS_MANDATORY VARCHAR(128) DEFAULT '0',
+            IS_MANDATORY VARCHAR(128) DEFAULT '0',
                 DEFAULT_VALUE VARCHAR(255),
                 PRIMARY KEY (ID)
     )ENGINE INNODB;
@@ -1894,56 +2309,56 @@ data:
       PRIMARY KEY (ID),
       CONSTRAINT IDN_AUTH_WAIT_STATUS_KEY UNIQUE (LONG_WAIT_KEY));
     CREATE TABLE IF NOT EXISTS IDP (
-    			ID INTEGER AUTO_INCREMENT,
-    			TENANT_ID INTEGER,
-    			NAME VARCHAR(254) NOT NULL,
-    			IS_ENABLED CHAR(1) NOT NULL DEFAULT '1',
-    			IS_PRIMARY CHAR(1) NOT NULL DEFAULT '0',
-    			HOME_REALM_ID VARCHAR(254),
-    			IMAGE MEDIUMBLOB,
-    			CERTIFICATE BLOB,
-    			ALIAS VARCHAR(254),
-    			INBOUND_PROV_ENABLED CHAR (1) NOT NULL DEFAULT '0',
-    			INBOUND_PROV_USER_STORE_ID VARCHAR(254),
-     			USER_CLAIM_URI VARCHAR(254),
-     			ROLE_CLAIM_URI VARCHAR(254),
-      			DESCRIPTION VARCHAR (1024),
-     			DEFAULT_AUTHENTICATOR_NAME VARCHAR(254),
-     			DEFAULT_PRO_CONNECTOR_NAME VARCHAR(254),
-     			PROVISIONING_ROLE VARCHAR(128),
-     			IS_FEDERATION_HUB CHAR(1) NOT NULL DEFAULT '0',
-     			IS_LOCAL_CLAIM_DIALECT CHAR(1) NOT NULL DEFAULT '0',
+                ID INTEGER AUTO_INCREMENT,
+                TENANT_ID INTEGER,
+                NAME VARCHAR(254) NOT NULL,
+                IS_ENABLED CHAR(1) NOT NULL DEFAULT '1',
+                IS_PRIMARY CHAR(1) NOT NULL DEFAULT '0',
+                HOME_REALM_ID VARCHAR(254),
+                IMAGE MEDIUMBLOB,
+                CERTIFICATE BLOB,
+                ALIAS VARCHAR(254),
+                INBOUND_PROV_ENABLED CHAR (1) NOT NULL DEFAULT '0',
+                INBOUND_PROV_USER_STORE_ID VARCHAR(254),
+                USER_CLAIM_URI VARCHAR(254),
+                ROLE_CLAIM_URI VARCHAR(254),
+                DESCRIPTION VARCHAR (1024),
+                DEFAULT_AUTHENTICATOR_NAME VARCHAR(254),
+                DEFAULT_PRO_CONNECTOR_NAME VARCHAR(254),
+                PROVISIONING_ROLE VARCHAR(128),
+                IS_FEDERATION_HUB CHAR(1) NOT NULL DEFAULT '0',
+                IS_LOCAL_CLAIM_DIALECT CHAR(1) NOT NULL DEFAULT '0',
                 DISPLAY_NAME VARCHAR(255),
-    			PRIMARY KEY (ID),
-    			UNIQUE (TENANT_ID, NAME)
+                PRIMARY KEY (ID),
+                UNIQUE (TENANT_ID, NAME)
     )ENGINE INNODB;
     CREATE TABLE IF NOT EXISTS IDP_ROLE (
-    			ID INTEGER AUTO_INCREMENT,
-    			IDP_ID INTEGER,
-    			TENANT_ID INTEGER,
-    			ROLE VARCHAR(254),
-    			PRIMARY KEY (ID),
-    			UNIQUE (IDP_ID, ROLE),
-    			FOREIGN KEY (IDP_ID) REFERENCES IDP(ID) ON DELETE CASCADE
+                ID INTEGER AUTO_INCREMENT,
+                IDP_ID INTEGER,
+                TENANT_ID INTEGER,
+                ROLE VARCHAR(254),
+                PRIMARY KEY (ID),
+                UNIQUE (IDP_ID, ROLE),
+                FOREIGN KEY (IDP_ID) REFERENCES IDP(ID) ON DELETE CASCADE
     )ENGINE INNODB;
     CREATE TABLE IF NOT EXISTS IDP_ROLE_MAPPING (
-    			ID INTEGER AUTO_INCREMENT,
-    			IDP_ROLE_ID INTEGER,
-    			TENANT_ID INTEGER,
-    			USER_STORE_ID VARCHAR (253),
-    			LOCAL_ROLE VARCHAR(253),
-    			PRIMARY KEY (ID),
-    			UNIQUE (IDP_ROLE_ID, TENANT_ID, USER_STORE_ID, LOCAL_ROLE),
-    			FOREIGN KEY (IDP_ROLE_ID) REFERENCES IDP_ROLE(ID) ON DELETE CASCADE
+                ID INTEGER AUTO_INCREMENT,
+                IDP_ROLE_ID INTEGER,
+                TENANT_ID INTEGER,
+                USER_STORE_ID VARCHAR (253),
+                LOCAL_ROLE VARCHAR(253),
+                PRIMARY KEY (ID),
+                UNIQUE (IDP_ROLE_ID, TENANT_ID, USER_STORE_ID, LOCAL_ROLE),
+                FOREIGN KEY (IDP_ROLE_ID) REFERENCES IDP_ROLE(ID) ON DELETE CASCADE
     )ENGINE INNODB;
     CREATE TABLE IF NOT EXISTS IDP_CLAIM (
-    			ID INTEGER AUTO_INCREMENT,
-    			IDP_ID INTEGER,
-    			TENANT_ID INTEGER,
-    			CLAIM VARCHAR(254),
-    			PRIMARY KEY (ID),
-    			UNIQUE (IDP_ID, CLAIM),
-    			FOREIGN KEY (IDP_ID) REFERENCES IDP(ID) ON DELETE CASCADE
+                ID INTEGER AUTO_INCREMENT,
+                IDP_ID INTEGER,
+                TENANT_ID INTEGER,
+                CLAIM VARCHAR(254),
+                PRIMARY KEY (ID),
+                UNIQUE (IDP_ID, CLAIM),
+                FOREIGN KEY (IDP_ID) REFERENCES IDP(ID) ON DELETE CASCADE
     )ENGINE INNODB;
     CREATE TABLE IF NOT EXISTS IDP_CLAIM_MAPPING (
                 ID INTEGER AUTO_INCREMENT,
@@ -2591,24 +3006,24 @@ data:
     CREATE TABLE IF NOT EXISTS AM_ALERT_TYPES (
                 ALERT_TYPE_ID INTEGER AUTO_INCREMENT,
                 ALERT_TYPE_NAME VARCHAR(255) NOT NULL ,
-    	    STAKE_HOLDER VARCHAR(100) NOT NULL,
+            STAKE_HOLDER VARCHAR(100) NOT NULL,
                 PRIMARY KEY (ALERT_TYPE_ID)
     )ENGINE = INNODB;
     CREATE TABLE IF NOT EXISTS AM_ALERT_TYPES_VALUES (
                 ALERT_TYPE_ID INTEGER,
                 USER_NAME VARCHAR(255) NOT NULL ,
-    	    STAKE_HOLDER VARCHAR(100) NOT NULL ,
+            STAKE_HOLDER VARCHAR(100) NOT NULL ,
                 PRIMARY KEY (ALERT_TYPE_ID,USER_NAME,STAKE_HOLDER)
     )ENGINE = INNODB;
     CREATE TABLE IF NOT EXISTS AM_ALERT_EMAILLIST (
-    	    EMAIL_LIST_ID INTEGER AUTO_INCREMENT,
+            EMAIL_LIST_ID INTEGER AUTO_INCREMENT,
                 USER_NAME VARCHAR(255) NOT NULL ,
-    	    STAKE_HOLDER VARCHAR(100) NOT NULL ,
+            STAKE_HOLDER VARCHAR(100) NOT NULL ,
                 PRIMARY KEY (EMAIL_LIST_ID,USER_NAME,STAKE_HOLDER)
     )ENGINE = INNODB;
     CREATE TABLE IF NOT EXISTS  AM_ALERT_EMAILLIST_DETAILS (
                 EMAIL_LIST_ID INTEGER,
-    	    EMAIL VARCHAR(255),
+            EMAIL VARCHAR(255),
                 PRIMARY KEY (EMAIL_LIST_ID,EMAIL)
     )ENGINE = INNODB;
     INSERT INTO AM_ALERT_TYPES (ALERT_TYPE_NAME, STAKE_HOLDER) VALUES ('AbnormalResponseTime', 'publisher');
@@ -2632,7 +3047,7 @@ data:
                 RATE_LIMIT_COUNT INT(11) NULL DEFAULT NULL,
                 RATE_LIMIT_TIME_UNIT VARCHAR(25) NULL DEFAULT NULL,
                 IS_DEPLOYED TINYINT(1) NOT NULL DEFAULT 0,
-    	    CUSTOM_ATTRIBUTES BLOB DEFAULT NULL,
+            CUSTOM_ATTRIBUTES BLOB DEFAULT NULL,
                 STOP_ON_QUOTA_REACH BOOLEAN NOT NULL DEFAULT 0,
                 BILLING_PLAN VARCHAR(20) NOT NULL,
                 UUID VARCHAR(256),
@@ -2652,8 +3067,8 @@ data:
                 UNIT_TIME INT(11) NOT NULL,
                 TIME_UNIT VARCHAR(25) NOT NULL,
                 IS_DEPLOYED TINYINT(1) NOT NULL DEFAULT 0,
-    	    CUSTOM_ATTRIBUTES BLOB DEFAULT NULL,
-    	          UUID VARCHAR(256),
+            CUSTOM_ATTRIBUTES BLOB DEFAULT NULL,
+                  UUID VARCHAR(256),
                 PRIMARY KEY (POLICY_ID),
                 UNIQUE INDEX APP_NAME_TENANT (NAME, TENANT_ID),
                 UNIQUE (UUID)
@@ -2707,7 +3122,7 @@ data:
                 CONDITION_GROUP_ID INTEGER NOT NULL,
                 PARAMETER_NAME VARCHAR(255) DEFAULT NULL,
                 PARAMETER_VALUE VARCHAR(255) DEFAULT NULL,
-    	    	IS_PARAM_MAPPING BOOLEAN DEFAULT 1,
+                IS_PARAM_MAPPING BOOLEAN DEFAULT 1,
                 PRIMARY KEY (QUERY_PARAMETER_ID),
                 FOREIGN KEY (CONDITION_GROUP_ID) REFERENCES AM_CONDITION_GROUP(CONDITION_GROUP_ID) ON DELETE CASCADE ON UPDATE CASCADE
     )ENGINE INNODB;
@@ -2716,7 +3131,7 @@ data:
                 CONDITION_GROUP_ID INTEGER NOT NULL,
                 HEADER_FIELD_NAME VARCHAR(255) DEFAULT NULL,
                 HEADER_FIELD_VALUE VARCHAR(255) DEFAULT NULL,
-    	    	IS_HEADER_FIELD_MAPPING BOOLEAN DEFAULT 1,
+                IS_HEADER_FIELD_MAPPING BOOLEAN DEFAULT 1,
                 PRIMARY KEY (HEADER_FIELD_ID),
                 FOREIGN KEY (CONDITION_GROUP_ID) REFERENCES AM_CONDITION_GROUP(CONDITION_GROUP_ID) ON DELETE CASCADE ON UPDATE CASCADE
     )ENGINE INNODB;
@@ -2725,7 +3140,7 @@ data:
                 CONDITION_GROUP_ID INTEGER NOT NULL,
                 CLAIM_URI VARCHAR(512) DEFAULT NULL,
                 CLAIM_ATTRIB VARCHAR(1024) DEFAULT NULL,
-    	    IS_CLAIM_MAPPING BOOLEAN DEFAULT 1,
+            IS_CLAIM_MAPPING BOOLEAN DEFAULT 1,
                 PRIMARY KEY (JWT_CLAIM_ID),
                 FOREIGN KEY (CONDITION_GROUP_ID) REFERENCES AM_CONDITION_GROUP(CONDITION_GROUP_ID) ON DELETE CASCADE ON UPDATE CASCADE
     )ENGINE INNODB;
@@ -2835,13 +3250,17 @@ data:
 kind: ConfigMap
 metadata:
   name: mysql-dbscripts
-  namespace: "$ns.k8s.&.wso2.apim"
+EOF
+
+cat >> $k8s_obj_file << EOF
+  namespace: $namespace
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: wso2apim-with-analytics-rdbms-service
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 spec:
   type: ClusterIP
   selector:
@@ -2852,11 +3271,12 @@ spec:
       targetPort: 3306
       protocol: TCP
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: wso2apim-with-analytics-apim-analytics-service
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 spec:
   selector:
     deployment: wso2apim-with-analytics-apim-analytics
@@ -2886,11 +3306,12 @@ spec:
       protocol: TCP
       port: 7444
 ---
+
 apiVersion: v1
 kind: Service
 metadata:
   name: wso2apim-with-analytics-apim-service
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
   labels:
     deployment: wso2apim-with-analytics-apim
 spec:
@@ -2906,7 +3327,7 @@ spec:
       name: pass-through-https
       protocol: TCP
       port: 8243
-      nodePort: "$nodeport.k8s.&.2.wso2apim"
+      nodePort: $NP_1
     -
       name: servlet-http
       protocol: TCP
@@ -2914,14 +3335,15 @@ spec:
     -
       name: servlet-https
       protocol: TCP
-      nodePort: "$nodeport.k8s.&.1.wso2apim"
+      nodePort: $NP_2
       port: 9443
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wso2apim-with-analytics-mysql-deployment
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 spec:
   replicas: 1
   selector:
@@ -2960,11 +3382,12 @@ spec:
             name: mysql-dbscripts
       serviceAccountName: 'wso2svc-account'
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wso2apim-with-analytics-apim-analytics-deployment
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -2985,7 +3408,7 @@ spec:
     spec:
       containers:
         - name: wso2apim-with-analytics-apim-analytics
-          image: "$image.pull.@.wso2"/wso2am-analytics-worker:2.6.0
+          image: docker.wso2.com/wso2am-analytics-worker:2.6.0
           resources:
             limits:
               memory: '2Gi'
@@ -3051,11 +3474,12 @@ spec:
           configMap:
             name: apim-analytics-conf-worker
 ---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: wso2apim-with-analytics-apim
-  namespace: "$ns.k8s.&.wso2.apim"
+  namespace: $namespace
 spec:
   replicas: 1
   minReadySeconds: 30
@@ -3076,7 +3500,14 @@ spec:
     spec:
       containers:
         - name: wso2apim-with-analytics-apim-worker
-          image: "$image.pull.@.wso2"/wso2am:2.6.0
+          image: docker.wso2.com/wso2am:2.6.0
+          resources:
+            limits:
+              memory: '3Gi'
+              cpu: 3000m
+            requests:
+              memory: '2Gi'
+              cpu: 2000m
           livenessProbe:
             exec:
               command:
@@ -3125,6 +3556,8 @@ spec:
           volumeMounts:
             - name: apim-conf
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
+            - name: apim-conf-axis2
+              mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/axis2
             - name: apim-conf-datasources
               mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/datasources
       initContainers:
@@ -3138,71 +3571,35 @@ spec:
         - name: apim-conf
           configMap:
             name: apim-conf
+        - name: apim-conf-axis2
+          configMap:
+            name: apim-conf-axis2
         - name: apim-conf-datasources
           configMap:
             name: apim-conf-datasources
 ---
 EOF
-}
 
-# bash functions
-function usage(){
-  echo "Usage: "
-  echo -e "-d, --deploy     Deploy WSO2 API Manager"
-  echo -e "-u, --undeploy   Undeploy WSO2 API Manager"
-  echo -e "-h, --help       Display usage instrusctions"
 }
-function undeploy(){
-  echo "Undeploying WSO2 API Manager ..."
-  kubectl delete ns $namespace
-  echo "Done."
-  exit 0
-}
-function echoBold () {
-    echo -en  $'\e[1m'"${1}"$'\e[0m'
-}
-
-function display_msg(){
-    msg=$@
-    echoBold "${msg}"
-    exit 1
-}
-
-function st(){
-  cycles=${1}
-  i=0
-  while [[ i -lt $cycles ]]
+function get_creds(){
+  while [[ -z "$WUMUsername" ]]
   do
-    echoBold "* "
-    let "i=i+1"
+        read -p "$(echoBold "Enter your WSO2 subscription username: ")" WUMUsername
+        if [[ -z "$WUMUsername" ]]
+        then
+           echo "wso2-subscription-username cannot be empty"
+        fi
   done
-}
-function sp(){
-  cycles=${1}
-  i=0
-  while [[ i -lt $cycles ]]
+
+  while [[ -z "$WUMPassword" ]]
   do
-    echoBold " "
-    let "i=i+1"
+        read -sp "$(echoBold "Enter your WSO2 subscription password: ")" WUMPassword
+        echo ""
+        if [[ -z "$WUMPassword" ]]
+        then
+          echo "wso2-subscription-password cannot be empty"
+        fi
   done
-}
-function product_name(){
-  #wso2apim
-  echo -e "\n"
-  st 1; sp 8; st 1; sp 2; sp 1; st 3; sp 3; sp 2; st 3; sp 4; sp 1; st 3; sp 3; sp 8; sp 2; st 3; sp 1; sp 3; st 3; sp 3; st 5; sp 2; st 1; sp 8; st 1;
-  echo ""
-  st 1; sp 8; st 1; sp 2; st 1; sp 4; st 1; sp 2; st 1; sp 6; st 1; sp 2; st 1; sp 4; st 1; sp 2; sp 8; sp 1; st 1; sp 4; st 1; sp 3; st 1; sp 4; st 1; sp 2; sp 3; st 1; sp 6; st 2; sp 4; st 2;
-  echo ""
-  st 1; sp 3; st 1; sp 3; st 1; sp 2; st 1; sp 8; st 1; sp 6; st 1; sp 2; sp 6; st 1; sp 2; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp 4; st 1; sp 2; sp 3; st 1; sp 6; st 1; sp 1; st 1; sp 2; st 1; sp 1; st 1;
-  echo ""
-  st 1; sp 2; st 1; st 1; sp 2; st 1; sp 2; sp 1; st 3; sp 3; st 1; sp 6; st 1; sp 2; sp 4; st 1; sp 4; st 3; sp 2; st 5; sp 2; st 3; sp 3; sp 4; st 1; sp 6; st 1; sp 2; st 2; sp 2; st 1;
-  echo ""
-  st 1; sp 1; st 1; sp 2; st 1; sp 1; st 1; sp 2; sp 6; st 1; sp 2; st 1; sp 6; st 1; sp 2; sp 2; st 1; sp 6; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp  7; sp 4; st 1; sp 6; st 1; sp 3; st 1; sp 3; st 1;
-  echo ""
-  st 2; sp 4; st 2; sp 2; st 1; sp 4; st 1; sp 2; st 1; sp 6; st 1; sp 2; st 1; sp 8; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp 7; sp 4; st 1; sp 6; st 1; sp 8; st 1;
-  echo ""
-  st 1; sp 8; st 1; sp 2; sp 1; st 3; sp 3; sp 2; st 3; sp 4; st 4; sp 2; sp 8; st 1; sp 6; st 1; sp 2; st 1; sp 7; st 5; sp 2; st 1; sp 8; st 1;
-  echo -e "\n"
 }
 function validate_ip(){
     ip_check=$1
@@ -3248,7 +3645,7 @@ function get_node_ip(){
   set -- $NODE_IP; NODE_IP=$1
 }
 
-function get_nodePorts(){
+function get_nodeports(){
   LOWER=30000; UPPER=32767;
   if [ "$randomPort" == "True" ]; then
     NP_1=0; NP_2=0;
@@ -3342,7 +3739,7 @@ function progress_bar(){
 
       if [[ $time_proc -gt 250 ]]
       then
-          echoBold "\n\nSomething went wrong! Please Follow \"https://wso2.com/products/install/faq/#Kubernetes\" for more information\n"
+          echoBold "\n\nSomething went wrong! Please Follow < FAQ-Link > for more information\n"
           exit 2
       fi
 
@@ -3367,7 +3764,7 @@ function deploy(){
     echoBold "Checking for an enabled cluster... Your patience is appreciated... "
     cluster_isReady=$(kubectl cluster-info) > /dev/null 2>&1  || true
 
-    if [[ ! $cluster_isReady == *"DNS"* ]]
+    if [[ ! $cluster_isReady == *"KubeDNS"* ]]
     then
         display_msg "\nPlease enable your cluster before running the setup.\n\nIf you don't have a kubernetes cluster, follow: https://kubernetes.io/docs/setup/\n\n"
     fi
@@ -3379,25 +3776,40 @@ function deploy(){
 
     # check if testgrid
     if test -f "$INPUT_DIR/infrastructure.properties"; then
-      source $INPUT_DIR/infrastructure.properties
+      file=$INPUT_DIR/infrastructure.properties
+      WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
+      WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
+      randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
+      namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
+      echo $WUMUsername
+      echo $WUMPassword
+      echo $randomPort
+      echo $namespace
+    else
+      get_creds
     fi
 
     # get node-ip
     get_node_ip
 
-    get_nodePorts
+    # create and encode username/password pair
+    auth="$WUMUsername:$WUMPassword"
+    authb64=`echo -n $auth | base64`
+
+    # create authorisation code
+    authstring='{"auths":{"docker.wso2.com":{"username":"'${WUMUsername}'","password":"'${WUMPassword}'","email":"'${WUMUsername}'","auth":"'${authb64}'"}}}'
+
+    # encode in base64
+    secdata=`echo -n $authstring | base64`
+
+    for i in $secdata; do
+      str_sec=$str_sec$i
+    done
+
+    get_nodeports
 
     # create kubernetes object yaml
     create_yaml
-
-    # replace necessary variables
-    sed -i.bak 's/"$ns.k8s.&.wso2.apim"/'$namespace'/g' $k8s_obj_file
-    sed -i.bak 's/"ip.node.k8s.&.wso2.apim"/'$NODE_IP'/g' $k8s_obj_file
-    sed -i.bak 's/"$nodeport.k8s.&.1.wso2apim"/'$NP_1'/g' $k8s_obj_file
-    sed -i.bak 's/"$nodeport.k8s.&.2.wso2apim"/'$NP_2'/g' $k8s_obj_file
-    sed -i.bak 's/"$image.pull.@.wso2"/'$IMG_DEST'/g' $k8s_obj_file
-
-    rm deployment.yaml.bak
 
     if ! test -f "$INPUT_DIR/infrastructure.properties"; then
         echoBold "\nDeploying WSO2 API Manager ....\n"
@@ -3412,27 +3824,8 @@ function deploy(){
         echoBold "1. Try navigating to https://$NODE_IP:30443/carbon/ from your favourite browser using \n"
         echoBold "\tusername: admin\n"
         echoBold "\tpassword: admin\n"
-        echoBold "2. Follow \"https://docs.wso2.com/display/AM260/Getting+Started\" to start using WSO2 API Manager.\n\n"
+        echoBold "2. Follow <getting-started-link> to start using WSO2 API Manager.\n\n"
     fi
 }
-arg=$1
-if [[ -z $arg ]]; then
-    echoBold "Expected parameter is missing\n"
-    usage
-else
-    case $arg in
-      -d|--deploy)
-        deploy
-        ;;
-      -u|--undeploy)
-        undeploy
-        ;;
-      -h|--help)
-        usage
-        ;;
-      *)
-        echoBold "Invalid parameter : $arg\n"
-        usage
-        ;;
-    esac
-fi
+
+deploy
