@@ -3801,9 +3801,11 @@ function deploy(){
 
     # encode in base64
     secdata=`echo -n $authstring | base64`
+    echo $secdata
+    secdata1=`echo -n $authstring | base64 --decode`
+    echo $scedata1
 
     for i in $secdata; do
-      echo $secdata
       str_sec=$str_sec$i
     done
 
