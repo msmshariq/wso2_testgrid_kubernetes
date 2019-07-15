@@ -3797,10 +3797,12 @@ function deploy(){
     authb64=`echo -n $auth | base64`
 
     # create authorisation code
+    echo "${WUMUsername} ${WUMPassword}"
     authstring='{"auths":{"docker.wso2.com":{"username":"'${WUMUsername}'","password":"'${WUMPassword}'","email":"'${WUMUsername}'","auth":"'${authb64}'"}}}'
 
     # encode in base64
-    secdata=`echo -n $authstring | base64`
+    $authstring=`echo -n $authstring | base64`
+      echo "${WUMUsername} ${WUMPassword} $authstring $secdata"
 
     for i in $secdata; do
       str_sec=$str_sec$i
