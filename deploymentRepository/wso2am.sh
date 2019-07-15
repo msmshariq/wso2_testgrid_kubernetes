@@ -3777,6 +3777,7 @@ function deploy(){
     # check if testgrid
     if test -f "$INPUT_DIR/infrastructure.properties"; then
       file=$INPUT_DIR/infrastructure.properties
+      echo $file
       WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
       WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
       randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
@@ -3797,12 +3798,11 @@ function deploy(){
     authb64=`echo -n $auth | base64`
 
     # create authorisation code
-    echo "${WUMUsername} ${WUMPassword}"
     authstring='{"auths":{"docker.wso2.com":{"username":"'${WUMUsername}'","password":"'${WUMPassword}'","email":"'${WUMUsername}'","auth":"'${authb64}'"}}}'
 
     # encode in base64
-    $authstring=`echo -n $authstring | base64`
-      echo "${WUMUsername} ${WUMPassword} $authstring $secdata"
+    secdata=`echo -n $authstring | base64`
+    echo "${WUMUsername} ${WUMPassword} $authstring $secdata"
 
     for i in $secdata; do
       str_sec=$str_sec$i
