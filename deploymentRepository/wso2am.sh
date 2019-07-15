@@ -3802,10 +3802,11 @@ function deploy(){
 
     # encode in base64
     secdata=`echo -n $authstring | base64`
-    echo "${WUMUsername} ${WUMPassword} $authstring $secdata"
+    echo ${WUMUsername} ${WUMPassword} $authstring $secdata
 
     for i in $secdata; do
       str_sec=$str_sec$i
+      echo $str_sec
     done
 
     get_nodeports
