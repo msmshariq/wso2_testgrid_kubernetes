@@ -471,7 +471,7 @@ data:
 EOF
 
 
-echo "                    <GatewayEndpoint>http://$NODE_IP:30243,https://$NODE_IP:30243</GatewayEndpoint>" >> $k8s_obj_file
+echo "                    <GatewayEndpoint>http://'$NODE_IP':30243,https://'$NODE_IP':30243</GatewayEndpoint>" >> $k8s_obj_file
 
 cat >> $k8s_obj_file << "EOF"
                     <GatewayWSEndpoint>ws://${carbon.local.ip}:9099</GatewayWSEndpoint>
