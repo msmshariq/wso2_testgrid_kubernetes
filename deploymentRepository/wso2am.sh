@@ -3780,10 +3780,11 @@ function deploy(){
       echo $file
       WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
       WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
+      wso2DockerPullPassword=$WUMPassword
       randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
       namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
       echo $WUMUsername
-      echo $WUMPassword
+      echo $wso2DockerPullPassword
       echo $randomPort
       echo $namespace
     else
@@ -3794,19 +3795,18 @@ function deploy(){
     get_node_ip
 
     # create and encode username/password pair
-    auth="$WUMUsername:$WUMPassword"
+    auth="$WUMUsername:$wso2DockerPullPassword"
     authb64=`echo -n $auth | base64`
 
     # create authorisation code
-    authstring='{"auths":{"docker.wso2.com":{"username":"'${WUMUsername}'","password":"'${WUMPassword}'","email":"'${WUMUsername}'","auth":"'${authb64}'"}}}'
+    authstring='{"auths":{"docker.wso2.com":{"username":"'${WUMUsername}'","password":"'${wso2DockerPullPassword}'","email":"'${WUMUsername}'","auth":"'${authb64}'"}}}'
 
     # encode in base64
     secdata=`echo -n $authstring | base64`
-    echo ${WUMUsername} ${WUMPassword} $authstring $secdata
+    echo ${WUMUsername} ${wso2DockerPullPassword} $authstring $secdata
 
     for i in $secdata; do
       str_sec=$str_sec$i
-      echo $str_sec
     done
 
     get_nodeports
