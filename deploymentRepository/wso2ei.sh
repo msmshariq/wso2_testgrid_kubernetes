@@ -3128,7 +3128,12 @@ function deploy(){
 
     # check if testgrid
     if test -f $TG_PROP; then
-        source $TG_PROP
+      file=$INPUT_DIR/infrastructure.properties
+      WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
+      WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
+      randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
+      namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
+
     else
         get_creds # get wso2 subscription parameters
     fi
