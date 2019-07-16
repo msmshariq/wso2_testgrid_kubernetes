@@ -1,7 +1,4 @@
-#!/bin/bash
-
-#-------------------------------------------------------------------------------
-# Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,12 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-#--------------------------------------------------------------------------------
 
-set -o xtrace
-echo "Change the configurations of axis.xml file"
-OUTPUT_DIR=$4
-INPUT_DIR=$2
-source $INPUT_DIR/infrastructure.properties
-
-echo "demo helm script to change necessary configurations in the helm files"
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ .Values.svcaccount }}
+  namespace : {{ .Values.namespace }}
