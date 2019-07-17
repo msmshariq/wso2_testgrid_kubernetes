@@ -2099,23 +2099,21 @@ function progress_bar(){
 }
 function deploy(){
 
-    #checking for required tools
+# checking for required tools
     if [[ ! $(which kubectl) ]]
     then
-       display_msg "Please install Kubernetes command-line tool (kubectl) before you start with the setup\n"
+       display_msg "Please install Kubernetes command-line tool (kubectl) before you start the setup\n"
     fi
 
     if [[ ! $(which base64) ]]
     then
-       display_msg "Please install base64 before you start with the setup\n"
+       display_msg "Please install base64 before you start the setup\n"
     fi
-
     echoBold "Checking for an enabled cluster... Your patience is appreciated..."
     cluster_isReady=$(kubectl cluster-info) > /dev/null 2>&1  || true
 
     if [[ ! $cluster_isReady == *"KubeDNS"* ]]
     then
-        echoBold "Done.\n"
         display_msg "\nPlease enable your cluster before running the setup.\n\nIf you don't have a kubernetes cluster, follow: https://kubernetes.io/docs/setup/\n\n"
     fi
     echoBold "Done.\n"
@@ -2123,7 +2121,9 @@ function deploy(){
     #displaying wso2 product name
     product_name
 
+    # check if testgrid
     if test -f $TG_PROP; then
+      file=$INPUT_DIR/infrastructure.properties
       WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
       WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
       randomPort=$(cat $file | grep "randomPort" | cut -d'=' -f2)
@@ -2132,11 +2132,12 @@ function deploy(){
       echo $WUMPassword
       echo $randomPort
       echo $namespace
+
     else
-        get_creds  # get wso2 subscription parameters
+        get_creds # get wso2 subscription parameters
     fi
 
-    # getting cluster node ip
+    # checking if inputs are empty
     get_node_ip
 
     # create and encode username/password pair
@@ -2153,14 +2154,14 @@ function deploy(){
       str_sec=$str_sec$i
     done
 
-    # if TG randomPort else default
+    # If TG random nodePort else default nodePort
     get_nodePorts
 
-    #create kubernetes object yaml
+    # create kubernetes object yaml
     create_yaml
 
     if ! test -f $TG_PROP; then
-        echoBold "\nDeploying WSO2 Identity Server...\n"
+        echoBold "\nDeploying wso2 Enterprise Integrator ... \n"
 
         # create kubernetes deployment
         kubectl create -f ${k8s_obj_file}
@@ -2168,36 +2169,36 @@ function deploy(){
         # waiting until deployment is ready
         progress_bar
 
-        echoBold "Successfully deployed WSO2 Identity Server.\n\n"
+        echoBold "Successfully deployed WSO2 Enterprise Integrator.\n\n"
 
-        echoBold "1. Try navigating to https://$NODE_IP:30443/carbon/ from your favourite browser using \n"
+        echoBold "1. Try navigating to https://$NODE_IP:30443/carbon/ and https://$NODE_IP:30643/portal/ from your favourite browser using\n"
         echoBold "\tusername: admin\n"
         echoBold "\tpassword: admin\n"
-        echoBold "2. Follow <getting-started-link> to start using WSO2 Identity Server.\n\n "
+        echoBold "2. Follow [ https://docs.wso2.com/display/AM260/Quick+Start+Guide ] to start using WSO2 Enterprise Integrator.\n\n"
     fi
 }
 
 deploy
+
 # arg=$1
-# if [[ -z $arg ]]
-# then
+# if [[ -z $arg ]]; then
 #     echoBold "Expected parameter is missing\n"
 #     usage
 # else
-#   case $arg in
-#     -d|--deploy)
-#       deploy
-#       ;;
-#     -u|--undeploy)
-#       undeploy
-#       ;;
-#     -h|--help)
-#       usage
-#       ;;
-#     *)
-#       echoBold "Invalid parameter\n"
-#       usage
-#       ;;
-#   esac
+#     case $arg in
+#       -d|--deploy)
+#         deploy
+#         ;;
+#       -u|--undeploy)
+#         undeploy
+#         ;;
+#       -h|--help)
+#         usage
+#         ;;
+#       *)
+#         echoBold "Invalid parameter : $arg\n"
+#         usage
+#         ;;
+#     esac
 # fi
 
