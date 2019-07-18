@@ -63,11 +63,11 @@ yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLoca
 
 function resources_deployment(){
 
-    DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 
     if [ "$DB" == "mysql" ]
     then
         helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm/mysql/values.yaml stable/mysql
+        sleep 1m
     fi
     if [ "$DB" == "postgres" ]
     then
