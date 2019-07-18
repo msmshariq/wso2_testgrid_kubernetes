@@ -36,15 +36,18 @@ function helm_deploy(){
 function create_value_yaml(){
 
 file=$INPUT_DIR/infrastructure.properties
-WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
-WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
-namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
+dockerAccessKey=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
+dockerAccessPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
+deploymentNamespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
+echo $dockerAccessKey
+echo $dockerAccessPassword
+echo $deploymentNamespace
 
 cat > values.yaml << EOF
-username: $WUMUsername
-password: $WUMPassword
-email: $WUMUsername
-namespace: $namespace
+username: $dockerAccessKey
+password: $dockerAccessPassword
+email: $dockerAccessKey
+namespace: $deploymentNamespace
 svcaccount: "wso2svc-account"
 dbType: $DBEngine
 operatingSystem: $OS
@@ -71,6 +74,27 @@ function resources_deployment(){
         kubectl create -f $deploymentRepositoryLocation/deploymentRepository/helm/jobs/db_provisioner_job.yaml --namespace $namespace
     fi
 
+}
+
+function readiness_deployments(){
+    start=`date +%s`
+    i=0;
+    # todo add a terminal condition/timeout.
+    for ((i=0; i<$dep_num; i++)) ; do
+      num_true=0;
+      while [ "$num_true" -eq "0" ] ; do
+        sleep 5
+        deployment_status=$(kubectl get deployments -n $namespace ${dep[$i]} -o jsonpath='{.status.conditions[?(@.type=="Available")].status}')
+        if [ "$deployment_status" == "True" ] ; then
+          num_true=1;
+        fi
+      done
+    done
+
+    end=`date +%s`
+    runtime=$((end-start))
+    echo "Deployment \"${dep}\" got ready in ${runtime} seconds."
+    echo
 }
 
 helm_deploy
