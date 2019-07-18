@@ -38,15 +38,12 @@ function create_value_yaml(){
 file=$INPUT_DIR/infrastructure.properties
 WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
-echo $WUMPassword
-echo $WUMUsername
-echo $namespace
+namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
 
 cat > values.yaml << EOF
 username: $WUMUsername
 password: $WUMPassword
 email: $WUMUsername
-
 namespace: $namespace
 svcaccount: "wso2svc-account"
 dbType: $DBEngine
@@ -54,7 +51,6 @@ operatingSystem: $OS
 jdkType: $JDK
 EOF
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm/product/
-
 }
 
 function resources_deployment(){
