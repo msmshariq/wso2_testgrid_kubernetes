@@ -39,7 +39,7 @@ file=$INPUT_DIR/infrastructure.properties
 WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
 echo $WUMPassword
-eco $WUMUsername
+echo $WUMUsername
 echo $namespace
 
 cat > values.yaml << EOF
