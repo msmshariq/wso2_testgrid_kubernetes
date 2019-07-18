@@ -54,7 +54,7 @@ password: $dockerAccessPassword
 email: $dockerAccessUserName
 namespace: $namespace
 svcaccount: "wso2svc-account"
-dbType: $DBEngine
+dbType: $DB
 operatingSystem: $OS
 jdkType: $JDK
 EOF
@@ -62,6 +62,8 @@ yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLoca
 }
 
 function resources_deployment(){
+
+    DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 
 
     if [ "$DB" == "mysql" ]
