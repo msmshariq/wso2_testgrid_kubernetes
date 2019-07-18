@@ -37,7 +37,7 @@ function create_value_yaml(){
 
 echo $dockerAccessUserName
 echo $dockerAccessPassword
-echo $namespace
+echo $deployNamespace
 
 echo "creation of values.yaml file"
 
@@ -45,11 +45,11 @@ cat > values.yaml << EOF
 username: $dockerAccessUserName
 password: $dockerAccessPassword
 email: $dockerAccessUserName
-namespace: $namespace
+namespace: $deployNamespace
 svcaccount: "wso2svc-account"
-dbType: $DBEngine
-operatingSystem: $OS
-jdkType: $JDK
+dbType: $deployDBEngine
+operatingSystem: $deployOS
+jdkType: $deployJDK
 EOF
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm/product/
 }
