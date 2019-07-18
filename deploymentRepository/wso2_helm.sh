@@ -39,6 +39,8 @@ echo $dockerAccessUserName
 echo $dockerAccessPassword
 echo $namespace
 
+echo "creation of values.yaml file"
+
 cat > values.yaml << EOF
 username: $dockerAccessUserName
 password: $dockerAccessPassword

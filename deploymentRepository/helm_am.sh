@@ -26,6 +26,7 @@ echo "demo helm script to change necessary configurations in the helm files"
 file=$INPUT_DIR/infrastructure.properties
 dockerAccessUserName=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 dockerAccessPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
-
+echo $dockerAccessUserName
+echo $dockerAccessPassword
 echo "dockerAccessUserName=$dockerAccessUserName" >> $OUTPUT_DIR/infrastructure.properties
 echo "dockerAccessPassword=$dockerAccessPassword" >> $OUTPUT_DIR/infrastructure.properties
