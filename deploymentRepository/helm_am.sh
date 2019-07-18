@@ -20,7 +20,6 @@ set -o xtrace
 echo "Change the configurations of axis.xml file"
 OUTPUT_DIR=$4
 INPUT_DIR=$2
-source $INPUT_DIR/infrastructure.properties
 
 echo "demo helm script to change necessary configurations in the helm files"
 
@@ -28,5 +27,5 @@ file=$INPUT_DIR/infrastructure.properties
 dockerAccessUserName=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 dockerAccessPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
 
-echo "dockerAccessUserName=$dockerAccessUserName" >> $OUTPUT_DIR/deployment.properties
-echo "dockerAccessPassword=$dockerAccessPassword" >> $OUTPUT_DIR/deployment.properties
+echo "dockerAccessUserName=$dockerAccessUserName" >> $OUTPUT_DIR/infrastructure.properties
+echo "dockerAccessPassword=$dockerAccessPassword" >> $OUTPUT_DIR/infrastructure.properties
