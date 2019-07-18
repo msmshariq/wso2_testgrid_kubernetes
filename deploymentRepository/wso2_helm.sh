@@ -37,7 +37,11 @@ function create_value_yaml(){
 
 echo $dockerAccessUserName
 echo $dockerAccessPassword
-echo $deployNamespace
+echo $namespace
+
+DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
+OS=$(echo $OS | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
+JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 
 echo "creation of values.yaml file"
 
@@ -45,11 +49,11 @@ cat > values.yaml << EOF
 username: $dockerAccessUserName
 password: $dockerAccessPassword
 email: $dockerAccessUserName
-namespace: $deployNamespace
+namespace: $namespace
 svcaccount: "wso2svc-account"
-dbType: $deployDBEngine
-operatingSystem: $deployOS
-jdkType: $deployJDK
+dbType: $DBEngine
+operatingSystem: $OS
+jdkType: $JDK
 EOF
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm/product/
 }
