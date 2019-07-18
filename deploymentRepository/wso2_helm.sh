@@ -35,6 +35,9 @@ function helm_deploy(){
 
 function create_value_yaml(){
 
+file=$INPUT_DIR/infrastructure.properties
+dockerAccessUserName=$(cat $file | grep "dockerAccessUserName" | cut -d'=' -f2)
+dockerAccessPassword=$(cat $file | grep "dockerAccessPassword" | cut -c 22- | tr -d '\')
 echo $dockerAccessUserName
 echo $dockerAccessPassword
 echo $namespace
