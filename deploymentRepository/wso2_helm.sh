@@ -36,14 +36,14 @@ function helm_deploy(){
 function create_value_yaml(){
 
 file=$INPUT_DIR/infrastructure.properties
-echo $WUMUsername
-echo $WUMPassword
+echo $dockerAccessUserName
+echo $dockerAccessPassword
 echo $namespace
 
 cat > values.yaml << EOF
-username: $WUMUsername
-password: $WUMPassword
-email: $WUMUsername
+username: $dockerAccessUserName
+password: $dockerAccessPassword
+email: $dockerAccessUserName
 namespace: $namespace
 svcaccount: "wso2svc-account"
 dbType: $DBEngine
