@@ -39,7 +39,7 @@ file=$INPUT_DIR/infrastructure.properties
 WUMUsername=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 WUMPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
 namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
-echo "checking the script"
+
 cat > values.yaml << EOF
 username: $WUMUsername
 password: $WUMPassword
@@ -59,7 +59,6 @@ function resources_deployment(){
 
     if [ "$DB" == "mysql" ]
     then
-        echo"check the script mysql"
         helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm/mysql/values.yaml stable/mysql
     fi
     if [ "$DB" == "postgres" ]
