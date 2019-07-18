@@ -36,18 +36,15 @@ function helm_deploy(){
 function create_value_yaml(){
 
 file=$INPUT_DIR/infrastructure.properties
-dockerAccessKey=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
-dockerAccessPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
-deploymentNamespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
-echo $dockerAccessKey
-echo $dockerAccessPassword
-echo $deploymentNamespace
+echo $WUMUsername
+echo $WUMPassword
+echo $namespace
 
 cat > values.yaml << EOF
-username: $dockerAccessKey
-password: $dockerAccessPassword
-email: $dockerAccessKey
-namespace: $deploymentNamespace
+username: $WUMUsername
+password: $WUMPassword
+email: $WUMUsername
+namespace: $namespace
 svcaccount: "wso2svc-account"
 dbType: $DBEngine
 operatingSystem: $OS
