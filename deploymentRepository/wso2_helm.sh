@@ -18,6 +18,8 @@
 
 set -e
 
+source $OUTPUT_DIR/deployment.properties
+
 #installation of database differs accoring to the type of database resource found.
 #This function is to deploy the database correctly as found in the test plan.
 
@@ -35,7 +37,6 @@ function helm_deploy(){
 
 function create_value_yaml(){
 
-file=$INPUT_DIR/infrastructure.properties
 echo $dockerAccessUserName
 echo $dockerAccessPassword
 echo $namespace
