@@ -22,12 +22,15 @@ OUTPUT_DIR=$4
 INPUT_DIR=$2
 
 echo "Change the configurations of axis.xml file"
-sed -i 's/namespace/deploy123/g' $deploymentRepositoryLocation/deploymentRepository/helm/product/confs/integrator/conf/axis2/axis2.xml
 
 file=$INPUT_DIR/infrastructure.properties
 dockerAccessUserName=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 dockerAccessPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
+namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
 echo $dockerAccessUserName
 echo $dockerAccessPassword
 echo "dockerAccessUserName=$dockerAccessUserName" >> $OUTPUT_DIR/infrastructure.properties
 echo "dockerAccessPassword=$dockerAccessPassword" >> $OUTPUT_DIR/infrastructure.properties
+
+sed -i 's/namespace/$namespace/g' $deploymentRepositoryLocation/deploymentRepository/helm/product/confs/integrator/conf/axis2/axis2.xml
+
