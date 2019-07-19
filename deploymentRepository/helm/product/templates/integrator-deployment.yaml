@@ -1,4 +1,4 @@
-# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
 apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: wso2is-deployment
+  name: wso2ei-integrator-deployment
   namespace : {{ .Values.namespace }}
 spec:
   replicas: 1
@@ -28,67 +28,60 @@ spec:
   template:
     metadata:
       labels:
-        deployment: wso2is
+        deployment: wso2ei-integrator
     spec:
       containers:
-      - name: wso2is
+      - name: wso2ei-integrator
         {{- if or (eq .Values.username "") (eq .Values.password "") }}
-        image: wso2/wso2is:5.8.0
+        image: wso2/wso2ei-integrator:6.5.0
         {{- else }}
-        image: docker.wso2.com/wso2is:5.8.0
+        image: docker.wso2.com/wso2ei-integrator:6.5.0
         {{- end }}
         livenessProbe:
           exec:
             command:
-            - /bin/sh
+            - /bin/bash
             - -c
             - nc -z localhost 9443
-          initialDelaySeconds: 250
+          initialDelaySeconds: 100
           periodSeconds: 10
         readinessProbe:
           exec:
             command:
-              - /bin/sh
+              - /bin/bash
               - -c
               - nc -z localhost 9443
-          initialDelaySeconds: 250
+          initialDelaySeconds: 100
           periodSeconds: 10
-        lifecycle:
-          preStop:
-            exec:
-              command:  ['sh', '-c', '${WSO2_SERVER_HOME}/bin/wso2server.sh stop']
         imagePullPolicy: Always
-        securityContext:
-          runAsUser: 802
         ports:
+        - containerPort: 8280
+          protocol: TCP
+        - containerPort: 8243
+          protocol: TCP
         - containerPort: 9763
           protocol: TCP
         - containerPort: 9443
           protocol: TCP
         volumeMounts:
-        - name: identity-server-conf
-          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf
-        - name: identity-server-conf-axis2
-          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/axis2
-        - name: identity-server-conf-datasources
-          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/datasources
-        - name: identity-server-conf-identity
-          mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/identity
+        - name: integrator-conf
+          mountPath: /home/wso2carbon/wso2-config-volume/conf
+        - name: integrator-conf-axis2
+          mountPath: /home/wso2carbon/wso2-config-volume/conf/axis2
+        - name: integrator-conf-datasources
+          mountPath: /home/wso2carbon/wso2-config-volume/conf/datasources
       serviceAccountName: {{ .Values.svcaccount }}
       {{ if and (not (eq .Values.username "")) (not (eq .Values.password "")) }}
       imagePullSecrets:
       - name: wso2creds
       {{ end }}
       volumes:
-      - name: identity-server-conf
+      - name: integrator-conf
         configMap:
-          name: identity-server-conf
-      - name: identity-server-conf-axis2
+          name: integrator-conf
+      - name: integrator-conf-axis2
         configMap:
-          name: identity-server-conf-axis2
-      - name: identity-server-conf-datasources
+          name: integrator-conf-axis2
+      - name: integrator-conf-datasources
         configMap:
-          name: identity-server-conf-datasources
-      - name: identity-server-conf-identity
-        configMap:
-          name: identity-server-conf-identity
+          name: integrator-conf-datasources

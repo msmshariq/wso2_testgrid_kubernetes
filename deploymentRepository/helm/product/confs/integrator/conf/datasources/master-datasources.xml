@@ -60,32 +60,30 @@
             </definition>
         </datasource-->
     <datasource>
-      <name>WSO2_REG_DS</name>
-      <description>The datasource used for registry</description>
+      <name>WSO2_CONFIG_DB</name>
+      <description>The datasource used for config registry</description>
       <jndiConfig>
-        <name>jdbc/WSO2RegDS</name>
+        <name>jdbc/WSO2ConfigDB</name>
       </jndiConfig>
       <definition type="RDBMS">
         <configuration>
-          <url>REGDB_URL</url>
+          <url>CONFIGDB_URL</url>
           <username>DB_USERNAME</username>
           <password>DB_PASSWORD</password>
           <driverClassName>DRIVER_CLASSNAME</driverClassName>
           <maxActive>80</maxActive>
           <maxWait>60000</maxWait>
-          <minIdle>5</minIdle>
           <testOnBorrow>true</testOnBorrow>
           <validationQuery>VALIDATION_QUERY</validationQuery>
           <validationInterval>30000</validationInterval>
-          <defaultAutoCommit>false</defaultAutoCommit>
         </configuration>
       </definition>
     </datasource>
     <datasource>
-      <name>WSO2_USER_DS</name>
-      <description>The datasource used for user management</description>
+      <name>WSO2_USER_DB</name>
+      <description>The datasource is used for user management and userstore</description>
       <jndiConfig>
-        <name>jdbc/WSO2UserDS</name>
+        <name>jdbc/WSO2UserDB</name>
       </jndiConfig>
       <definition type="RDBMS">
         <configuration>
@@ -93,57 +91,11 @@
           <username>DB_USERNAME</username>
           <password>DB_PASSWORD</password>
           <driverClassName>DRIVER_CLASSNAME</driverClassName>
-          <maxActive>80</maxActive>
+          <maxActive>50</maxActive>
           <maxWait>60000</maxWait>
-          <minIdle>5</minIdle>
           <testOnBorrow>true</testOnBorrow>
           <validationQuery>VALIDATION_QUERY</validationQuery>
           <validationInterval>30000</validationInterval>
-          <defaultAutoCommit>false</defaultAutoCommit>
-        </configuration>
-      </definition>
-    </datasource>
-    <datasource>
-      <name>WSO2_IDENTITY_DS</name>
-      <description>The datasource used for identity management</description>
-      <jndiConfig>
-        <name>jdbc/WSO2IdentityDS</name>
-      </jndiConfig>
-      <definition type="RDBMS">
-        <configuration>
-          <url>IDENTITYDB_URL</url>
-          <username>DB_USERNAME</username>
-          <password>DB_PASSWORD</password>
-          <driverClassName>DRIVER_CLASSNAME</driverClassName>
-          <maxActive>80</maxActive>
-          <maxWait>60000</maxWait>
-          <minIdle>5</minIdle>
-          <testOnBorrow>true</testOnBorrow>
-          <validationQuery>VALIDATION_QUERY</validationQuery>
-          <validationInterval>30000</validationInterval>
-          <defaultAutoCommit>false</defaultAutoCommit>
-        </configuration>
-      </definition>
-    </datasource>
-    <datasource>
-      <name>WSO2_CONSENT_DS</name>
-      <description>The datasource used for consent management</description>
-      <jndiConfig>
-        <name>jdbc/WSO2ConsentDS</name>
-      </jndiConfig>
-      <definition type="RDBMS">
-        <configuration>
-          <url>CONSENTDB_URL</url>
-          <username>DB_USERNAME</username>
-          <password>DB_PASSWORD</password>
-          <driverClassName>DRIVER_CLASSNAME</driverClassName>
-          <maxActive>80</maxActive>
-          <maxWait>60000</maxWait>
-          <minIdle>5</minIdle>
-          <testOnBorrow>true</testOnBorrow>
-          <validationQuery>VALIDATION_QUERY</validationQuery>
-          <validationInterval>30000</validationInterval>
-          <defaultAutoCommit>false</defaultAutoCommit>
         </configuration>
       </definition>
     </datasource>

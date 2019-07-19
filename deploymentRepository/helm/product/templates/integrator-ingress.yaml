@@ -12,19 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: ConfigMap
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
-  name: identity-server-conf-identity
+  name: wso2ei-integrator-ingress
   namespace : {{ .Values.namespace }}
-data:
-  {{- $file := .Files }}
-  {{- range $path, $byte := .Files.Glob "confs/identity/*" }}
-  {{- $list := $path | splitList "/"}}
-  {{- $length := len $list }}
-  {{- $last := add $length -1 }}
-  {{ index $list $last }}: |-
-    {{- range $file.Lines $path }}
-    {{ . }}
-    {{- end }}
-  {{- end }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
+spec:
+  tls:
+  - hosts:
+    - wso2ei-integrator
+  rules:
+  - host: wso2ei-integrator
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wso2ei-integrator-service
+          servicePort: 9443
