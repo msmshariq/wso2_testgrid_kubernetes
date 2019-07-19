@@ -1,4 +1,4 @@
-# Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright (c) 2019, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -13,19 +13,18 @@
 # limitations under the License.
 
 apiVersion: v1
-kind: Service
+kind: ConfigMap
 metadata:
-  name: wso2ei-integrator-service
+  name: identity-server-conf-axis2
   namespace : {{ .Values.namespace }}
-spec:
-  selector:
-    deployment: wso2ei-integrator
-  ports:
-  - name: servlet-http
-    port: 9763
-    targetPort: 9763
-    protocol: TCP
-  - name: servlet-https
-    port: 9443
-    targetPort: 9443
-    protocol: TCP
+data:
+  {{- $file := .Files }}
+  {{- range $path, $byte := .Files.Glob "confs/axis2/*" }}
+  {{- $list := $path | splitList "/"}}
+  {{- $length := len $list }}
+  {{- $last := add $length -1 }}
+  {{ index $list $last }}: |-
+    {{- range $file.Lines $path }}
+    {{ . }}
+    {{- end }}
+  {{- end }}

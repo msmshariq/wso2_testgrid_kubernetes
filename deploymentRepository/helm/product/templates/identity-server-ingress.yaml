@@ -12,20 +12,26 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-apiVersion: v1
-kind: Service
+apiVersion: extensions/v1beta1
+kind: Ingress
 metadata:
-  name: wso2ei-integrator-gateway-service
+  name: wso2is-ingress
   namespace : {{ .Values.namespace }}
+  annotations:
+    kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/ssl-passthrough: "true"
+    nginx.ingress.kubernetes.io/affinity: "cookie"
+    nginx.ingress.kubernetes.io/session-cookie-name: "route"
+    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 spec:
-  selector:
-    deployment: wso2ei-integrator
-  ports:
-  - name: pass-through-http
-    port: 8280
-    targetPort: 8280
-    protocol: TCP
-  - name: pass-through-https
-    port: 8243
-    targetPort: 8243
-    protocol: TCP
+  tls:
+  - hosts:
+    - wso2is
+  rules:
+  - host: wso2is
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: wso2is-service
+          servicePort: 9443
