@@ -1,4 +1,4 @@
-# Copyright (c) 2017, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
+# Copyright (c) 2018, WSO2 Inc. (http://www.wso2.org) All Rights Reserved.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -15,31 +15,20 @@
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
-  name: wso2apim-with-analytics-apim-ingress
+  name: wso2ei-integrator-gateway-tls-ingress
   namespace : {{ .Values.namespace }}
   annotations:
     kubernetes.io/ingress.class: "nginx"
     nginx.ingress.kubernetes.io/ssl-passthrough: "true"
-    nginx.ingress.kubernetes.io/affinity: "cookie"
-    nginx.ingress.kubernetes.io/session-cookie-name: "route"
-    nginx.ingress.kubernetes.io/session-cookie-hash: "sha1"
 spec:
   tls:
   - hosts:
-    - wso2apim
-    - wso2apim-gateway
+    - wso2ei-integrator-gateway
   rules:
-  - host: wso2apim
+  - host: wso2ei-integrator-gateway
     http:
       paths:
       - path: /
         backend:
-          serviceName: wso2apim-with-analytics-apim-service
-          servicePort: 9443
-  - host: wso2apim-gateway
-    http:
-      paths:
-      - path: /
-        backend:
-          serviceName: wso2apim-with-analytics-apim-service
+          serviceName: wso2ei-integrator-gateway-service
           servicePort: 8243
