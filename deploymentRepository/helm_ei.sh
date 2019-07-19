@@ -27,6 +27,7 @@ file=$INPUT_DIR/infrastructure.properties
 dockerAccessUserName=$(cat $file | grep "WUMUsername" | cut -d'=' -f2)
 dockerAccessPassword=$(cat $file | grep "WUMPassword" | cut -c 13- | tr -d '\')
 namespace=$(cat $file | grep "namespace" | cut -d'=' -f2)
+deploymentRepositoryLocation=$(cat $file | grep "deploymentRepositoryLocation" | cut -d'=' -f2)
 echo $dockerAccessUserName
 echo $dockerAccessPassword
 echo "dockerAccessUserName=$dockerAccessUserName" >> $OUTPUT_DIR/infrastructure.properties
