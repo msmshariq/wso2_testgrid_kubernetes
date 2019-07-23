@@ -21,7 +21,7 @@ set -e
 #installation of database differs accoring to the type of database resource found.
 #This function is to deploy the database correctly as found in the test plan.
 
-function helm_deploy(){ 
+function helm_deploy(){
 
   create_value_yaml
 
@@ -30,7 +30,7 @@ function helm_deploy(){
   resources_deployment
   helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_am/product/
 
-  
+
 }
 
 function create_value_yaml(){
@@ -49,6 +49,7 @@ JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 echo "creation of values.yaml file"
 
 cat > values.yaml << EOF
+context: "TestGrid"
 username: $dockerAccessUserName
 password: $dockerAccessPassword
 email: $dockerAccessUserName
