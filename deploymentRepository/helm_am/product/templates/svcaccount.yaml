@@ -13,6 +13,10 @@
 # limitations under the License.
 
 apiVersion: v1
+{{ if ( eq .Values.context "TestGrid") }}
+imagePullSecrets:
+- name: gcr-wso2creds
+{{ end }}
 kind: ServiceAccount
 metadata:
   name: {{ .Values.svcaccount }}

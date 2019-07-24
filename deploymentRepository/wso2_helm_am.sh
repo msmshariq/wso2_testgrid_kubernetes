@@ -24,7 +24,7 @@ set -e
 function helm_deploy(){
 
   create_value_yaml
-
+  create_gcr_secret
   #install resources using helm
   helmDeployment="wso2product$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
   resources_deployment
@@ -60,6 +60,15 @@ operatingSystem: $OS
 jdkType: $JDK
 EOF
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm_am/product/
+}
+
+function create_gcr_secret(){
+  #create secret with gcr authentication
+  kubectl create secret docker-registry gcr-wso2creds \
+    --docker-server=asia.gcr.io \
+    --docker-username=_json_key \
+    --docker-password="$(cat $INPUT_DIR/key.json)" \
+    --docker-email=$dockerAccessUserName
 }
 
 function resources_deployment(){
