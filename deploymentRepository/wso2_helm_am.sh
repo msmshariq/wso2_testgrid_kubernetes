@@ -59,6 +59,9 @@ dbType: $DBEngine
 operatingSystem: $OS
 jdkType: $JDK
 EOF
+echo "testing values.yaml ... "
+cat values.yaml
+
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm_am/product/
 }
 
