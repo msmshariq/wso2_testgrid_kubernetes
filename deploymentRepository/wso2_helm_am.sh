@@ -79,7 +79,7 @@ password: $dockerAccessPassword
 email: $dockerAccessUserName
 namespace: $namespace
 svcaccount: "wso2svc-account"
-dbType: $DBEngine
+dbType: $DB
 operatingSystem: $OS
 jdkType: $JDK
 EOF
