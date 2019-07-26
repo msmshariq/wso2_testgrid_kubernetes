@@ -42,6 +42,10 @@ echo $dockerAccessUserName
 echo $dockerAccessPassword
 echo $namespace
 
+DBEngine=$(cat $file | grep "DBEngine" | cut -d'=' -f2)
+OS=$(cat $file | grep "OS" | cut -d'=' -f2)
+JDK=$(cat $file | grep "JDK" | cut -d'=' -f2)
+
 DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 OS=$(echo $OS | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
