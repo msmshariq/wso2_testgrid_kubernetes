@@ -86,7 +86,7 @@ EOF
 echo "testing values.yaml ... "
 cat values.yaml
 
-yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm_am/product/
+yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm_is/product/
 }
 
 function create_gcr_secret(){
