@@ -169,21 +169,21 @@ postgresqlDataDir: /bitnami/postgresql/data
 
 initdbScripts:
   init.sql: |
-      DROP DATABASE IF EXISTS WSO2IS_REG_DB;
-      DROP DATABASE IF EXISTS WSO2IS_BPS_DB;
-      DROP DATABASE IF EXISTS WSO2IS_USER_DB;
-      DROP DATABASE IF EXISTS WSO2IS_IDENTITY_DB;
-      DROP DATABASE IF EXISTS WSO2IS_CONSENT_DB;
-      DROP DATABASE IF EXISTS WSO2_METRICS_DB;
+      DROP DATABASE IF EXISTS wso2is_reg_db;
+      DROP DATABASE IF EXISTS wso2is_bps_db;
+      DROP DATABASE IF EXISTS wso2is_user_db;
+      DROP DATABASE IF EXISTS wso2is_identity_db;
+      DROP DATABASE IF EXISTS wso2is_consent_db;
+      DROP DATABASE IF EXISTS wso2is_metrics_db;
 
-      CREATE DATABASE WSO2IS_REG_DB;
-      CREATE DATABASE WSO2IS_BPS_DB;
-      CREATE DATABASE WSO2IS_USER_DB;
-      CREATE DATABASE WSO2IS_IDENTITY_DB;
-      CREATE DATABASE WSO2IS_CONSENT_DB;
-      CREATE DATABASE WSO2_METRICS_DB;
+      CREATE DATABASE wso2is_reg_db;
+      CREATE DATABASE wso2is_bps_db;
+      CREATE DATABASE wso2is_user_db;
+      CREATE DATABASE wso2is_identity_db;
+      CREATE DATABASE wso2is_consent_db;
+      CREATE DATABASE wso2is_metrics_db;
 
-      \\c WSO2IS_REG_DB;
+      \\c wso2is_reg_db;
 
       DROP TABLE IF EXISTS REG_CLUSTER_LOCK;
       CREATE TABLE REG_CLUSTER_LOCK (
@@ -747,7 +747,7 @@ initdbScripts:
       			PRIMARY KEY (UM_ID, UM_TENANT_ID)
       );
 
-      \\c WSO2IS_USER_DB;
+      \\c wso2is_user_db;
 
       DROP TABLE IF EXISTS REG_CLUSTER_LOCK;
       CREATE TABLE REG_CLUSTER_LOCK (
@@ -1311,7 +1311,7 @@ initdbScripts:
       			PRIMARY KEY (UM_ID, UM_TENANT_ID)
       );
 
-      \\c WSO2IS_BPS_DB;
+      \\c wso2is_bps_db;
 
       --
       -- BPEL Related SQL Scripts
@@ -1455,7 +1455,7 @@ initdbScripts:
       --
       CREATE TABLE HT_COORDINATION_DATA (MESSAGE_ID VARCHAR(255) NOT NULL, PROCESS_INSTANCE_ID VARCHAR(255), PROTOCOL_HANDlER_URL VARCHAR(255) NOT NULL, TASK_ID VARCHAR(255), PRIMARY KEY (MESSAGE_ID));
 
-      \\c WSO2IS_CONSENT_DB;
+      \\c wso2is_consent_db;
 
       DROP TABLE IF EXISTS CM_PII_CATEGORY;
       DROP SEQUENCE IF EXISTS CM_PII_CATEGORY_PK_SEQ;
@@ -1602,7 +1602,7 @@ initdbScripts:
 
       INSERT INTO CM_PURPOSE_CATEGORY (NAME, DESCRIPTION, TENANT_ID) VALUES ('DEFAULT','For core functionalities of the product', '-1234');
 
-      \\c WSO2IS_IDENTITY_DB;
+      \\c wso2is_identity_db;
 
       DROP TABLE IF EXISTS IDN_BASE_TABLE;
       CREATE TABLE IDN_BASE_TABLE (
@@ -2669,7 +2669,7 @@ initdbScripts:
       -- SP_TEMPLATE --
       CREATE INDEX IDX_SP_TEMPLATE ON SP_TEMPLATE (TENANT_ID, NAME);
 
-      \\c WSO2_METRICS_DB;
+      \\c wso2is_metrics_db;
 
       CREATE SEQUENCE METRIC_GAUGE_SEQUENCE START WITH 1 INCREMENT BY 1;
 
