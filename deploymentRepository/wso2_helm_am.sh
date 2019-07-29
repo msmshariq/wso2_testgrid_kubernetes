@@ -103,17 +103,17 @@ function resources_deployment(){
 
     if [ "$DB" == "mysql" ]
     then
-        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mysql/values.yaml stable/mysql
+        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mysql/values.yaml stable/mysql
         sleep 30s
     fi
     if [ "$DB" == "postgres" ]
     then
-        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/postgresql/values.yaml stable/postgresql
+        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/postgresql/values.yaml stable/postgresql
         sleep 30s
     fi
     if [ "$DB" == "mssql" ]
     then
-        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mssql/values.yaml stable/mssql-linux
+        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mssql/values.yaml stable/mssql-linux
         kubectl create -f $deploymentRepositoryLocation/deploymentRepository/helm/jobs/db_provisioner_job.yaml --namespace $namespace
         sleep 30s
     fi
