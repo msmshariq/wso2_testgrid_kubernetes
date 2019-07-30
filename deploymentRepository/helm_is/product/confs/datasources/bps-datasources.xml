@@ -47,7 +47,7 @@
           <validationQuery>VALIDATION_QUERY</validationQuery>
           <validationInterval>30000</validationInterval>
           <useDataSourceFactory>false</useDataSourceFactory>
-          <defaultAutoCommit>false</defaultAutoCommit>
+          <defaultAutoCommit>true</defaultAutoCommit>
         </configuration>
       </definition>
     </datasource>
