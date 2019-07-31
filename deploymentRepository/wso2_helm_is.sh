@@ -95,7 +95,7 @@ function create_gcr_secret(){
     --docker-server=asia.gcr.io \
     --docker-username=_json_key \
     --docker-password="$(cat $INPUT_DIR/key.json)" \
-    --docker-email=$dockerAccessUserName -namespace $namespace
+    --docker-email=$dockerAccessUserName --namespace $namespace
 }
 
 function resources_deployment(){
