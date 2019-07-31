@@ -28,7 +28,7 @@ function helm_deploy(){
   #install resources using helm
   helmDeployment="wso2product$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
   resources_deployment
-  helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_am/product/
+  helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_am/product/ --namespace $namespace
 
 
 }
@@ -95,7 +95,7 @@ function create_gcr_secret(){
     --docker-server=asia.gcr.io \
     --docker-username=_json_key \
     --docker-password="$(cat $INPUT_DIR/key.json)" \
-    --docker-email=$dockerAccessUserName
+    --docker-email=$dockerAccessUserName --namespace $namespace
 }
 
 function resources_deployment(){
@@ -103,17 +103,17 @@ function resources_deployment(){
 
     if [ "$DB" == "mysql" ]
     then
-        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mysql/values.yaml stable/mysql
+        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mysql/values.yaml stable/mysql --namespace $namespace
         sleep 30s
     fi
     if [ "$DB" == "postgres" ]
     then
-        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/postgresql/values.yaml stable/postgresql
+        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/postgresql/values.yaml stable/postgresql --namespace $namespace
         sleep 30s
     fi
     if [ "$DB" == "mssql" ]
     then
-        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mssql/values.yaml stable/mssql-linux
+        helm install wso2am-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_am/mssql/values.yaml stable/mssql-linux --namespace $namespace
         kubectl create -f $deploymentRepositoryLocation/deploymentRepository/helm/jobs/db_provisioner_job.yaml --namespace $namespace
         sleep 30s
     fi

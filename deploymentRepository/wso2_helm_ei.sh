@@ -21,16 +21,16 @@ set -e
 #installation of database differs accoring to the type of database resource found.
 #This function is to deploy the database correctly as found in the test plan.
 
-function helm_deploy(){ 
+function helm_deploy(){
 
   create_value_yaml
 
   #install resources using helm
   helmDeployment="wso2product$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
   resources_deployment
-  helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_ei/product/
+  helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_ei/product/ --namespace $namespace
 
-  
+
 }
 
 function create_value_yaml(){
@@ -66,17 +66,17 @@ function resources_deployment(){
 
     if [ "$DB" == "mysql" ]
     then
-        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/mysql/values.yaml stable/mysql
+        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/mysql/values.yaml stable/mysql --namespace $namespace
         sleep 30s
     fi
     if [ "$DB" == "postgres" ]
     then
-        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/postgresql/values.yaml stable/postgresql
+        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/postgresql/values.yaml stable/postgresql --namespace $namespace
         sleep 30s
     fi
     if [ "$DB" == "mssql" ]
     then
-        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/mssql/values.yaml stable/mssql-linux
+        helm install wso2-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/mssql/values.yaml stable/mssql-linux --namespace $namespace
         kubectl create -f $deploymentRepositoryLocation/deploymentRepository/helm_ei/jobs/db_provisioner_job.yaml --namespace $namespace
         sleep 30s
     fi
