@@ -24,7 +24,7 @@ set -e
 function helm_deploy(){
 
   create_value_yaml
-
+  create_gcr_secret
   #install resources using helm
   helmDeployment="wso2product$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
   resources_deployment
@@ -33,14 +33,38 @@ function helm_deploy(){
 
 }
 
+# Read a property file to a given associative array
+#
+# $1 - Property file
+# $2 - associative array
+# How to call
+# declare -A somearray
+# read_property_file testplan-props.properties somearray
+read_property_file() {
+    local property_file_path=$1
+    # Read configuration into an associative array
+    # IFS is the 'internal field separator'. In this case, your file uses '='
+    local -n configArray=$2
+    IFS="="
+    while read -r key value
+    do
+      [[ -n ${key} ]] && configArray[$key]=$value
+    done < ${property_file_path}
+    unset IFS
+}
+
 function create_value_yaml(){
 
 file=$INPUT_DIR/infrastructure.properties
-dockerAccessUserName=$(cat $file | grep "dockerAccessUserName" | cut -d'=' -f2)
-dockerAccessPassword=$(cat $file | grep "dockerAccessPassword" | cut -c 22- | tr -d '\')
-echo $dockerAccessUserName
-echo $dockerAccessPassword
-echo $namespace
+declare -g -A infra_props
+read_property_file "${INPUT_DIR}/infrastructure.properties" infra_props
+dockerAccessUserName=${infra_props["dockerAccessUserName"]}
+dockerAccessPassword=${infra_props["dockerAccessPassword"]}
+namespace=${infra_props["namespace"]}
+
+DBEngine=${infra_props["DBEngine"]}
+OS=${infra_props["OS"]}
+JDK=${infra_props["JDK"]}
 
 DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 OS=$(echo $OS | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
@@ -49,16 +73,29 @@ JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 echo "creation of values.yaml file"
 
 cat > values.yaml << EOF
+context: "TestGrid"
 username: $dockerAccessUserName
 password: $dockerAccessPassword
 email: $dockerAccessUserName
 namespace: $namespace
 svcaccount: "wso2svc-account"
-dbType: $DBEngine
+dbType: $DB
 operatingSystem: $OS
 jdkType: $JDK
 EOF
+echo "testing values.yaml ... "
+cat values.yaml
+
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm_ei/product/
+}
+
+function create_gcr_secret(){
+  #create secret with gcr authentication
+  kubectl create secret docker-registry gcr-wso2creds \
+    --docker-server=asia.gcr.io \
+    --docker-username=_json_key \
+    --docker-password="$(cat $INPUT_DIR/key.json)" \
+    --docker-email=$dockerAccessUserName --namespace $namespace
 }
 
 function resources_deployment(){
