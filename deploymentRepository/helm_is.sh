@@ -33,5 +33,4 @@ echo $dockerAccessPassword
 echo "dockerAccessUserName=$dockerAccessUserName" >> $OUTPUT_DIR/infrastructure.properties
 echo "dockerAccessPassword=$dockerAccessPassword" >> $OUTPUT_DIR/infrastructure.properties
 
-sed -i 's/namespace/$namespace/g' $deploymentRepositoryLocation/deploymentRepository/helm/product/confs/axis2/axis2.xml
-
+#sed -i "s/namespace/$namespace/g" $deploymentRepositoryLocation/deploymentRepository/helm_is/product/confs/axis2/axis2.xml

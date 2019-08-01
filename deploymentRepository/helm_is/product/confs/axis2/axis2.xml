@@ -193,13 +193,13 @@
         -->
     <!--<parameter name="proxyPort">80</parameter>-->
   </transportReceiver>
-  <!--Please uncomment this in Multiple Instance Scenario if you want to use NIO Transport Recievers and 
+  <!--Please uncomment this in Multiple Instance Scenario if you want to use NIO Transport Recievers and
  	Remove the current transport REceivers in axis2.xml -->
   <!--transportReceiver name="http" class="org.apache.synapse.transport.nhttp.HttpCoreNIOListener">
         <parameter name="port" locked="false">8280</parameter>
         <parameter name="non-blocking" locked="false">true</parameter>
     </transportReceiver>
-    
+
     <transportReceiver name="https" class="org.apache.synapse.transport.nhttp.HttpCoreNIOSSLListener">
         <parameter name="port" locked="false">8243</parameter>
         <parameter name="non-blocking" locked="false">true</parameter>
@@ -349,7 +349,7 @@
         <parameter name="mail.smtp.auth">true</parameter>
     </transportSender>-->
   <!--Please uncomment this in Multiple Instance Scenario if you want to use NIO sender -->
-  <!--  
+  <!--
     <transportSender name="http" class="org.apache.synapse.transport.nhttp.HttpCoreNIOSender">
         <parameter name="non-blocking" locked="false">true</parameter>
     </transportSender>
@@ -604,7 +604,7 @@
       <applicationDomain name="wso2.as.domain" description="AS group" agent="org.wso2.carbon.core.clustering.hazelcast.HazelcastGroupManagementAgent" subDomain="worker" port="2222"/>
     </groupManagement>
     <parameter name="membershipSchemeClassName">org.wso2.carbon.membership.scheme.kubernetes.KubernetesMembershipScheme</parameter>
-    <parameter name="KUBERNETES_NAMESPACE">namespace</parameter>
+    <parameter name="KUBERNETES_NAMESPACE">WSO2IS_NAMESPACE</parameter>
     <parameter name="KUBERNETES_SERVICES">wso2is-service</parameter>
     <parameter name="KUBERNETES_MASTER_SKIP_SSL_VERIFICATION">true</parameter>
     <parameter name="USE_DNS">false</parameter>
