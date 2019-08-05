@@ -108,7 +108,7 @@ function change_k8sContext(){
   # Modifying namespace of new config-file
   kubectl config set-context $(kubectl config current-context) --kubeconfig ${HOME}/.kube/configfiles/dir-${namespace}/config --namespace ${namespace}
   # Modifying $KUBECONFIG environment variable
-  expose KUBECONFIG=${HOME}/.kube/configfiles/dir-${namespace}/config
+  export KUBECONFIG=${HOME}/.kube/configfiles/dir-${namespace}/config
 
   #  TO DO: remove created directory for kubeconfig ($HOME/.kube/configfiles/dir-$namespace)
 }
