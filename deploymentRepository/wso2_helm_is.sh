@@ -27,9 +27,9 @@ function helm_deploy(){
   create_gcr_secret
   #install resources using helm
   helmDeployment="wso2product$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
+  change_k8sContext
   resources_deployment
-  helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_is/product/ --namespace $namespace
-
+  helm install $helmDeployment $deploymentRepositoryLocation/deploymentRepository/helm_is/product/
 
 }
 
@@ -98,23 +98,38 @@ function create_gcr_secret(){
     --docker-email=$dockerAccessUserName --namespace $namespace
 }
 
+function change_k8sContext(){
+  if [[ -d ${HOME}/.kube/configfiles ]]; then
+    mkdir ${HOME}/.kube/configfiles
+  fi
+  mkdir ${HOME}/.kube/configfiles/dir-${namespace}
+  # copying the original config (.kube/config)
+  cp ${HOME}/.kube/config ${HOME}/.kube/configfiles/dir-${namespace}/
+  # Modifying namespace of new config-file
+  kubectl config set-context $(kubectl config current-context) --kubeconfig ${HOME}/.kube/configfiles/dir-${namespace}/config --namespace ${namespace}
+  # Modifying $KUBECONFIG environment variable
+  expose KUBECONFIG=${HOME}/.kube/configfiles/dir-${namespace}/config
+
+  #  TO DO: remove created directory for kubeconfig ($HOME/.kube/configfiles/dir-$namespace)
+}
+
 function resources_deployment(){
 
 
     if [ "$DB" == "mysql" ]
     then
-        helm install wso2is-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_is/mysql/values.yaml stable/mysql --namespace $namespace
+        helm install wso2is-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_is/mysql/values.yaml stable/mysql
         sleep 30s
     fi
     if [ "$DB" == "postgres" ]
     then
-        helm install wso2is-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_is/postgresql/values.yaml stable/postgresql --namespace $namespace
+        helm install wso2is-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_is/postgresql/values.yaml stable/postgresql
         sleep 30s
     fi
     if [ "$DB" == "mssql" ]
     then
-        helm install wso2is-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_is/mssql/values.yaml stable/mssql-linux --namespace $namespace
-        kubectl create -f $deploymentRepositoryLocation/deploymentRepository/helm_is/jobs/db_provisioner_job.yaml --namespace $namespace
+        helm install wso2is-rdbms-service -f $deploymentRepositoryLocation/deploymentRepository/helm_is/mssql/values.yaml stable/mssql-linux
+        kubectl create -f $deploymentRepositoryLocation/deploymentRepository/helm_is/jobs/db_provisioner_job.yaml
         sleep 30s
     fi
 
