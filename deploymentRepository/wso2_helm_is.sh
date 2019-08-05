@@ -16,7 +16,7 @@
 # limitations under the License.
 #--------------------------------------------------------------------------------
 
-set -e
+set -e; set -o xtrace
 
 #installation of database differs accoring to the type of database resource found.
 #This function is to deploy the database correctly as found in the test plan.
@@ -99,7 +99,7 @@ function create_gcr_secret(){
 }
 
 function change_k8sContext(){
-  if [[ -d ${HOME}/.kube/configfiles ]]; then
+  if [[ ! -d ${HOME}/.kube/configfiles ]]; then
     mkdir ${HOME}/.kube/configfiles
   fi
   mkdir ${HOME}/.kube/configfiles/dir-${namespace}
