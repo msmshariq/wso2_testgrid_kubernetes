@@ -32,7 +32,7 @@ spec:
     spec:
       containers:
       - name: wso2ei-integrator
-        {{- if (eq. Values.context "TestGrid") }}
+        {{- if (eq .Values.context "TestGrid") }}
         image: image: asia.gcr.io/testgrid/wso2-docker/wso2ei:6.5.0-{{ .Values.dbType }}
         {{- else if or (eq .Values.username "") (eq .Values.password "") }}
         image: wso2/wso2ei-integrator:6.5.0
