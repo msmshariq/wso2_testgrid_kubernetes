@@ -33,7 +33,7 @@ spec:
       containers:
       - name: wso2is
         {{- if (eq .Values.context "TestGrid") }}
-        image: asia.gcr.io/testgrid/wso2-docker/wso2is:5.8.0-{{ .Values.dbType }}
+        image: asia.gcr.io/testgrid/wso2-docker/wso2is:5.8.0-{{ .Values.operatingSystem}}-{{ .Values.jdkType}}-{{ .Values.dbType }}
         {{- else if or (eq .Values.username "") (eq .Values.password "") }}
         image: wso2/wso2is:5.8.0
         {{- else }}

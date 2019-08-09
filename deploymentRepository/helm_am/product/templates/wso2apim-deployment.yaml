@@ -34,7 +34,7 @@ spec:
       containers:
         - name: wso2apim-with-analytics-apim-worker
           {{- if (eq .Values.context "TestGrid") }}
-          image: asia.gcr.io/testgrid/wso2-docker/wso2am:2.6.0-{{ .Values.dbType }}
+          image: asia.gcr.io/testgrid/wso2-docker/wso2am:2.6.0-{{ .Values.operatingSystem}}-{{ .Values.jdkType}}-{{ .Values.dbType }}
           {{- else if or (eq .Values.username "") (eq .Values.password "") }}
           image: wso2/wso2am:2.6.0
           {{- else }}
