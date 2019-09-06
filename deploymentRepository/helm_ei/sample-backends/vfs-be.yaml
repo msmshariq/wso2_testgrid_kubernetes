@@ -1,0 +1,122 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: WSO2 Enterprise Integrator Clustered deployment
+Parameters:
+  KeyPairName:
+    Description: >-
+      This is used to ssh to the node. If you don't have a key, please create
+      one from AWS console and rerun the script
+    Type: 'AWS::EC2::KeyPair::KeyName'
+  WSO2InstanceType:
+    Description: 'EC2 instance type of the WSO2 EI Node [t2.micro is the free tier]'
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.nano
+      - t1.micro
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - t2.xlarge
+      - t2.2xlarge
+      - m3.medium
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - m4.large
+    ConstraintDescription: must be a valid EC2 instance type
+  FTPUserName:
+    Type: String
+    Default: vfsuser
+    Description: FTP User Name
+  FTPUserPassword:
+    Type: String
+    Default: testPassword
+    Description: FTP User Password
+Resources:
+  FTPSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: FTP protocol related security group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '20'
+          ToPort: '20'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '21'
+          ToPort: '21'
+          CidrIp: 0.0.0.0/0
+  FTPEC2Instance:
+    Type: AWS::EC2::Instance
+    Properties:
+      ImageId: !FindInMap
+        - WSO2EIAMIRegionMap
+        - !Ref 'AWS::Region'
+        - Ubuntu1804
+      InstanceType: !Ref WSO2InstanceType
+      SecurityGroupIds:
+        - !Ref FTPSecurityGroup
+      KeyName: !Ref KeyPairName
+      Tags:
+        - Key: Name
+          Value: wso2-ei-ftp-node
+      UserData: !Base64
+        'Fn::Join':
+        - |+
+
+        - - '#!/bin/bash'
+          - sudo -i
+          - apt-get upgrade;
+          - apt-get update;
+          - apt install vsftpd -y;
+          - systemctl start vsftpd;
+          - systemctl enable vsftpd;
+          - cp /etc/vsftpd.conf /etc/vsftpd.conf.original;
+          - sed -i s/#write_enable=YES/write_enable=YES/g /etc/vsftpd.conf
+          - sed -i s/#local_umask=022/local_umask=022/g /etc/vsftpd.conf
+          - sed -i s/#xferlog_std_format=YES/xferlog_std_format=YES/g /etc/vsftpd.conf
+          - echo "userlist_enable=YES" >> /etc/vsftpd.conf
+          - echo "userlist_file=/etc/vsftpd.userlist" >> /etc/vsftpd.conf
+          - echo "userlist_deny=NO" >> /etc/vsftpd.conf
+          - echo "chroot_local_user=YES" >> /etc/vsftpd.conf
+          - echo "allow_writeable_chroot=YES" >> /etc/vsftpd.conf
+          - echo "tcp_wrappers=YES" >> /etc/vsftpd.conf
+          - !Join
+            - ''
+            - - password=
+              - !Ref FTPUserPassword
+          - !Join
+            - ''
+            - - vfsuser=
+              - !Ref FTPUserName
+          - pass=$(perl -e 'print crypt($ARGV[0], "password")' $password)
+          - sudo useradd -m -c "VFS USER" -s /bin/bash -p $pass $vfsuser
+          - echo $vfsuser >> /etc/vsftpd.userlist
+          - systemctl restart vsftpd
+    DependsOn:
+      - FTPSecurityGroup
+Outputs:
+  FTPHostname:
+    Value: !GetAtt FTPEC2Instance.PublicDnsName
+    Description: FTP hostname
+  FTPUserName:
+    Value: !Ref FTPUserName
+    Description: FTP username
+  FTPUserPassword:
+    Value: !Ref FTPUserPassword
+    Description: FTP user password
+Mappings:
+  WSO2EIAMIRegionMap:
+    ap-southeast-2:
+      Ubuntu1804: ami-0d287fd93ad5b629c
+    eu-west-1:
+      Ubuntu1804: ami-0f802c1aabada212b
+    us-east-1:
+      Ubuntu1804: ami-02a2048d0e4afcd10
+    us-east-2:
+      Ubuntu1804: ami-0d6c9af151fd608ba
+    us-west-1:
+      Ubuntu1804: ami-0aa610ea6a7a5acca
+    us-west-2:
+      Ubuntu1804: ami-056eb6e8b1f9c03a7

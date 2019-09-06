@@ -1,0 +1,136 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description: WSO2 Enterprise Integrator Scenario Test Backend Deployment
+Parameters:
+  KeyPairName:
+    Description: >-
+      This is used to ssh to the node. If you don't have a key, please create
+      one from AWS console and rerun the script
+    Type: 'AWS::EC2::KeyPair::KeyName'
+  WSO2InstanceType:
+    Description: 'EC2 instance type of the WSO2 EI Node [t2.micro is the free tier]'
+    Type: String
+    Default: t2.micro
+    AllowedValues:
+      - t2.nano
+      - t1.micro
+      - t2.micro
+      - t2.small
+      - t2.medium
+      - t2.large
+      - t2.xlarge
+      - t2.2xlarge
+      - m3.medium
+      - m3.large
+      - m3.xlarge
+      - m3.2xlarge
+      - m4.large
+    ConstraintDescription: must be a valid EC2 instance type
+Resources:
+  ActiveMQSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ActiveMQ related security group
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: '8161'
+          ToPort: '8161'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '61616'
+          ToPort: '61616'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '5672'
+          ToPort: '5672'
+        - IpProtocol: tcp
+          FromPort: '15672'
+          ToPort: '15672'
+          CidrIp: 0.0.0.0/0
+        - IpProtocol: tcp
+          FromPort: '22'
+          ToPort: '22'
+          CidrIp: 0.0.0.0/0
+  ActiveMqEC2Instance:
+    Type: AWS::EC2::Instance
+    CreationPolicy:
+      ResourceSignal:
+        Timeout: PT20M
+        Count: 1
+    Properties:
+      ImageId: !FindInMap
+        - WSO2EIAMIRegionMap
+        - !Ref 'AWS::Region'
+        - Ubuntu1804
+      InstanceType: !Ref WSO2InstanceType
+      SecurityGroupIds:
+        - !Ref ActiveMQSecurityGroup
+      KeyName: !Ref KeyPairName
+      Tags:
+        - Key: Name
+          Value: wso2-ei-activemq-node
+      UserData: !Base64
+        'Fn::Join':
+        - |+
+
+        - - '#!/bin/bash'
+          - sudo -i
+          - apt-get upgrade;
+          - echo "Add Repository for Java distro"
+          - add-apt-repository ppa:webupd8team/java -y
+          - apt-get update;
+          - apt-get -y install python-setuptools python-pip
+          - pip install https://s3.amazonaws.com/cloudformation-examples/aws-cfn-bootstrap-latest.tar.gz
+
+          - echo "oracle-java8-installer shared/accepted-oracle-license-v1-1 select true" | sudo debconf-set-selections
+          - echo "Installing Java 8"
+          - apt install oracle-java8-installer -y
+          - echo "Java 8 installation completed"
+          - mkdir /installations/distributions -p
+          - mkdir /installations/bin -p
+          - echo "Download ActiveMQ distribution"
+          - wget http://archive.apache.org/dist/activemq/5.15.8/apache-activemq-5.15.8-bin.tar.gz -P /installations/distributions/
+          - tar -xvf /installations/distributions/apache-activemq-5.15.8-bin.tar.gz -C /installations/bin/
+          - echo "Starting ActiveMQ"
+          - /installations/bin/apache-activemq-5.15.8/bin/activemq start
+
+          - echo "Download https transport for APT"
+          - apt-key adv --keyserver "hkps.pool.sks-keyservers.net" --recv-keys "0x6B73A36E6026DFCA"
+          - wget -O - "https://github.com/rabbitmq/signing-keys/releases/download/2.0/rabbitmq-release-signing-key.asc" | sudo apt-key add -
+          - apt-get install apt-transport-https
+          - echo "Add Apt repository to Apt source list directory"
+          - echo "deb https://dl.bintray.com/rabbitmq/debian bionic main" | sudo tee -a /etc/apt/sources.list.d/bintray.rabbitmq.list
+          - echo "deb https://dl.bintray.com/rabbitmq-erlang/debian bionic erlang" | sudo tee -a /etc/apt/sources.list.d/bintray.rabbitmq.list
+          - apt-get update
+          - echo "Install RabbitMQ"
+          - apt-get install -y rabbitmq-server
+          - echo "Start the RabitMQ server"
+          - sudo systemctl start rabbitmq-server.service
+          - sudo systemctl enable rabbitmq-server.service
+          - echo "Enable RabbitMQ management console"
+          - sudo rabbitmq-plugins enable rabbitmq_management
+          - sudo chown -R rabbitmq:rabbitmq /var/lib/rabbitmq/
+
+          - !Sub "/usr/local/bin/cfn-signal -e $? --stack ${AWS::StackName} --resource ActiveMqEC2Instance --region ${AWS::Region}"
+    DependsOn:
+      - ActiveMQSecurityGroup
+Outputs:
+  ActiveMqHostname:
+    Value: !GetAtt ActiveMqEC2Instance.PublicDnsName
+    Description: Activemq hostname
+  RabbitMqHostname:
+    Value: !GetAtt ActiveMqEC2Instance.PublicDnsName
+    Description: Rabbitmq hostname
+Mappings:
+  WSO2EIAMIRegionMap:
+    ap-southeast-2:
+      Ubuntu1804: ami-0d287fd93ad5b629c
+    eu-west-1:
+      Ubuntu1804: ami-0f802c1aabada212b
+    us-east-1:
+      Ubuntu1804: ami-02a2048d0e4afcd10
+    us-east-2:
+      Ubuntu1804: ami-0d6c9af151fd608ba
+    us-west-1:
+      Ubuntu1804: ami-0aa610ea6a7a5acca
+    us-west-2:
+      Ubuntu1804: ami-056eb6e8b1f9c03a7
