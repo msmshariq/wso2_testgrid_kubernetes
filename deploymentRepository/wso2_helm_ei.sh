@@ -102,7 +102,7 @@ function change_k8sContext(){
   if [[ ! -d ${HOME}/.kube/configfiles ]]; then
     mkdir ${HOME}/.kube/configfiles
   fi
-  mkdir ${HOME}/.kube/configfiles/dir-${namespace}
+  mkdir -p ${HOME}/.kube/configfiles/dir-${namespace}
   # copying the original config (.kube/config)
   cp ${HOME}/.kube/config ${HOME}/.kube/configfiles/dir-${namespace}/
   # Modifying namespace of new config-file
