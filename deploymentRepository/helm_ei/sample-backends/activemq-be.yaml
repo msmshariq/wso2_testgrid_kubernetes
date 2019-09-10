@@ -73,8 +73,8 @@ Resources:
         - |+
 
         - - '#!/bin/bash'
+          - export DEBIAN_FRONTEND=noninteractive
           - sudo -i
-          - apt-get upgrade;
           - echo "Add Repository for Java distro"
           - add-apt-repository ppa:webupd8team/java -y
           - apt-get update;
