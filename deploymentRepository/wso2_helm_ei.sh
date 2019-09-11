@@ -24,6 +24,7 @@ set -e ; set -o xtrace
 function helm_deploy(){
 
   create_value_yaml
+  addTransportReceiverHostName
   create_gcr_secret
   #install resources using helm
   helmDeployment="wso2product$(cat /dev/urandom | tr -dc 'a-z0-9' | fold -w 5 | head -n 1)"
@@ -87,6 +88,11 @@ echo "testing values.yaml ... "
 cat values.yaml
 
 yes | cp -rf $deploymentRepositoryLocation/values.yaml $deploymentRepositoryLocation/deploymentRepository/helm_ei/product/
+}
+
+function addTransportReceiverHostName(){
+  activeMqHost=${infra_props["ActiveMqHostname"]}
+  sed -i.bak "s/ei_dependency_activemq_hostname/$activeMqHost/g" $deploymentRepositoryLocation/deploymentRepository/helm_ei/product/confs/integrator/conf/axis2/axis2.xml
 }
 
 function create_gcr_secret(){
