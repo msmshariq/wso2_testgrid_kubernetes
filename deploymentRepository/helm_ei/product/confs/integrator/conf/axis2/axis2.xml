@@ -223,34 +223,34 @@
             supports optional|require or defaults to none -->
   </transportReceiver>
   <transportReceiver name="local" class="org.wso2.carbon.core.transports.local.CarbonLocalTransportReceiver"/>
-  <!--<transportReceiver name="vfs" class="org.apache.synapse.transport.vfs.VFSTransportListener"/>-->
+  <transportReceiver name="vfs" class="org.apache.synapse.transport.vfs.VFSTransportListener"/>
   <!--<transportReceiver name="mailto" class="org.apache.axis2.transport.mail.MailTransportListener">-->
   <!-- configure any optional POP3/IMAP properties
         check com.sun.mail.pop3 and com.sun.mail.imap package documentation for more details-->
   <!--</transportReceiver>-->
-  <!--Uncomment this and configure as appropriate for JMS transport support, after setting up your JMS environment (e.g. ActiveMQ)
+  <!--Uncomment this and configure as appropriate for JMS transport support, after setting up your JMS environment (e.g. ActiveMQ)-->
     <transportReceiver name="jms" class="org.apache.axis2.transport.jms.JMSListener">
         <parameter name="myTopicConnectionFactory" locked="false">
         	<parameter name="java.naming.factory.initial" locked="false">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
-        	<parameter name="java.naming.provider.url" locked="false">tcp://localhost:61616</parameter>
+        	<parameter name="java.naming.provider.url" locked="false">tcp://ei_dependency_activemq_hostname:61616</parameter>
         	<parameter name="transport.jms.ConnectionFactoryJNDIName" locked="false">TopicConnectionFactory</parameter>
 		    <parameter name="transport.jms.ConnectionFactoryType" locked="false">topic</parameter>
         </parameter>
 
         <parameter name="myQueueConnectionFactory" locked="false">
         	<parameter name="java.naming.factory.initial" locked="false">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
-        	<parameter name="java.naming.provider.url" locked="false">tcp://localhost:61616</parameter>
+        	<parameter name="java.naming.provider.url" locked="false">tcp://ei_dependency_activemq_hostname:61616</parameter>
         	<parameter name="transport.jms.ConnectionFactoryJNDIName" locked="false">QueueConnectionFactory</parameter>
 		    <parameter name="transport.jms.ConnectionFactoryType" locked="false">queue</parameter>
         </parameter>
 
         <parameter name="default" locked="false">
         	<parameter name="java.naming.factory.initial" locked="false">org.apache.activemq.jndi.ActiveMQInitialContextFactory</parameter>
-        	<parameter name="java.naming.provider.url" locked="false">tcp://localhost:61616</parameter>
+        	<parameter name="java.naming.provider.url" locked="false">tcp://ei_dependency_activemq_hostnamef:61616</parameter>
         	<parameter name="transport.jms.ConnectionFactoryJNDIName" locked="false">QueueConnectionFactory</parameter>
 		    <parameter name="transport.jms.ConnectionFactoryType" locked="false">queue</parameter>
         </parameter>
-    </transportReceiver>-->
+    </transportReceiver>
   <!--Uncomment this and configure as appropriate for JMS transport support with Apache Qpid -->
   <!--transportReceiver name="jms" class="org.apache.axis2.transport.jms.JMSListener">
         <parameter name="myTopicConnectionFactory" locked="false">
@@ -359,7 +359,7 @@
   <!--<transportSender name="local" class="org.apache.axis2.transport.local.NonBlockingLocalTransportSender"/>-->
   <!-- uncomment this and configure to use connection pools for sending messages>
      <transportSender name="jms" class="org.apache.axis2.transport.jms.JMSSender"/-->
-  <!--transportSender name="vfs" class="org.apache.synapse.transport.vfs.VFSTransportSender"/-->
+  <transportSender name="vfs" class="org.apache.synapse.transport.vfs.VFSTransportSender"/>
   <!-- Uncomment and configure the SMTP server information
     check com.sun.mail.smtp package documentation for descriptions of properties
     <transportSender name="mailto" class="org.apache.axis2.transport.mail.MailTransportSender">
