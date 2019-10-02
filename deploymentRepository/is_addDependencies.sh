@@ -5,6 +5,7 @@ set -e; set -o xtrace
 
 ProductVersion="5.8.0"
 releaseName="wso2is-tomcat-dep"
+INPUT_DIR=$2
 #namespace="web-app-is"  -- debug --
 
 read_property_file() {
