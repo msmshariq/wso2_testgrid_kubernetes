@@ -68,3 +68,5 @@ TOMCAT_POD_NAME=$(kubectl get pods --namespace ${namespace} -o jsonpath='{.items
 
 kubectl cp is-app-copy/travelocity.com ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
 kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
+
+sh catalina.sh start
