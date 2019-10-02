@@ -115,6 +115,8 @@ function change_k8sContext(){
 
 function resources_deployment(){
 
+    helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+    helm repo update
 
     if [ "$DB" == "mysql" ]
     then
