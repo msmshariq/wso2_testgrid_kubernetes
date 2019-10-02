@@ -49,7 +49,7 @@ unzip PassiveSTSSampleApp-${ProductVersion}.war -d PassiveSTSSampleApp
 mkdir is-app-copy; mv travelocity.com is-app-copy; mv PassiveSTSSampleApp is-app-copy
 
 #get ingres ip
-TOMCAT_SVC_NAME=$(kubectl get svc --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat"].metadata.name}')
+TOMCAT_SVC_NAME=$(kubectl get svc --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
 
 while [ -z $(kubectl get svc --namespace ${namespace} ${TOMCAT_SVC_NAME} -o jsonpath='{.status.loadBalancer.ingress[0].ip}') ];
 do
