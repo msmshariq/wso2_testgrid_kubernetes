@@ -71,6 +71,9 @@ DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 OS=$(echo $OS | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 
+ACTIVEMQ_IP=$((infra_props["ActiveMQ_IP_K8s"]))
+RABBITMQ_IP=$(infra_props["RabbitMQ_IP_k8s"])
+
 echo "creation of values.yaml file"
 
 cat > values.yaml << EOF
@@ -83,6 +86,10 @@ svcaccount: "wso2svc-account"
 dbType: $DB
 operatingSystem: $OS
 jdkType: $JDK
+
+sampleBackends:
+  activemqHost: $ACTIVEMQ_IP
+  rabbitmqHost: $RABBITMQ_IP
 EOF
 echo "testing values.yaml ... "
 cat values.yaml
