@@ -18,7 +18,8 @@ metadata:
   name: integrator-conf-axis2
   namespace : {{ .Values.namespace }}
 data:
-  {{- $namespace := .Values.namespace}}
+  {{- $namespace := .Values.namespace }}
+  {{- $activemq_hostip := .Values.sampleBackends.activemqHost }}
   {{- $file := .Files }}
   {{- range $path, $byte := .Files.Glob "confs/integrator/conf/axis2/*" }}
   {{- $list := $path | splitList "/"}}
@@ -26,6 +27,6 @@ data:
   {{- $last := add $length -1 }}
   {{ index $list $last }}: |-
     {{- range $line := $file.Lines $path }}
-      {{ $line | replace "WSO2EI_NAMESPACE" $namespace }}
+      {{ $line | replace "WSO2EI_NAMESPACE" $namespace | replace "ACTIVEMQ_HOSTIP" $activemq_hostip }}
     {{- end }}
   {{- end }}
