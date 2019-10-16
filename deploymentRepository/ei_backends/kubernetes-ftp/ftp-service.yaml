@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: wso2-ftp-service
+  labels:
+    app: wso2-ftp
+spec:
+  type: NodePort
+  ports:
+    - port: 21
+      nodePort: 30080
+  selector:
+    app: wso2-ftp
