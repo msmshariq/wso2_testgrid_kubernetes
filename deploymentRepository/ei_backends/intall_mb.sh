@@ -38,6 +38,7 @@ helm install ${ACTIVREMQ_RELEASE_NAME} $deploymentRepositoryLocation/deploymentR
 activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 while [[ -z $activemq_ip ]]
 do
+  activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   sleep 10
 done
 
@@ -48,6 +49,7 @@ helm install "${RABBITMQ_RELEASE_NAME}" stable/rabbitmq  --namespace ${namespace
 rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 while [[ -z $rabbitmq_ip ]]
 do
+  rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   sleep 10
 done
 
