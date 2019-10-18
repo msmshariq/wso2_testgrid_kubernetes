@@ -32,7 +32,7 @@ namespace=${infra_props["namespace"]}
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 
 #deploy activemq charts
-helm install ${ACTIVREMQ_RELEASE_NAME} ei_backends/${ACTIVEMQ_CHART_NAME}/ --namespace ${namespace}
+helm install ${ACTIVREMQ_RELEASE_NAME} $deploymentRepositoryLocation/deploymentRepository/ei_backends/${ACTIVEMQ_CHART_NAME}/ --namespace ${namespace}
 
 #get activemq hostname
 activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
