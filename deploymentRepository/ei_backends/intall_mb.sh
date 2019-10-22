@@ -40,7 +40,7 @@ helm install ${ACTIVREMQ_RELEASE_NAME} $deploymentRepositoryLocation/deploymentR
 # done
 
 #deploy rabbitmq helm charts
-helm install "${RABBITMQ_RELEASE_NAME}" stable/rabbitmq  --namespace ${namespace}
+helm install "${RABBITMQ_RELEASE_NAME}" -f $deploymentRepositoryLocation/deploymentRepository/ei_backends/rabbitmq/values.yaml stable/rabbitmq  --namespace ${namespace}
 
 #get rabbitmq hostname
 # rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
