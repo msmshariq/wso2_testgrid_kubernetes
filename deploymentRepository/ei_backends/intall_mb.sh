@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-OUTPUT_DIR=$4
-INPUT_DIR=$2
-
 # variables
 ACTIVREMQ_RELEASE_NAME="activemq-wso2ei"
 ACTIVEMQ_CHART_NAME="activemq-artemis"
@@ -35,20 +32,29 @@ helm repo add stable https://kubernetes-charts.storage.googleapis.com/
 helm install ${ACTIVREMQ_RELEASE_NAME} $deploymentRepositoryLocation/deploymentRepository/ei_backends/${ACTIVEMQ_CHART_NAME}/ --namespace ${namespace}
 
 #get activemq hostname
-activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-while [[ -z $activemq_ip ]]
-do
-  activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-  sleep 10
-done
+# activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+# while [[ -z $activemq_ip ]]
+# do
+#   activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+#   sleep 10
+# done
 
 #deploy rabbitmq helm charts
 helm install "${RABBITMQ_RELEASE_NAME}" stable/rabbitmq  --namespace ${namespace}
 
 #get rabbitmq hostname
+# rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+# while [[ -z $rabbitmq_ip ]]
+# do
+#   rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
+#   sleep 10
+# done
+
+activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
-while [[ -z $rabbitmq_ip ]]
+while [ -z $rabbitmq_ip ] || [ -z $activemq_ip ]
 do
+  activemq_ip=$(kubectl get services  --namespace ${namespace} "${ACTIVREMQ_RELEASE_NAME}"-"${ACTIVEMQ_CHART_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   rabbitmq_ip=$(kubectl get services  --namespace ${namespace} "${RABBITMQ_RELEASE_NAME}" -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
   sleep 10
 done
