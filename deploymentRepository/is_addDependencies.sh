@@ -35,6 +35,12 @@ declare -g -A infra_props
 read_property_file "${INPUT_DIR}/infrastructure.properties" infra_props
 namespace=${infra_props["namespace"]}
 
+deployment_prop_file=$INPUT_DIR/deployment.properties
+declare -g -A deployment_props
+read_property_file "${deployment_prop_file}" deployment_props
+ISHttpsUrl=${deployment_props["ISHttpsUrl"]}
+loadBalancerHostName=${deployment_props["loadBalancerHostName"]}
+
 # install tomcat helm
 helm install ${releaseName} stable/tomcat --namespace $namespace
 
@@ -58,11 +64,11 @@ done
 
 TOMCAT_IP=$(kubectl get svc --namespace ${namespace} ${TOMCAT_SVC_NAME} -o jsonpath='{.status.loadBalancer.ingress[0].ip}')
 
-sed -i 's|https://localhost:9443|https://wso2is:9443|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
-sed -i 's|SAML2.IdPEntityId=localhost|SAML2.IdPEntityId=wso2is|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
+sed -i 's|https://localhost:9443|${ISHttpsUrl}|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
+sed -i 's|SAML2.IdPEntityId=localhost|SAML2.IdPEntityId=${loadBalancerHostName}|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
 sed -i 's|http://localhost:8080|http://'${TOMCAT_IP}':8080|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
 
-sed -i 's|https://localhost:9443|https://wso2is:9443|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
+sed -i 's|https://localhost:9443|${ISHttpsUrl}|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
 sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|https://'${TOMCAT_IP}':8080/PassiveSTSSampleApp/|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
 
 TOMCAT_POD_NAME=$(kubectl get pods --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
