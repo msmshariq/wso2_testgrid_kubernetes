@@ -55,10 +55,12 @@ read_property_file() {
 
 function create_value_yaml(){
 
+loadBalancerHostName=wso2am-$(($RANDOM % 10000)).gke.wso2testgrid.com
+echo "loadBalancerHostName=$loadBalancerHostName" >> ${OUTPUT_DIR}/deployment.properties
+
 file=$INPUT_DIR/infrastructure.properties
 declare -g -A infra_props
 read_property_file "${INPUT_DIR}/infrastructure.properties" infra_props
-read_property_file "${INPUT_DIR}/deployment.properties" deployment_props
 
 dockerAccessUserName=${infra_props["dockerAccessUserName"]}
 dockerAccessPassword=${infra_props["dockerAccessPassword"]}
@@ -72,8 +74,6 @@ DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 OS=$(echo $OS | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 
-is_hostname=${deployment_props["loadBalancerHostName"]}
-
 echo "creation of values.yaml file"
 
 cat > values.yaml << EOF
@@ -86,7 +86,7 @@ svcaccount: "wso2svc-account"
 dbType: $DB
 operatingSystem: $OS
 jdkType: $JDK
-hostname: $is_hostname
+hostname: $loadBalancerHostName
 EOF
 echo "testing values.yaml ... "
 cat values.yaml
