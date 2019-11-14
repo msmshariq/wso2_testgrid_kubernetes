@@ -18,13 +18,14 @@ metadata:
   name: identity-server-conf
   namespace : {{ .Values.namespace }}
 data:
+  {{- $hostname := .Values.hostname }}
   {{- $file := .Files }}
   {{- range $path, $byte := .Files.Glob "confs/*" }}
   {{- $list := $path | splitList "/"}}
   {{- $length := len $list }}
   {{- $last := add $length -1 }}
   {{ index $list $last }}: |-
-    {{- range $file.Lines $path }}
-    {{ . }}
+    {{- range $line := $file.Lines $path }}
+      {{ $line | replace "WSO2IS_HOSTNAME" $hostname }}
     {{- end }}
   {{- end }}

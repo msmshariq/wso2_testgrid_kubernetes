@@ -58,6 +58,8 @@ function create_value_yaml(){
 file=$INPUT_DIR/infrastructure.properties
 declare -g -A infra_props
 read_property_file "${INPUT_DIR}/infrastructure.properties" infra_props
+read_property_file "${INPUT_DIR}/deployment.properties" deployment_props
+
 dockerAccessUserName=${infra_props["dockerAccessUserName"]}
 dockerAccessPassword=${infra_props["dockerAccessPassword"]}
 namespace=${infra_props["namespace"]}
@@ -69,6 +71,8 @@ JDK=${infra_props["JDK"]}
 DB=$(echo $DBEngine | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 OS=$(echo $OS | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
 JDK=$(echo $JDK | cut -d'-' -f 1  | tr '[:upper:]' '[:lower:]')
+
+is_hostname=${deployment_props["loadBalancerHostName"]}
 
 echo "creation of values.yaml file"
 
@@ -82,6 +86,7 @@ svcaccount: "wso2svc-account"
 dbType: $DB
 operatingSystem: $OS
 jdkType: $JDK
+hostname: $is_hostname
 EOF
 echo "testing values.yaml ... "
 cat values.yaml
