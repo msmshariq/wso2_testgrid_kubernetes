@@ -78,6 +78,8 @@ spec:
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/identity
         - name: identity-server-conf-tomcat
           mountPath: /home/wso2carbon/wso2-config-volume/repository/conf/tomcat
+        - name: identity-server-lib
+          mountPath: /home/wso2carbon/wso2-config-volume/repository/components/plugins
       serviceAccountName: {{ .Values.svcaccount }}
       {{ if and (not (eq .Values.username "")) (not (eq .Values.password "")) }}
       imagePullSecrets:
@@ -99,3 +101,6 @@ spec:
       - name: identity-server-conf-tomcat
         configMap:
           name: identity-server-conf-tomcat
+      - name: identity-server-lib
+        configMap:
+          name: identity-server-lib
