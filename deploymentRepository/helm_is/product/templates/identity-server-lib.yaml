@@ -18,5 +18,5 @@ metadata:
   name: identity-server-lib
   namespace : {{ .Values.namespace }}
 binaryData:
-  org.wso2.analytics.apim.rest.api.proxy_3.0.0.jar : |-
+  org.wso2.carbon.identity.oauth.dcr-6.0.168.jar : |-
     {{ .Files.Get "lib/org.wso2.carbon.identity.oauth.dcr-6.0.168.jar" | b64enc }}
