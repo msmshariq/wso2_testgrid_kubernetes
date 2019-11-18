@@ -20,3 +20,5 @@ metadata:
 binaryData:
   org.wso2.carbon.identity.oauth.dcr-6.0.168.jar : |-
     {{ .Files.Get "lib/org.wso2.carbon.identity.oauth.dcr-6.0.168.jar" | b64enc }}
+  org.wso2.carbon.identity.oauth-6.0.168.jar : |-
+    {{ .Files.Get "lib/org.wso2.carbon.identity.oauth-6.0.168.jar" | b64enc }}
