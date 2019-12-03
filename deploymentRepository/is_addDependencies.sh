@@ -68,10 +68,10 @@ echo "ISSamplesHttpUrl=http://$TOMCAT_IP:80" >> ${INPUT_DIR}/deployment.properti
 
 sed -i 's|https://localhost:9443|'${ISHttpsUrl}'|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
 sed -i 's|SAML2.IdPEntityId=localhost|SAML2.IdPEntityId='${loadBalancerHostName}'|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
-sed -i 's|http://localhost:8080|http://'${TOMCAT_IP}':8080|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
+sed -i 's|http://localhost:8080|http://'${TOMCAT_IP}':80|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
 
 sed -i 's|https://localhost:9443|'${ISHttpsUrl}'|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
-sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|https://'${TOMCAT_IP}':8080/PassiveSTSSampleApp/|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
+sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|https://'${TOMCAT_IP}':80/PassiveSTSSampleApp/|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
 
 TOMCAT_POD_NAME=$(kubectl get pods --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
 
