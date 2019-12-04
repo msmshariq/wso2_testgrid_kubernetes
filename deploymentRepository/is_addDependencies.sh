@@ -28,6 +28,7 @@ if [ -z $(which zip) ]; then
 fi
 
 helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+helm repo add bitnami https://charts.bitnami.com
 helm repo update
 
 file=$INPUT_DIR/infrastructure.properties
@@ -42,7 +43,9 @@ ISHttpsUrl=${deployment_props["ISHttpsUrl"]}
 loadBalancerHostName=${deployment_props["loadBalancerHostName"]}
 
 # install tomcat helm
-helm install ${releaseName} stable/tomcat --namespace $namespace
+#helm install ${releaseName} stable/tomcat --namespace $namespace
+
+helm install ${releaseName} bitnami/tomcat --version 6.1.0 --namespace $namespace
 
 #travelocity
 wget http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/is/org.wso2.sample.is.sso.agent/${ProductVersion}/org.wso2.sample.is.sso.agent-${ProductVersion}.war
