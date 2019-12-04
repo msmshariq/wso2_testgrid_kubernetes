@@ -78,7 +78,9 @@ sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|https://'${TOMCAT_IP}':80/P
 
 TOMCAT_POD_NAME=$(kubectl get pods --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
 
-kubectl cp is-app-copy/travelocity.com ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
-kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
+#kubectl cp is-app-copy/travelocity.com ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
+kubectl cp is-app-copy/travelocity.com ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
+#kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
+kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
 
-kubectl exec -it ${TOMCAT_POD_NAME} --namespace ${namespace} -- bash -c "sh bin/catalina.sh start"
+#kubectl exec -it ${TOMCAT_POD_NAME} --namespace ${namespace} -- bash -c "sh bin/catalina.sh start"
