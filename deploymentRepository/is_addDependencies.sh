@@ -79,7 +79,7 @@ sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|http://'${TOMCAT_IP}':80/Pa
 TOMCAT_POD_NAME=$(kubectl get pods --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
 
 #kubectl cp is-app-copy/travelocity.com ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
-zip -r is-app-copy/travelocity.com.war is-app-copy/travelocity.com
+zip -r is-app-copy/travelocity.com.war ./is-app-copy/travelocity.com/*
 kubectl cp is-app-copy/travelocity.com.war ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
 #kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
 kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
