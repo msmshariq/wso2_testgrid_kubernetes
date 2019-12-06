@@ -45,7 +45,7 @@ loadBalancerHostName=${deployment_props["loadBalancerHostName"]}
 # install tomcat helm
 #helm install ${releaseName} stable/tomcat --namespace $namespace
 
-helm install ${releaseName} bitnami/tomcat --version 6.1.0 --namespace $namespace
+helm install ${releaseName} --set resources=Memory:1024Mi bitnami/tomcat --version 2.1.0 --namespace $namespace
 
 #travelocity
 wget http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/is/org.wso2.sample.is.sso.agent/${ProductVersion}/org.wso2.sample.is.sso.agent-${ProductVersion}.war
