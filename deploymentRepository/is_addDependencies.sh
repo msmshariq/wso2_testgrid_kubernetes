@@ -50,12 +50,13 @@ helm install ${releaseName} bitnami/tomcat --version 6.1.0 --namespace $namespac
 #travelocity
 wget http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/is/org.wso2.sample.is.sso.agent/${ProductVersion}/org.wso2.sample.is.sso.agent-${ProductVersion}.war
 unzip org.wso2.sample.is.sso.agent-${ProductVersion}.war -d travelocity.com
+rm org.wso2.sample.is.sso.agent-${ProductVersion}.war
 
 #PassiveSTSSampleApp
 wget http://maven.wso2.org/nexus/content/repositories/releases/org/wso2/is/PassiveSTSSampleApp/${ProductVersion}/PassiveSTSSampleApp-${ProductVersion}.war
 unzip PassiveSTSSampleApp-${ProductVersion}.war -d PassiveSTSSampleApp
+rm PassiveSTSSampleApp-${ProductVersion}.war
 
-mkdir is-app-copy; mv travelocity.com is-app-copy; mv PassiveSTSSampleApp is-app-copy
 
 #get ingres ip
 TOMCAT_SVC_NAME=$(kubectl get svc --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
@@ -69,19 +70,19 @@ TOMCAT_IP=$(kubectl get svc --namespace ${namespace} ${TOMCAT_SVC_NAME} -o jsonp
 
 echo "ISSamplesHttpUrl=http://$TOMCAT_IP:80" >> ${INPUT_DIR}/deployment.properties
 
-sed -i 's|https://localhost:9443|'${ISHttpsUrl}'|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
-sed -i 's|SAML2.IdPEntityId=localhost|SAML2.IdPEntityId='${loadBalancerHostName}'|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
-sed -i 's|http://localhost:8080|http://'${TOMCAT_IP}':80|g' is-app-copy/travelocity.com/WEB-INF/classes/travelocity.properties
+sed -i 's|https://localhost:9443|'${ISHttpsUrl}'|g' travelocity.com/WEB-INF/classes/travelocity.properties
+sed -i 's|SAML2.IdPEntityId=localhost|SAML2.IdPEntityId='${loadBalancerHostName}'|g' travelocity.com/WEB-INF/classes/travelocity.properties
+sed -i 's|http://localhost:8080|http://'${TOMCAT_IP}':80|g' travelocity.com/WEB-INF/classes/travelocity.properties
 
-sed -i 's|https://localhost:9443|'${ISHttpsUrl}'|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
-sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|http://'${TOMCAT_IP}':80/PassiveSTSSampleApp/index.jsp|g' is-app-copy/PassiveSTSSampleApp/WEB-INF/web.xml
+sed -i 's|https://localhost:9443|'${ISHttpsUrl}'|g' PassiveSTSSampleApp/WEB-INF/web.xml
+sed -i 's|http://localhost:8080/PassiveSTSSampleApp/|http://'${TOMCAT_IP}':80/PassiveSTSSampleApp/index.jsp|g' PassiveSTSSampleApp/WEB-INF/web.xml
 
 TOMCAT_POD_NAME=$(kubectl get pods --namespace ${namespace} -o jsonpath='{.items[?(@.metadata.labels.app == "tomcat")].metadata.name}')
 
-#kubectl cp is-app-copy/travelocity.com ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
-zip -r is-app-copy/travelocity.com.war ./is-app-copy/travelocity.com/*
-kubectl cp is-app-copy/travelocity.com.war ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
-#kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/usr/local/tomcat/webapps/
-kubectl cp is-app-copy/PassiveSTSSampleApp ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
+zip -r travelocity.com.war travelocity.com/*
+kubectl cp travelocity.com.war ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
+
+zip -r PassiveSTSSampleApp.war PassiveSTSSampleApp/*
+kubectl cp PassiveSTSSampleApp.war ${namespace}/${TOMCAT_POD_NAME}:/opt/bitnami/tomcat/webapps/
 
 #kubectl exec -it ${TOMCAT_POD_NAME} --namespace ${namespace} -- bash -c "sh bin/catalina.sh start"
