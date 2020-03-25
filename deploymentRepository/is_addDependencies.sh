@@ -45,7 +45,7 @@ loadBalancerHostName=${deployment_props["loadBalancerHostName"]}
 # install tomcat helm
 #helm install ${releaseName} stable/tomcat --namespace $namespace
 
-helm install ${releaseName} --set resources.requests.memory=1Gi --set resources.requests.cpu=500m bitnami/tomcat --namespace $namespace
+helm install ${releaseName} --set resources.requests.memory=2Gi --set resources.requests.cpu=1024m bitnami/tomcat --namespace $namespace
 # --version 2.1.0
 
 #travelocity
